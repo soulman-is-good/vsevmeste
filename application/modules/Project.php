@@ -1,50 +1,42 @@
 <?php
 /**
- * Forum
+ * Project class
  *
  * @author Soul_man
  */
-class Vote extends X3_Module_Table {
+class Project extends X3_Module_Table {
 
     public $encoding = 'UTF-8';
     /*
      * uncomment if want new model functional
      */
-    public $tableName = 'data_vote';
+    public $tableName = 'project';
 
     public $_fields = array(
         'id'=>array('integer[10]','unsigned','primary','auto_increment'),
         'user_id'=>array('integer[10]','unsigned','index','ref'=>array('User','id','default'=>"name")),
-        'city_id' => array('integer[10]', 'unsigned', 'default'=>'NULL', 'index', 'ref'=>array('City','id','default'=>'title','null'=>'Все','query'=>array())),
-        'region_id' => array('integer[10]', 'unsigned','default'=>'NULL', 'index', 'ref'=>array('City_Region','id','default'=>'title')),
-        'house'=>array('string[10]','default'=>"NULL"),
-        'flat'=>array('string[10]','default'=>"NULL"),
-        'title'=>array('content[255]'),
-        'answer'=>array('content','default'=>'||'),
+        'city_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('City','id','default'=>'title')),
+        'category_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Category','id','default'=>'title')),
+        'media'=>array('string[128]'),
+        'title'=>array('string[32]'),
+        'current_sum'=>array('integer[11]','default'=>'0'),
+        'needed_sum'=>array('integer[11]'),
+        'short_content'=>array('text'),
+        'full_content'=>array('text'),
         'status'=>array('boolean','default'=>'0'),
-        'type'=>array('enum["*","admin","ksk","user"]','default'=>"*"),
         'created_at'=>array('datetime'),
         'end_at'=>array('datetime')
     );
-    
-    public function __construct($action = null) {
-        if(X3::user()->isKsk())
-            $this->_fields['city_id']['ref']['query'] = array(
-                '@join'=>"INNER JOIN user_address a ON a.city_id=data_city.id",
-                '@condition'=>array('a.user_id'=>X3::user()->id)
-                );
-        parent::__construct($action);
-    }
 
     public function fieldNames() {
         return array(
-            'user_id'=>'Автор',
-            'city_id'=>X3::translate('Регион'),
-            'region_id'=>X3::translate('Улица'),
-            'house' => X3::translate('№ дома'),
-            'flat' => X3::translate('№ квартиры'),
-            'title'=>X3::translate('Вопрос'),
-            'type'=>X3::translate('Кому'),
+            'user_id'=>X3::translate('Создатель'),
+            'city_id'=>X3::translate('Город'),
+            'title'=>X3::translate('Название'),
+            'media'=>X3::translate('Медиа'),
+            'current_sum'=>X3::translate('Вложенная сумма'),
+            'needed_sum'=>X3::translate('Нужная сумма'),
+            'created_at'=>X3::translate('Дата создания'),
             'end_at'=>X3::translate('Дата окончания'),
             'status'=>'Пуликован',
         );

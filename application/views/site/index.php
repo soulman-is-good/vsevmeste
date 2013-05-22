@@ -1,47 +1,29 @@
 <!-- Слайдер -->
-	<div class="slider_cont">
-		<div class="slider" style="background: url(images/02.jpg) no-repeat;">
-			<div class="slider_text_cont">
-				<div class="slider_title">Пошив модной одежды для малоимущих</div>
-				<div class="project_category" style="margin-bottom: 10px; font-size: 21px;">Благотворительная акция</div>
-				<div style="margin-bottom: 20px; font-size: 16px; font-style: italic; color: #fff;"><b>24 567</b>&nbsp;тенге вложили<br /><b>24</b>&nbsp;дня осталось</div>
-				<a href="#"><div class="button">Посмотреть проект</div></a>
-			</div>
-			<div class="slider_left_fade"></div>
-			<div class="slider_right_fade"></div>
-			<div class="slider_pages">
-				<a href="#"><div class="slider_page_active"></div></a>
-				<a href="#"><div class="slider_page"></div></a>
-				<a href="#"><div class="slider_page"></div></a>
-				<a href="#"><div class="slider_page"></div></a>
-				<a href="#"><div class="slider_page"></div></a>
-			</div>
-		</div>
-	</div>
+	<?=  X3_Widget::run('@views:_widgets:promo_slider.php')?>
 <!-- Меню -->
 	<div class="menu_cont">
-		<a href="#"><div class="menu"><img src="images/rocket.png" alt="" />Все проекты</div></a>
-		<a href="#"><div class="menu"><img src="images/gears.png" alt="" />Как это работает</div></a>
-		<a href="#"><div class="menu"><img src="images/lamp.png" alt="" />Добавить проект</div></a>
+		<a href="/projects/"><div class="menu"><img src="images/rocket.png" alt="" />Все проекты</div></a>
+		<a href="/how-does-it-works.html"><div class="menu"><img src="images/gears.png" alt="" />Как это работает</div></a>
+		<a href="/project/add/"><div class="menu"><img src="images/lamp.png" alt="" />Добавить проект</div></a>
 		<div class="menu_cont_left"></div>
 		<div class="menu_cont_right"></div>
 	</div>
 	<div class="body">
 <!-- Завершающиеся проекты -->
 		<div class="main_projects_cont">
-			<a href="#"><div class="left_nav"><img src="images/left_nav.png" alt="" /></div></a>
-			<a href="#"><div class="right_nav"><img src="images/right_nav.png" alt="" /></div></a>
-			<div class="title_cont"><img src="images/end.png" alt="" />Завершающиеся проекты</div>
-			<div style="float: right; margin-right: 35px;"><a href="#" class="black_link t16"><b>Посмотреть все</b></a></div>
+			<a href="#"><div class="left_nav"><img src="/images/left_nav.png" alt="" /></div></a>
+			<a href="#"><div class="right_nav"><img src="/images/right_nav.png" alt="" /></div></a>
+			<div class="title_cont"><img src="/images/end.png" alt="" />Завершающиеся проекты</div>
+			<div style="float: right; margin-right: 35px;"><a href="/projects/ending/" class="black_link t16"><b>Посмотреть все</b></a></div>
 			<div class="clear"></div>
 			<div class="project_cont" style="margin-left: 35px;">
 				<div class="green_bg">
 					<div class="white_bg">
-						<div class="project_pic"><a href="#"><img src="images/03.jpg" alt="" /></a></div>
+						<div class="project_pic"><a href="/project/name.html"><img src="/images/03.jpg" alt="" /></a></div>
 						<div class="project_text_cont">
-							<div style="margin-bottom: 10px;"><a href="#" class="green_link t16"><b>Anamanaguchi - make ENDLESS FANTASY more than an album!</b></a></div>
-							<div class="name"><a href="#" class="grey_link">Константин Константинов</a></div>
-							<div class="city"><img src="images/location.png" alt="" /><a href="#" class="grey_link">Алматы</a></div>
+							<div style="margin-bottom: 10px;"><a href="/project/<name>.html" class="green_link t16"><b>Anamanaguchi - make ENDLESS FANTASY more than an album!</b></a></div>
+							<div class="name"><a href="/user/<id>.html" class="grey_link">Константин Константинов</a></div>
+							<div class="city"><img src="/images/location.png" alt="" /><a href="/search.php?city=almaty" class="grey_link">Алматы</a></div>
 							<div class="project_text"><p>We just finished a 22-track record over 3 years without help from a label. Help us make Endless Fantasy more than just an album!</p></div>
 							<div style="float: left;"><b>25 446</b> тенге</div>
 							<div style="float: right;"><b>26</b> %</div>

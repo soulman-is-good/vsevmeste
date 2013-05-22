@@ -6,22 +6,22 @@
  * @property integer $created_at unix timestamp 
  * @author Soul_man
  */
-class Message_Uploads extends X3_Module_Table {
+class Project_Uploads extends X3_Module_Table {
 
     public $encoding = 'UTF-8';
 
-    public $tableName = 'message_uploads';
+    public $tableName = 'project_uploads';
 
     public $_fields = array(
       'file_id'=>array('string[128]','primary'),
-      'message_id'=>array('integer[10]','unsigned','index','ref'=>array('Message','id','default'=>'content')),
+      'project_id'=>array('integer[10]','unsigned','index','ref'=>array('Project','id','default'=>'title')),
       'created_at'=>array('integer[10]','unsigned','default'=>'0')
     );
     public function fieldNames() {
         return array(
             'created_at' => 'Дата',
             'file_id' => 'Файл',
-            'message_id' => 'Сообщение',
+            'project_id' => 'Проект',
         );
     }
     public static function newInstance($class = __CLASS__) {

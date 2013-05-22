@@ -11,29 +11,7 @@
 <link href="/css/style.css" type="text/css" rel="stylesheet" />
 <link href="/css/font/junegull.css" rel="stylesheet" type="text/css" />
 <title><?=X3::app()->name?></title>
-<script type="text/javascript" src="/js/jquery.js"></script>
-<?if(isset(X3::app()->datapicker)):?>
-<link href="http://code.jquery.com/ui/1.10.0/themes/cupertino/jquery-ui.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
-<?endif;?>
 <link href="/js/tipTip.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="/js/jquery.tipTip.js"></script>
-<script type="text/javascript" src="/js/jquery.fcselect.js"></script>
-<script type="text/javascript" src="/js/jquery.fctabs.js"></script>
-<script type="text/javascript" src="/js/jquery.maskedinput.min.js"></script>
-<script type="text/javascript" src="/js/placeholder.js"></script>
-<script type="text/javascript" src="/js/wnd.js"></script>
-<script type="text/javascript" src="http://api-maps.yandex.ru/2.0-stable/?lang=ru-RU&coordorder=longlat&load=package.full"></script>
-
-<script type="text/javascript">
-String.prototype.repeat = function( num ){return new Array( num + 1 ).join( this );}    
-</script>
-<?if(X3::user()->superAdmin):?>
-<script type="text/javascript" src="/js/admin.js"></script>
-    <script type="text/javascript" src="/js/ckeditor.4/ckeditor.js"></script>
-    <?include("js/sfbrowser/connectors/php/init.php");?>
-<?endif;?>
-
 <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
 <body itemscope itemtype="http://schema.org/WebPage" class="<?=X3::app()->module->controller->id." ".X3::app()->module->controller->action?><?=X3::user()->isGuest()?' unauthorized':''?>">
@@ -45,6 +23,28 @@ working with Zuber.kz
         <?=X3_Widget::run('@layouts:header.php',array('main'=>isset($main)))?>
         <?=$content?>
         <?=X3_Widget::run('@layouts:footer.php',array('main'=>isset($main)));?>
+<script type="text/javascript">
+String.prototype.repeat = function( num ){return new Array( num + 1 ).join( this );}    
+</script>
+<script type="text/javascript" src="/js/jquery.js"></script>
+<?if(isset(X3::app()->datapicker)):?>
+<link href="http://code.jquery.com/ui/1.10.0/themes/cupertino/jquery-ui.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+<?endif;?>
+<script type="text/javascript" src="/js/jquery.tipTip.js"></script>
+<script type="text/javascript" src="/js/jquery.fcselect.js"></script>
+<script type="text/javascript" src="/js/jquery.fctabs.js"></script>
+<script type="text/javascript" src="/js/jquery.maskedinput.min.js"></script>
+<script type="text/javascript" src="/js/placeholder.js"></script>
+<script type="text/javascript" src="/js/wnd.js"></script>
+<script type="text/javascript" src="http://api-maps.yandex.ru/2.0-stable/?lang=ru-RU&coordorder=longlat&load=package.full"></script>
 
+<?if(X3::user()->superAdmin):?>
+<script type="text/javascript" src="/js/admin.js"></script>
+    <script type="text/javascript" src="/js/ckeditor.4/ckeditor.js"></script>
+    <?include("js/sfbrowser/connectors/php/init.php");?>
+<?endif;?>
+
+<script type="text/javascript" src="/js/script.js"></script>
 </body>
 </html>
