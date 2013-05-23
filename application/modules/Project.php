@@ -17,7 +17,7 @@ class Project extends X3_Module_Table {
         'user_id'=>array('integer[10]','unsigned','index','ref'=>array('User','id','default'=>"name")),
         'city_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('City','id','default'=>'title')),
         'category_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Category','id','default'=>'title')),
-        'media'=>array('string[128]'),
+        'gallery_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Project_Gallery','id','default'=>'title')),
         'title'=>array('string[32]'),
         'current_sum'=>array('integer[11]','default'=>'0'),
         'needed_sum'=>array('integer[11]'),
@@ -32,13 +32,16 @@ class Project extends X3_Module_Table {
         return array(
             'user_id'=>X3::translate('Создатель'),
             'city_id'=>X3::translate('Город'),
+            'category_id'=>X3::translate('Категория проекта'),
+            'gallery_id'=>X3::translate('Превью'),
             'title'=>X3::translate('Название'),
-            'media'=>X3::translate('Медиа'),
+            'full_content'=>X3::translate('Описание проекта'),
+            'short_content'=>X3::translate('Краткое описание проекта'),
             'current_sum'=>X3::translate('Вложенная сумма'),
             'needed_sum'=>X3::translate('Нужная сумма'),
             'created_at'=>X3::translate('Дата создания'),
             'end_at'=>X3::translate('Дата окончания'),
-            'status'=>'Пуликован',
+            'status'=>X3::translate('Опубликован'),
         );
     }
     

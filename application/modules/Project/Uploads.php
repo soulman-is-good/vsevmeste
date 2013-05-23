@@ -13,14 +13,19 @@ class Project_Uploads extends X3_Module_Table {
     public $tableName = 'project_uploads';
 
     public $_fields = array(
-      'file_id'=>array('string[128]','primary'),
+      'id'=>array('integer[10]','unsigned','primary','auto_increment'),
+      'title'=>array('string[64]','default'=>'NULL'),
+      'video'=>array('string[1024]','default'=>'NULL'),
+      'file_id'=>array('string[128]','default'=>'NULL'),
       'project_id'=>array('integer[10]','unsigned','index','ref'=>array('Project','id','default'=>'title')),
       'created_at'=>array('integer[10]','unsigned','default'=>'0')
     );
     public function fieldNames() {
         return array(
             'created_at' => 'Дата',
-            'file_id' => 'Файл',
+            'title' => 'Название',
+            'video' => 'Видео',
+            'file_id' => 'Изображение',
             'project_id' => 'Проект',
         );
     }
