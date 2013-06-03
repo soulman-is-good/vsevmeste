@@ -12,4 +12,13 @@
 			</div>
 			<div class="clear"></div>
 		</div>
+<?if(count(X3::app()->promo) == 0):?>
+	<?=  X3_Widget::run('@views:_widgets:menu.php')?>
+<?endif;?>
 	</div>
+<?if(count(X3::app()->promo) > 0):?>
+<!-- Слайдер -->
+	<?=  X3_Widget::run('@views:_widgets:promo_slider.php')?>
+<!-- Меню -->
+	<?=  X3_Widget::run('@views:_widgets:menu.php')?>
+<?endif;?>

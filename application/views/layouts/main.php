@@ -14,7 +14,7 @@
 <link href="/js/tipTip.css" type="text/css" rel="stylesheet" />
 <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
 </head>
-<body itemscope itemtype="http://schema.org/WebPage" class="<?=X3::app()->module->controller->id." ".X3::app()->module->controller->action?><?=X3::user()->isGuest()?' unauthorized':''?>">
+<body itemscope itemtype="http://schema.org/WebPage" class="<?=count(X3::app()->promo)>0?'':'noslider'?> <?=X3::app()->module->controller->id." ".X3::app()->module->controller->action?><?=X3::user()->isGuest()?' unauthorized':''?>">
 <!--
 Development and Layout - Maxim Savin <http://careers.stackoverflow.com/soulman>
 Based on x3framework2.0

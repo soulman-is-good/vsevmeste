@@ -1,14 +1,5 @@
-<!-- Слайдер -->
-	<?=  X3_Widget::run('@views:_widgets:promo_slider.php')?>
-<!-- Меню -->
-	<div class="menu_cont">
-		<a href="/projects/"><div class="menu"><img src="images/rocket.png" alt="" />Все проекты</div></a>
-		<a href="/how-does-it-works.html"><div class="menu"><img src="images/gears.png" alt="" />Как это работает</div></a>
-		<a href="/project/add/"><div class="menu"><img src="images/lamp.png" alt="" />Добавить проект</div></a>
-		<div class="menu_cont_left"></div>
-		<div class="menu_cont_right"></div>
-	</div>
 	<div class="body">
+            <div class="clearfix" style="height:40px;">&nbsp;</div>
 <!-- Завершающиеся проекты -->
 		<div class="main_projects_cont">
 			<a href="#"><div class="left_nav"><img src="/images/left_nav.png" alt="" /></div></a>

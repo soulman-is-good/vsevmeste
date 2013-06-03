@@ -180,6 +180,11 @@ p {
         color-stop(0%,#fff), color-stop(100%,#e5e5e5));
 }
 
+.noslider .top_cont {
+    padding: 20px 0px 0px;
+    border:2px solid #c2ccb8;
+}
+
 .top {
     width: 980px;
     margin: auto;
@@ -369,26 +374,43 @@ p {
 
 .menu_cont {
     position: relative;
-    margin: 0px auto 40px auto;
+    margin: 0px auto;
     width: 980px;
+}
+.noslider .menu_cont {
+    margin: 20px auto 0px auto;
+}
+.menu_cont a.first div.menu {
+    width:294px;
+    margin-left:15px;
+    padding-right:15px;
+}
+.menu_cont a.last div.menu {
+    padding-left:15px;
+    width:294px;
+    margin-right:15px;
 }
 
 .menu_cont_left {
     position: absolute;
     left: 0px;
-    top: 1px;
+    top: 0px;
     width: 15px;
-    height: 58px;
-    background: url(../images/menu_cont_left.png) no-repeat;
+    height: 60px;
+    background-image: url(../images/menu_cont_corn.png);
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
 }
 
 .menu_cont_right {
     position: absolute;
     right: 0px;
-    top: 1px;
+    top: 0px;
     width: 15px;
-    height: 58px;
-    background: url(../images/menu_cont_right.png) no-repeat;
+    height: 60px;
+    background-image: url(../images/menu_cont_corn.png);
+    background-repeat: no-repeat;
+    background-position: -15px 0px;
 }
 
 .menu {
@@ -415,7 +437,13 @@ p {
     -moz-transition: background 0.5s;
     -webkit-transition: background 0.5s;
 }
-a .menu:hover {
+a:hover .menu_cont_left {
+    background-position: 0 -60px;
+}
+a:hover .menu_cont_right {
+    background-position: -15px -60px;
+}
+a:hover .menu {
     color: #ffff00;
     background: #92d839;
     background: -webkit-linear-gradient(top, #92d839, #58b80a);
@@ -441,7 +469,7 @@ a .menu:hover {
     background: -webkit-linear-gradient(top, #78cc14 0%,#ade453 100%,#78cc14 100%,#78cc14 100%,#78cc14 100%);
     background: -o-linear-gradient(top, #78cc14 0%,#ade453 100%,#78cc14 100%,#78cc14 100%,#78cc14 100%);
     background: -ms-linear-gradient(top, #78cc14 0%,#ade453 100%,#78cc14 100%,#78cc14 100%,#78cc14 100%);
-    background: linear-gradient(to bottom, #78cc14 0%,#ade453 100%,#78cc14 100%,#78cc14 100%,#78cc14 100%);
+    background: linear-gradient(top bottom, #78cc14 0%,#ade453 100%,#78cc14 100%,#78cc14 100%,#78cc14 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#78cc14', endColorstr='#78cc14',GradientType=0 );
 }
 .menu img {
@@ -486,6 +514,9 @@ a .menu:hover {
     background: linear-gradient(top, #92d839, #58b80a);
     background: -webkit-gradient(linear, left top, left bottom, 
         color-stop(0%,#92d839), color-stop(100%,#58b80a));
+}
+.left_nav img, .right_nav img {
+    display:block;
 }
 
 .right_nav {
@@ -539,8 +570,9 @@ a .menu:hover {
 
 .green_bg {
     width: 210px;
-    padding: 5px;
-    background: #cce7b1;
+    padding: 1px;
+    border:5px solid #cce7b1;
+    background: #b6e08c;
     border-radius: 7px;
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
@@ -548,7 +580,8 @@ a .menu:hover {
 
 .white_bg {
     background: #fff;
-    border: 1px solid #b6e08c;
+    border: 1px solid #fff;
+    overflow:hidden;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
