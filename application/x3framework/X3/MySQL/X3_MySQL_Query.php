@@ -69,7 +69,7 @@ class X3_MySQL_Query extends X3_MySQL_Command implements X3_Interface_Query {
         }
         if (is_array($query))
             $query = implode(' ', $query);
-        $this->join = $query;
+        $this->join .= ' '.$query;
         return $this;
     }
 
@@ -325,7 +325,7 @@ class X3_MySQL_Query extends X3_MySQL_Command implements X3_Interface_Query {
             $this->select("{$table}.*");
         }
         $key = strtolower(key($params));
-        if (!in_array($key, array('@join', '@condition', '@limit', '@order', '@offset','@select','@from','@group'))) {
+        if (!in_array($key, array('@join', '@condition', '@limit', '@order', '@offset','@select','@from','@group','@with'))) {
             $tmp = $params;
             $params = array();
             $params['@condition'] = $tmp;
@@ -336,6 +336,27 @@ class X3_MySQL_Query extends X3_MySQL_Command implements X3_Interface_Query {
             switch ($key) {
                 case "@select":
                     $this->select($array);
+                    break;
+                case "@with":
+                    if ($this->class != null && $this->class instanceof X3_Module_Table){
+                        if(is_string($array))
+                            $array = array($array);
+                        $flds = $this->class->_fields;
+                        $join = array();
+                        foreach($array as $with) {
+                            if(!isset($flds[$with]) || !isset($flds[$with]['ref'])){
+                                throw new X3_Exception("No reference on `$with` field!",500);
+                            }
+                            $wtable = X3_Module_Table::getInstance($flds[$with]['ref'][0])->tableName;
+                            $wpk = $flds[$with]['ref'][1];
+                            $join[] = "INNER JOIN `$wtable` ON `$table`.`$with` = `$wtable`.`$wpk`";
+                        }
+                        if(!empty($join))
+                            $this->join($join);
+                        //TODO: Event to generate '$model->ref()->title' like link from join. There must be implemented ONLY events. Only for defined model or class
+                    }else{
+                        throw new X3_Exception('There must be X3_Module_Table instance. Use @join instead.',500);
+                    }
                     break;
                 case "@join":
                     $this->join($this->formJoin($array));
