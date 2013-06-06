@@ -2,6 +2,10 @@
 
 class Admin extends X3_Module {
     
+    public function beforeAction(){
+        $this->template->layout = null;
+    }
+    
     public function filter() {
         return array(
             'allow'=>array(
@@ -89,7 +93,7 @@ class Admin extends X3_Module {
     
     public function actionLinks() {
         if(!IS_AJAX) throw new X3_404();
-        if(X3::user()->superAdmin){
+        if(!X3_DEBUG && X3::user()->superAdmin){
             echo json_encode(array(
                 '/admin/list/module/Menu'=>'Меню',
                 '/admin/list/module/Page'=>'Тестовые страницы',
@@ -103,7 +107,7 @@ class Admin extends X3_Module {
     }
     
     public function actionList() {
-        if(!X3::user()->superAdmin)
+        if(!X3_DEBUG && !X3::user()->superAdmin)
             throw new X3_404();
         $action = strtolower($_GET['module']);
         $path = X3::app()->getPathFromAlias("@views:admin:sudo:$action.php");
@@ -122,7 +126,7 @@ class Admin extends X3_Module {
     }
     
     public function actionView() {
-        if(!X3::user()->superAdmin)
+        if(!X3_DEBUG && !X3::user()->superAdmin)
             throw new X3_404();
         $action = strtolower($_GET['module']);
         $path = X3::app()->getPathFromAlias("@views:admin:sudo:view:$action.php");
@@ -138,7 +142,7 @@ class Admin extends X3_Module {
     }
     
     public function actionEdit() {
-        if(!X3::user()->superAdmin)
+        if(!X3_DEBUG && !X3::user()->superAdmin)
             throw new X3_404();
         $action = strtolower($_GET['module']);
         $path = X3::app()->getPathFromAlias("@views:admin:sudo:form:$action.php");
@@ -160,7 +164,7 @@ class Admin extends X3_Module {
     }
     
     public function actionCreate() {
-        if(!X3::user()->superAdmin)
+        if(!X3_DEBUG && !X3::user()->superAdmin)
             throw new X3_404();
         $action = strtolower($_GET['module']);
         $path = X3::app()->getPathFromAlias("@views:admin:sudo:form:$action.php");
@@ -179,7 +183,7 @@ class Admin extends X3_Module {
     }
     
     public function actionDelete() {
-        if(!X3::user()->superAdmin)
+        if(!X3_DEBUG && !X3::user()->superAdmin)
             throw new X3_404();
         $class = ucfirst($_GET['module']);
         $id = X3::db()->validateSQL($_GET['id']);

@@ -277,6 +277,7 @@ class X3_MySQL_Query extends X3_MySQL_Command implements X3_Interface_Query {
         foreach ($models as $i => $model) {
             $class = X3::app()->db->modelClass;
             $tmp = new $class($module->tableName, $module);
+            $module->setupRelations($model);
             $this->fire('beforeGet', array(&$model));
             $tmp->acquire($model);
             $module->push($tmp);
@@ -343,17 +344,25 @@ class X3_MySQL_Query extends X3_MySQL_Command implements X3_Interface_Query {
                             $array = array($array);
                         $flds = $this->class->_fields;
                         $join = array();
+                        $select = $this->select;
                         foreach($array as $with) {
                             if(!isset($flds[$with]) || !isset($flds[$with]['ref'])){
                                 throw new X3_Exception("No reference on `$with` field!",500);
                             }
-                            $wtable = X3_Module_Table::getInstance($flds[$with]['ref'][0])->tableName;
+                            $wclass = X3_Module_Table::getInstance($flds[$with]['ref'][0]);
+                            $wtable = $wclass->tableName;
                             $wpk = $flds[$with]['ref'][1];
                             $join[] = "INNER JOIN `$wtable` ON `$table`.`$with` = `$wtable`.`$wpk`";
+                            foreach($wclass->_fields as $k=>$f)
+                                if(!in_array('unused',$f))
+                                    $select .= ", `$wtable`.`$k` AS `{$wtable}->{$k}`";
                         }
-                        if(!empty($join))
+                        if(!empty($join)){
+                            $this->select($select);
                             $this->join($join);
-                        //TODO: Event to generate '$model->ref()->title' like link from join. There must be implemented ONLY events. Only for defined model or class
+                        }
+                        $this->class->addRelation($with, $wclass);
+                        //TODO: Event to generate '$model->ref()->title' like link from join. $class->addReference('user_id',$models...?)
                     }else{
                         throw new X3_Exception('There must be X3_Module_Table instance. Use @join instead.',500);
                     }

@@ -1,11 +1,13 @@
 <?php
 $styles = array('margin-left'=>'35px');
+
 $models = Project::get(array(
     '@condition'=>array(),
     '@with'=>'user_id',
     '@order'=>'end_at DESC',
     '@limit'=>4
 ));
+var_dump($models,X3::db()->getErrors());exit;
 ?>
 <div class="main_projects_cont">
     <a href="#"><div class="left_nav"><img src="/images/left_nav.png" alt="" /></div></a>

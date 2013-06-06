@@ -17,7 +17,7 @@ class Project extends X3_Module_Table {
         'user_id'=>array('integer[10]','unsigned','index','ref'=>array('User','id','default'=>"name")),
         'city_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('City','id','default'=>'title')),
         'category_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Category','id','default'=>'title')),
-        'gallery_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Project_Gallery','id','default'=>'title')),
+//        'gallery_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Project_Gallery','id','default'=>'title')),
         'title'=>array('string[32]'),
         'current_sum'=>array('integer[11]','default'=>'0'),
         'needed_sum'=>array('integer[11]'),
@@ -59,57 +59,10 @@ class Project extends X3_Module_Table {
         );
     }
     
-    public static function isMyVote($id) {
-        $uid = X3::user()->id;
-        if(X3::user()->isAdmin())
-            return true;
-        $q = "SELECT f.id FROM data_vote f INNER JOIN data_user u ON u.id=f.user_id LEFT JOIN user_address a ON a.user_id=$uid WHERE 
-            f.id='$id' AND ((
-                    f.status AND 
-                    u.role='admin' AND 
-                    (
-                       (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat=a.flat) OR 
-                       (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat IS NULL) OR 
-                       (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house IS NULL AND f.flat IS NULL) OR 
-                       (f.city_id=a.city_id AND f.region_id IS NULL) OR
-                       (f.city_id IS NULL)
-                    )                
-                )
-                    OR
-                (f.status AND u.role='ksk' AND
-                 (
-                    (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat=a.flat) OR 
-                    (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat IS NULL) OR 
-                    (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house IS NULL AND f.flat IS NULL AND a.house IN (SELECT house FROM user_address WHERE user_id=u.id AND status=1)) OR 
-                    (f.city_id=a.city_id AND f.region_id IS NULL AND a.region_id IN (SELECT region_id FROM user_address WHERE user_id=u.id AND status=1) AND a.house IN (SELECT house FROM user_address WHERE user_id=u.id AND status=1)) OR
-                    (f.city_id IS NULL AND a.city_id IN (SELECT city_id FROM user_address WHERE user_id=u.id AND status=1) AND a.region_id IN (SELECT region_id FROM user_address WHERE user_id=u.id AND status=1) AND a.house IN (SELECT house FROM user_address WHERE user_id=u.id AND status=1))
-                 )
-                 )) LIMIT 1";
-        return X3::db()->call("isMyVote",$id,$uid) > 0;
-    }
-    
-    public static function hasVoted($id){
-        $uid = X3::user()->id;
-        $vote = (object)X3::db()->fetch("SELECT * FROM data_vote WHERE id=$id");
-        $type = $vote->type=='*'?'1':"f.role='".strtolower($vote->type)."'";
-        if($vote->flat>0)
-            $uq = X3::db()->query("SELECT user_address.id FROM user_address INNER JOIN data_user f ON f.id=user_address.user_id WHERE city_id=$vote->city_id AND region_id=$vote->region_id AND house=$vote->house AND flat=$vote->flat AND $type");
-        elseif($vote->flat == 0 && $vote->house != null)
-            $uq = X3::db()->query("SELECT user_address.id FROM user_address INNER JOIN data_user f ON f.id=user_address.user_id WHERE city_id=$vote->city_id AND region_id=$vote->region_id AND house=$vote->house AND $type");
-        elseif($vote->flat == 0 && $vote->house == null && $vote->region_id>0)
-            $uq = X3::db()->query("SELECT user_address.id FROM user_address INNER JOIN data_user f ON f.id=user_address.user_id WHERE city_id=$vote->city_id AND region_id=$vote->region_id AND $type");
-        elseif($vote->flat == 0 && $vote->house == null && $vote->region_id == 0 && $vote->city_id>0)
-            $uq = X3::db()->query("SELECT user_address.id FROM user_address INNER JOIN data_user f ON f.id=user_address.user_id WHERE city_id=$vote->city_id AND $type");
-        else
-            $uq = X3::db()->query("SELECT user_address.id FROM user_address INNER JOIN data_user f ON f.id=user_address.user_id WHERE $type");
-        $uids = array(0);
-        while($u = mysql_fetch_assoc($uq))
-            $uids[] = $u['id'];
-        $uids = implode(', ', $uids);
-        return X3::db()->count("SELECT COUNT(id) FROM user_address a1, user_address a2 WHERE a1.user_id=$uid AND a2.id IN ($aids) AND a1.id IN ($aids) AND")>0;
-    }
-
-
+    public function moduleTitle() {
+        return 'Проекты';
+    }    
+        
     public function actionIndex() {
         $id = X3::user()->id;
         $date = X3::db()->fetch("SELECT created_at FROM data_user WHERE id=$id");
@@ -401,9 +354,6 @@ class Project extends X3_Module_Table {
 
     public function beforeValidate() {
         if($this->city_id == 0) $this->city_id = null;
-        if($this->region_id == 0) $this->region_id = null;
-        if($this->house == 0) $this->house = null;
-        if($this->flat == 0) $this->flat = null;
         if(strpos($this->created_at,'.')!==false){
             $this->created_at = strtotime($this->created_at);
         }elseif($this->created_at == 0)

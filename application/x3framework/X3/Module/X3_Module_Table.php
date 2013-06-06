@@ -371,6 +371,31 @@ return array(false);//TODO: not tested!!!
             $params = array();
         return $class->getTable()->formQuery($params)->delete()->execute();
     }
+    
+    public function addRelation($attribute, $class){
+        $this->relations[$attribute] = ($class instanceof X3_Module_Table)?$class:new $class;
+    }
+    
+    public function setupRelations($model){
+        $data = array();
+        foreach($this->relations as $key=>$rel){
+            foreach ($model as $k=>$v){
+                $rkey = $rel->tableName . '->';
+                if(strpos($k,$rkey)!==false){
+                    $attr = str_replace($rkey, '', $k);
+                    $data[$key][$attr] = $v;
+                    unset($model[$k]);
+                }
+            }
+            if(isset($data[$key])){
+                $tmp = X3::db()->modelClass;
+                $tmp = new $tmp($rel->tableName);
+                $tmp->acquire($data[$key]);
+                $this->relations[$key]->push($tmp);
+            }
+            throw new X3_Exception('Error', 500);
+        }
+    }
 
     public function getRelation($relation, $asArray = false) {
         if (!isset(self::$relations[$relation]))
