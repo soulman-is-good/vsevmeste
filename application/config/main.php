@@ -1,7 +1,7 @@
 <?php
 return array(
     'basePath'=>dirname(dirname(dirname(__FILE__))),
-    'baseUrl'=>'http://eksk.soulman.kz',
+    'baseUrl'=>'http://vsevmeste.soulman.kz',
     'name'=>'VseVmeste',
 //    'errorController'=>'site/error',
     'uri'=>array(
@@ -16,7 +16,7 @@ return array(
         'profile'=>array(
             'class'=>'Profile',
             'time'=>microtime(true),
-            'enable'=>false
+            'enable'=>true
         ),
         'db'=>array(
             'host'=>'localhost',

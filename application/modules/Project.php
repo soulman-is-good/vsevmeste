@@ -19,6 +19,7 @@ class Project extends X3_Module_Table {
         'category_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Category','id','default'=>'title')),
 //        'gallery_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Project_Gallery','id','default'=>'title')),
         'title'=>array('string[32]'),
+        'name'=>array('string[32]','unique'),
         'current_sum'=>array('integer[11]','default'=>'0'),
         'needed_sum'=>array('integer[11]'),
         'short_content'=>array('text'),
@@ -48,11 +49,6 @@ class Project extends X3_Module_Table {
     public function filter() {
         return array(
             'allow' => array(
-                'user' => array('index', 'show', 'send','with','read','count'),
-                'ksk' => array('index', 'show', 'send','with','read','count','create','flats','delete'),
-                'admin' => array('index', 'show', 'send', 'file','with','read','count','create','flats','delete')
-            ),
-            'deny' => array(
                 '*' => array('*'),
             ),
             'handle' => 'redirect:/user/login.html'
@@ -62,46 +58,41 @@ class Project extends X3_Module_Table {
     public function moduleTitle() {
         return 'Проекты';
     }    
+    
+    public function getPercentDone(){
+        return round($this->current_sum/$this->needed_sum*100);
+    }
+    
+    public function getTimeLeft(){
+        //<b>25</b> дней осталось
+        $parts = '';
+        $left = $this->end_at - time();
+        if($left<=0)
+            return '<b>Закончен</b>';
+        if($left >= 31536000){
+            $y = floor($left/31536000);
+            $left -= $y * 31536000;
+            $parts = "<b>$y</b> " . X3_String::create($y)->numeral($y, array('год и ','года и ','лет и '));
+        }
+        $d = ceil($left/86400);
+        $parts .= "<b>$d</b> " . X3_String::create($d)->numeral($d, array('день остался','дня осталось','дней осталось'));
+        return $parts;
+    }
         
     public function actionIndex() {
         $id = X3::user()->id;
-        $date = X3::db()->fetch("SELECT created_at FROM data_user WHERE id=$id");
-        $type = X3::user()->isUser()?"(f.type='user' OR f.type='*')":(X3::user()->isKsk()?"(f.type='ksk' OR f.type='*')":"");
-        if(X3::user()->isAdmin()){
-            $q = "FROM data_vote f WHERE 1";
-        }else
-            $q = "FROM data_vote f INNER JOIN data_user u ON u.id=f.user_id LEFT JOIN user_address a ON a.user_id=$id WHERE
-                f.end_at>={$date['created_at']} AND (
-                (f.user_id=$id)
-                    OR
-                (
-                    f.status AND 
-                    $type AND u.role='admin' AND 
-                    (
-                       (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat=a.flat) OR 
-                       (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat IS NULL) OR 
-                       (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house IS NULL AND f.flat IS NULL) OR 
-                       (f.city_id=a.city_id AND f.region_id IS NULL) OR
-                       (f.city_id IS NULL)
-                    )                
-                )
-                    OR
-                (f.status AND $type AND u.role='ksk' AND
-                 (
-                    (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat=a.flat) OR 
-                    (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat IS NULL) OR 
-                    (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house IS NULL AND f.flat IS NULL AND a.house IN (SELECT house FROM user_address WHERE user_id=u.id AND status=1)) OR 
-                    (f.city_id=a.city_id AND f.region_id IS NULL AND a.region_id IN (SELECT region_id FROM user_address WHERE user_id=u.id AND status=1) AND a.house IN (SELECT house FROM user_address WHERE user_id=u.id AND status=1)) OR
-                    (f.city_id IS NULL AND a.city_id IN (SELECT city_id FROM user_address WHERE user_id=u.id AND status=1) AND a.region_id IN (SELECT region_id FROM user_address WHERE user_id=u.id AND status=1) AND a.house IN (SELECT house FROM user_address WHERE user_id=u.id AND status=1))
-                 )
-                 )
-                )
-                 ";
-        $count = X3::db()->count("SELECT f.id, MAX(f.created_at) latest ".$q." GROUP BY f.id");
+        $q = array(
+            '@condition'=>array(),
+            '@with'=>array('user_id','city_id'),
+            '@order'=>'created_at DESC'
+        );
+        $count = self::num_rows($q);
         $paginator = new Paginator(__CLASS__, $count);
-        $q = "SELECT f.id, f.title, f.user_id, MAX(f.created_at) latest, f.status, f.type, f.city_id, f.region_id, f.house, f.flat " . $q . " GROUP BY f.id ORDER BY latest DESC LIMIT $paginator->offset,$paginator->limit";
-        $models = X3::db()->query($q);
-        $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator));
+        $q['@limit'] = $paginator->limit;
+        $q['@offset'] = $paginator->offset;
+        $models = self::get($q);
+        $cats = Category::get();
+        $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator,'cats'=>$cats));
     }
     
     public function actionShow() {
@@ -366,6 +357,10 @@ class Project extends X3_Module_Table {
         $today = mktime(0,0,0,date('n'),date('j'),date('Y'));
         if($this->end_at < $today)
             $this->addError('end_at',X3::translate("Нельзя создать опрос с прошедшей датой"));
+        if($this->name==''){
+            $this->name = $this->title;
+        }
+        $this->name = str_replace(" ","_",preg_replace("/[^0-9a-z\- ]+/", "", strtolower(X3_String::create($this->name)->translit())));
     }
     
     public function onDelete($tables, $condition) {

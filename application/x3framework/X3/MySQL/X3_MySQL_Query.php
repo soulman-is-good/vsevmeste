@@ -353,18 +353,19 @@ class X3_MySQL_Query extends X3_MySQL_Command implements X3_Interface_Query {
                             $wtable = $wclass->tableName;
                             $wpk = $flds[$with]['ref'][1];
                             $join[] = "INNER JOIN `$wtable` ON `$table`.`$with` = `$wtable`.`$wpk`";
-                            foreach($wclass->_fields as $k=>$f)
+                            foreach($wclass->_fields as $k=>$f){
                                 if(!in_array('unused',$f))
                                     $select .= ", `$wtable`.`$k` AS `{$wtable}->{$k}`";
+                            }
+                            $this->class->addRelation($with, $wclass);
                         }
                         if(!empty($join)){
                             $this->select($select);
                             $this->join($join);
                         }
-                        $this->class->addRelation($with, $wclass);
                         //TODO: Event to generate '$model->ref()->title' like link from join. $class->addReference('user_id',$models...?)
                     }else{
-                        throw new X3_Exception('There must be X3_Module_Table instance. Use @join instead.',500);
+                        throw new X3_Exception('There must be X3_Module_Table instance. Use @join instead of @with.',500);
                     }
                     break;
                 case "@join":

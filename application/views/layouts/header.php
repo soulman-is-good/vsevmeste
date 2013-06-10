@@ -7,7 +7,7 @@
 			<div class="search_cont">
 				<div>
 					<input type="text" placeholder="Поиск проектов" title="Поиск проектов" class="search_field" />
-					<a href="#" title="Искать"><div class="search_button"><img src="images/search_button.png" alt="" /></div></a>
+					<a href="#" title="Искать"><div class="search_button"><img src="/images/search_button.png" alt="" /></div></a>
 				</div>
 			</div>
 			<div class="clear"></div>

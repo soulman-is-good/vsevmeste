@@ -558,10 +558,6 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
     }
     
     public function getFullname(){
-        if($this->role == 'admin')
-            return X3::translate('Администратор') . "#" . $this->id;
-        if($this->role == 'ksk')
-            return $this->name;
         return $this->name . " " . $this->surname;
     }
 

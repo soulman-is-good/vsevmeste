@@ -50,7 +50,7 @@
 					<a href="#"><li>Film & Video</li></a>
 				</ul>
 			</div>
-			<div style="float: left;"><img src="images/follow.png" alt="" /></div>
+			<div style="float: left;"><img src="/images/follow.png" alt="" /></div>
 		</div>
 		<div class="footer">
 			<div <?if(X3::user()->isAdmin()):?>x3editable="SysSettings({name:\"Copyright\"}).value"<?endif;?> style="display: inline-block; margin-right: 40px; color: white;"><?=SysSettings::getValue('Copyright','string','Копирайт','Общие','&copy;&nbsp;Vsevmeste.kz,&nbsp;2013')?></div>

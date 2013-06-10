@@ -372,7 +372,7 @@ return array(false);//TODO: not tested!!!
         return $class->getTable()->formQuery($params)->delete()->execute();
     }
     
-    public function addRelation($attribute, $class){
+    public function addRelation($attribute, $class) {
         $this->relations[$attribute] = ($class instanceof X3_Module_Table)?$class:new $class;
     }
     
@@ -389,22 +389,17 @@ return array(false);//TODO: not tested!!!
             }
             if(isset($data[$key])){
                 $tmp = X3::db()->modelClass;
-                $tmp = new $tmp($rel->tableName);
+                $tmp = new $tmp($rel->tableName,$this->relations[$key]);
                 $tmp->acquire($data[$key]);
                 $this->relations[$key]->push($tmp);
             }
-            throw new X3_Exception('Error', 500);
         }
     }
 
     public function getRelation($relation, $asArray = false) {
-        if (!isset(self::$relations[$relation]))
+        if (!isset($this->relations[$relation]))
             throw new X3_Exception("Missing relation '$relation'.");
-        $R = self::$relations[$relation];
-        if ($asArray)
-            return $this->getTable()->formQuery($params)->asArray($single);
-        else
-            return $class->getTable()->formQuery($params)->asObject($single);
+        return $this->relations[$relation];
     }
     
     public function hasErrors() {
@@ -446,7 +441,8 @@ return array(false);//TODO: not tested!!!
     public function __call($name, $parameters) {
         if (method_exists($this->table, $name) || method_exists(X3::db()->queryClass, $name))
             return call_user_func_array(array($this->table, $name), $parameters);
-
+        if(isset($this->relations[$name]))
+            return $this->relations[$name];
         return parent::__call($name, $parameters);
     }
 
