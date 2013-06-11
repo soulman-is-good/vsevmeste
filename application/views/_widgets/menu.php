@@ -1,5 +1,5 @@
 <div class="menu_cont">
-    <a class="first" href="/projects/">
+    <a class="first<?=X3::app()->request->isActive('/projects/')?' active':''?>" href="/projects/">
         <div class="menu"><img src="/images/rocket.png" alt="" />Все проекты</div>
         <div class="menu_cont_left"></div>
     </a>

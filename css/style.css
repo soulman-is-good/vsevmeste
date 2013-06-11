@@ -812,6 +812,24 @@ a:hover .menu {
     background: url(../images/zuber.png) no-repeat;
 }
 
+.cats {
+    margin:0px;
+    padding:0;
+    list-style: none;
+}
+
+.cats li {
+    padding:0 0 10px 0;
+}
+
+.cats a {
+    font-family: Trebuchet MS, Arial, Helvetica, sans-serif;
+    font-size:13px;
+    color:#000;
+    text-decoration: none;
+    border-bottom: 1px solid #A8A9A8;
+}
+
 /* ==|== non-semantic helper classes ============;============================ */
 .ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; }
 .ir br { display: none; }
