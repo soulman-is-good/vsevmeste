@@ -16,7 +16,10 @@ array(
     '/^\/page\/(.+)?$/' => array('/page/show/name/$1', true),
     //Articles/News
     '/^\/news\/([0-9]+)?(.*)$/' => array('/news/show/id/$1$2', true),
-    //Jobs
+    //Projects
+    '/^\/(.+)\-project(.*)$/' => array('/project/show/name/$1$2', true),
+    '/^\/projects\-(.+)\/$/' => array('/project/index/category/$1', true),
+    '/^\/projects\-(.+)\/(.+)$/' => array('/project/index/category/$1/sort/$2', true),
     '/^\/projects(.*)$/' => array('/project$1', true),
     
     

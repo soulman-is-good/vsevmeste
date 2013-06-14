@@ -86,13 +86,20 @@ class Project extends X3_Module_Table {
             '@with'=>array('user_id','city_id'),
             '@order'=>'created_at DESC'
         );
+        $category = null;
+        if(X3::request()->getRequest('category') !== null){
+            $category = Category::get(array('name'=>X3::request()->getRequest('category')));
+            if($category == null)
+                throw new X3_404();
+            $q['@condition']['category_id'] = $category->id;
+        }
         $count = self::num_rows($q);
         $paginator = new Paginator(__CLASS__, $count);
         $q['@limit'] = $paginator->limit;
         $q['@offset'] = $paginator->offset;
         $models = self::get($q);
         $cats = Category::get();
-        $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator,'cats'=>$cats));
+        $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator,'cats'=>$cats,'category'=>$category));
     }
     
     public function actionShow() {

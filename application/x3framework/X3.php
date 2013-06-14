@@ -106,6 +106,14 @@ class X3 {
     public static function user() {
         return self::$_app->user;
     }
+    
+    /**
+     * 
+     * @return X3_Request
+     */
+    public static function request() {
+        return self::$_app->request;
+    }
 
     public static function setApp($app) {
         if($app!==null) {

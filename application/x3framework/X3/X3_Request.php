@@ -15,8 +15,8 @@ class X3_Request extends X3_Component {
     public $url = '';
     public $uri = array();
     public $stack = array();
-    public $get = array();
-    public $post = array();
+    private $get = array();
+    private $post = array();
     public $suffix = '';
     public $hash = '';
     public $redirects = null;
@@ -202,6 +202,20 @@ class X3_Request extends X3_Component {
             }
         }
         return ($absolute?"http://".$_SERVER['HTTP_HOST']:"")."/".implode('/',$uri).(!empty($this->suffix)?".$this->suffix":'');
+    }
+    
+    public function getRequest($key){
+        if(array_key_exists($key,$this->get)){
+            return $this->get[$key];
+        }
+        return NULL;
+    }
+    
+    public function postRequest($key){
+        if(array_key_exists($key,$this->post)){
+            return $this->post[$key];
+        }
+        return NULL;
     }
 
     public function isActive($url,$strict=false) {
