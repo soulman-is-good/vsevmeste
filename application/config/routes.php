@@ -18,9 +18,9 @@ array(
     '/^\/news\/([0-9]+)?(.*)$/' => array('/news/show/id/$1$2', true),
     //Projects
     '/^\/(.+)\-project(.*)$/' => array('/project/show/name/$1$2', true),
-    '/^\/projects\-(.+)\/$/' => array('/project/index/category/$1', true),
+    '/^\/projects\-([^\/]+)\/$/' => array('/project/index/category/$1', true),
     '/^\/projects\-(.+)\/(.+)$/' => array('/project/index/category/$1/sort/$2', true),
-    '/^\/projects(.*)$/' => array('/project$1', true),
+    '/^\/projects\/(.*)$/' => array('/project/index/sort/$1', true),
     
     
     '/^\/user\/login.html$/' => array('/user/login.html', true),

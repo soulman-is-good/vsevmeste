@@ -5,7 +5,7 @@
  * @author Soul_man
  */
 class Project extends X3_Module_Table {
-
+            
     public $encoding = 'UTF-8';
     /*
      * uncomment if want new model functional
@@ -25,6 +25,7 @@ class Project extends X3_Module_Table {
         'short_content'=>array('text'),
         'full_content'=>array('text'),
         'status'=>array('boolean','default'=>'0'),
+        'clicks'=>array('integer','default'=>'0'),
         'created_at'=>array('datetime'),
         'end_at'=>array('datetime')
     );
@@ -87,11 +88,39 @@ class Project extends X3_Module_Table {
             '@order'=>'created_at DESC'
         );
         $category = null;
+        //Set category
         if(X3::request()->getRequest('category') !== null){
             $category = Category::get(array('name'=>X3::request()->getRequest('category')));
             if($category == null)
                 throw new X3_404();
             $q['@condition']['category_id'] = $category->id;
+        }
+        $sort = null;
+        //Sorting by
+        if(X3::request()->getRequest('sort') !== null){
+            $sort = X3::request()->getRequest('sort');
+            switch ($sort){
+                case 'popular':
+                    $q['@order']='clicks DESC';
+                    break;
+                case 'weekly':
+                    $time = time() - 604800;
+                    $q['@condition']['created_at']=array('>'=>"$time");
+                    break;
+                case 'ending':
+                    $time = time() + 604800;
+                    $q['@order'] = 'end_at DESC';
+                    $q['@condition']['end_at']=array('<'=>"$time");
+                    break;
+                case 'cheap':
+                    $q['@order'] = 'needed_sum ASC';
+                    break;
+                case 'almost':
+                    $q['@condition']['needed_sum'] = array('@@'=>'`needed_sum` < `current_sum` + 10001 AND `needed_sum`>10000');
+                    break;
+                default:
+                    $this->redirect('/projects/');
+            }
         }
         $count = self::num_rows($q);
         $paginator = new Paginator(__CLASS__, $count);
@@ -99,12 +128,13 @@ class Project extends X3_Module_Table {
         $q['@offset'] = $paginator->offset;
         $models = self::get($q);
         $cats = Category::get();
-        $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator,'cats'=>$cats,'category'=>$category));
+        $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator,'cats'=>$cats,'category'=>$category,'sort'=>$sort));
     }
     
     public function actionShow() {
-        if (isset($_GET['id']) && ($id = (int)$_GET['id']) > 0 && self::isMyVote($id)) {
-            $model = self::getByPk($id);
+        if (($id = (int)X3::request()->getRequest('id')) > 0 && NULL !== ($model = self::getByPk($id))) {
+            $model->clicks += 1;
+            $model->save();
             $this->template->render('show', array('model' => $model));
         }else
             throw new X3_404();
