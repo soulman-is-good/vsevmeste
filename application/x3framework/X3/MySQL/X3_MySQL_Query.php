@@ -268,6 +268,7 @@ class X3_MySQL_Query extends X3_MySQL_Command implements X3_Interface_Query {
                 return NULL;
             }
             $this->fire('beforeGet', array(&$models));
+            $module->setupRelations($models);
             $module->push(X3_Model::create($module)->acquire($models));
             $this->fire('afterGet', array(&$module));
             return $module;
