@@ -20,7 +20,7 @@ class Project extends X3_Module_Table {
 //        'gallery_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Project_Gallery','id','default'=>'title')),
         'title'=>array('string[32]'),
         'name'=>array('string[32]','unique'),
-        'current_sum'=>array('integer[11]','default'=>'0'),
+        'current_sum'=>array('integer[11]','default'=>'0'), 
         'needed_sum'=>array('integer[11]'),
         'short_content'=>array('text'),
         'full_content'=>array('text'),
