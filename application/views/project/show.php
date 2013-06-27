@@ -43,8 +43,12 @@
             <b>Поделиться ссылкой</b> <input class="search_field" type="text" value="http://<?=$_SERVER['HTTP_HOST']?>/<?=$model->name?>-project/" />
             <div style="display:inline-block" class="yashare-auto-init" data-yashareL10n="ru"
              data-yashareType="none" data-yashareQuickServices="vkontakte,facebook,twitter,gplus,odnoklassniki,moimir"
-
             ></div> 
+        </div>
+        <div class="pane">
+            <div class="pane-cont">
+                <?=$model->full_content?>
+            </div>
         </div>
     </div>
     <div class="clear" style="height: 120px">&nbps;</div>
