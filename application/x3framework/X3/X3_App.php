@@ -15,6 +15,10 @@ class X3_App extends X3_Component {
     const ERROR_OUTPUT_RADIUS = 5;
 
     public $user = null;
+    /**
+     *
+     * @var X3_ClientScript 
+     */
     public $cs = null;
     private $request = null;
     private static $_components = array(

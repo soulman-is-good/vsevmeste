@@ -7,6 +7,7 @@
 class Project extends X3_Module_Table {
             
     public $encoding = 'UTF-8';
+    public $scenario = 'update';
     /*
      * uncomment if want new model functional
      */
@@ -135,9 +136,36 @@ class Project extends X3_Module_Table {
     
     public function actionShow() {
         if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
-            $model->clicks += 1;
-            $model->save();
-            $this->template->render('show', array('model' => $model));
+            if(!isset($_COOKIE["clicked$model->id"])){
+                $model->scenario = 'click';
+                $model->clicks += 1;
+                if($model->save()){
+                    setcookie("clicked$model->id", '1',time()+864000);
+                }
+            }
+            $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            $this->template->render('show', array('model' => $model,'interests'=>$interests));
+        }else{
+            throw new X3_404();
+        }
+    }
+    
+    public function actionComments() {
+        if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
+            if(IS_AJAX){
+                if(isset($_GET['update'])){// && X3::user()->token === X3::request()->getRequest('token')){
+                    $model->scenario = 'comments';
+                    $model->comments = (int)$_GET['update'];
+                    if(!$model->save()){
+                        echo 'ERROR';
+                    }
+                }
+                exit;
+            }
+            $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            X3::clientScript()->registerScriptFile('//vk.com/js/api/openapi.js?96');
+            X3::clientScript()->registerScript('VkComments','VK.init({apiId: 3736088, onlyWidgets: true});',  X3_ClientScript::POS_HEAD);
+            $this->template->render('comments', array('model' => $model,'interests'=>$interests));
         }else{
             throw new X3_404();
         }
@@ -236,23 +264,27 @@ class Project extends X3_Module_Table {
     }
 
     public function beforeValidate() {
-        if($this->city_id == 0) $this->city_id = null;
-        if(strpos($this->created_at,'.')!==false){
-            $this->created_at = strtotime($this->created_at);
-        }elseif($this->created_at == 0)
-            $this->created_at = time();
-        if(strpos($this->end_at,'.')!==false){
-            $time = strtotime($this->end_at);
-            $this->end_at = mktime(23,59,59,date('n',$time), date('j',$time), date('Y',$time));
-        }elseif($this->end_at == 0)
-            $this->end_at = time() + 84600;
-        $today = mktime(0,0,0,date('n'),date('j'),date('Y'));
-        if($this->end_at < $today)
-            $this->addError('end_at',X3::translate("Нельзя создать опрос с прошедшей датой"));
-        if($this->name==''){
-            $this->name = $this->title;
+        if($this->scenario == 'update') {
+            if($this->city_id == 0) $this->city_id = null;
+            if($this->table->isNewRecord){
+                if(strpos($this->created_at,'.')!==false){
+                    $this->created_at = strtotime($this->created_at);
+                }elseif($this->created_at == 0)
+                    $this->created_at = time();
+            }
+            if(strpos($this->end_at,'.')!==false){
+                $time = strtotime($this->end_at);
+                $this->end_at = mktime(23,59,59,date('n',$time), date('j',$time), date('Y',$time));
+            }elseif($this->end_at == 0)
+                $this->end_at = time() + 84600;
+            $today = mktime(0,0,0,date('n'),date('j'),date('Y'));
+            if($this->end_at < $today)
+                $this->addError('end_at',X3::translate("Нельзя создать проект который уже закончился"));
+            if($this->name==''){
+                $this->name = $this->title;
+            }
+            $this->name = str_replace(" ","_",preg_replace("/[^0-9a-z\- ]+/", "", strtolower(X3_String::create($this->name)->translit())));
         }
-        $this->name = str_replace(" ","_",preg_replace("/[^0-9a-z\- ]+/", "", strtolower(X3_String::create($this->name)->translit())));
     }
     
     public function onDelete($tables, $condition) {

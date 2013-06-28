@@ -42,6 +42,8 @@ class Starter extends X3_Component {
     
     public function onStartApp($controller,$action) {
         X3::app()->promo = array();
+        if(!IS_AJAX)
+            X3::user()->token = time() . rand(10,100);
         return array($controller,$action);
     }
     

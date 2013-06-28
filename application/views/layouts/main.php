@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="google-site-verification" content="vYMUNjNbQeieKvgw7Z6EPAP0GHXkdrVJub6nEGMTu1A" />
 <meta property="og:image" content="<?=X3::app()->baseUrl?>/images/logo.png" />
-<link href="/css/style.css" type="text/css" rel="stylesheet" />
+<link href="/css/style.css?<?=  filemtime('css/style.css')?>" type="text/css" rel="stylesheet" />
 <link href="/css/font/junegull.css" rel="stylesheet" type="text/css" />
 <title><?=X3::app()->name?></title>
 <link href="/js/tipTip.css" type="text/css" rel="stylesheet" />

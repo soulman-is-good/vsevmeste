@@ -17,7 +17,8 @@ array(
     //Articles/News
     '/^\/news\/([0-9]+)?(.*)$/' => array('/news/show/id/$1$2', true),
     //Projects
-    '/^\/(.+)\-project(.*)$/' => array('/project/show/name/$1$2', true),
+    '/^\/(.+)\-project\/comments.html(.*)$/' => array('/project/comments/name/$1$2', true),
+    '/^\/(.+)\-project.*$/' => array('/project/show/name/$1', true),
     '/^\/projects\-([^\/]+)\/$/' => array('/project/index/category/$1', true),
     '/^\/projects\-(.+)\/(.+)$/' => array('/project/index/category/$1/sort/$2', true),
     '/^\/projects\/(.*)$/' => array('/project/index/sort/$1', true),

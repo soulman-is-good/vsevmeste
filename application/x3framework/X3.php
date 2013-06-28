@@ -114,6 +114,14 @@ class X3 {
     public static function request() {
         return self::$_app->request;
     }
+    
+    /**
+     * 
+     * @return X3_ClientScript
+     */
+    public static function clientScript() {
+        return self::$_app->cs;
+    }
 
     public static function setApp($app) {
         if($app!==null) {

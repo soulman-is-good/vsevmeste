@@ -4,7 +4,7 @@
         <ul>
             <li class="active">Проект</li>
             <li><a href="/<?=$model->name?>-project/events.html">События <i>13</i></a></li>
-            <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i>13</i></a></li>
+            <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=$model->comments?></i></a></li>
             <?/*<li><a href="/<?=$model->name?>-project/gallery.html">Вложения <i>13</i></a></li>*/?>
         </ul>
     </div>
@@ -25,17 +25,21 @@
             </div>
             <a href="#" class="invest_big">Вложить в проект</a>
         </div>
+        <?if($interests->count()>0):?>
         <div class="invest-label">Вложить в проект:</div>
-        <a class="pane" href="#">
+        <?foreach($interests as $interest):?>
+        <a class="pane" href="/<?=$model->name?>-project/i<?=  sprintf("%010d",$interest->id)?>.html" style="margin-bottom:20px">
             <div class="pane-cont">
-                <div class="price"><span>100</span> тенге</div>
-                <div style="margin-top:20px;color:#000;">Просто так поддержать проект</div>
+                <div class="price"><span><?=$interest->sum?></span> тенге</div>
+                <div style="margin-top:20px;color:#000;"><?=$interest->title?></div>
                 <div class="hr">&nbsp;</div>
-                <i style="color:#999">Мы вышлем вам спасибо на почту</i>
-                <div style="color:#000;padding:5px 0">Доставка до: 13 марта 2013</div>
-                <div style="color:#000;padding:0px 0px 5px 0px">Осталось: <b>22</b></div>
+                <i style="color:#999"><?=$interest->notes?></i>
+                <div style="color:#000;padding:5px 0">Доставка до: <?=I18n::date($interest->deliver_at)?></div>
+                <div style="color:#000;padding:0px 0px 5px 0px">Осталось: <b><?=$interest->left?></b></div>
             </div>
         </a>
+        <?endforeach;?>
+        <?endif;?>
     </div>
     <div class="item-body">
         <img width="100%" src="/images/03.jpg" alt="" />

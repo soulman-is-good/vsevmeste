@@ -21,6 +21,7 @@ class Project_Interest extends X3_Module_Table {
       'title'=>array('string[128]'),
       'notes'=>array('string[128]','default'=>'NULL'),
       'sum'=>array('integer[10]'),
+      'left'=>array('integer[10]'),
       'limit'=>array('integer[10]'),
       'deliver_at'=>array('datetime'),
       'created_at'=>array('datetime')
@@ -45,8 +46,10 @@ class Project_Interest extends X3_Module_Table {
     public function beforeValidate() {
         if($this->getTable()->getIsNewRecord()) {
             $this->created_at = time();
+            $this->left = $this->limit;
         }
-        if($this->deliver_at)asdas
+        if(!is_numeric($this->deliver_at))
+            $this->deliver_at = (int)strtotime($this->deliver_at);
         return parent::beforeValidate();
     }
 }
