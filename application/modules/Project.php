@@ -144,6 +144,7 @@ class Project extends X3_Module_Table {
                 }
             }
             $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            X3::clientScript()->registerScriptFile('//yandex.st/share/share.js',  X3_ClientScript::POS_END);
             $this->template->render('show', array('model' => $model,'interests'=>$interests));
         }else{
             throw new X3_404();
@@ -166,6 +167,29 @@ class Project extends X3_Module_Table {
             X3::clientScript()->registerScriptFile('//vk.com/js/api/openapi.js?96');
             X3::clientScript()->registerScript('VkComments','VK.init({apiId: 3736088, onlyWidgets: true});',  X3_ClientScript::POS_HEAD);
             $this->template->render('comments', array('model' => $model,'interests'=>$interests));
+        }else{
+            throw new X3_404();
+        }
+    }
+        
+    public function actionEvents() {
+        if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
+            $limit = 10;
+            $q = array('@condition'=>array('project_id'=>$model->id),'@limit'=>$limit,'@with'=>array('project_id','user_id'),'@order'=>'`created_at` DESC');
+            if(IS_AJAX){
+                if(isset($_GET['page'])){// && X3::user()->token === X3::request()->getRequest('token')){
+                    $page = (int)$_GET['page'];
+                    $q['@offset'] = $page * $limit;
+                    $models = Project_Event::get($q);
+                    foreach ($models as $model) {
+                        echo $this->template->renderPartial('_project_event',array('model'=>$model));
+                    }
+                }
+                exit;
+            }
+            $models = Project_Event::get($q);
+            $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            $this->template->render('events', array('models' => $models,'model'=>$model,'interests'=>$interests));
         }else{
             throw new X3_404();
         }

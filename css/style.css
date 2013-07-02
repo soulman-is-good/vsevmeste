@@ -945,10 +945,12 @@ a.pane:hover {
 
 .pane {
     background: #fff;
-    box-shadow: 0 0 3px #999;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    box-shadow: 0 0 5px 0px #999;
+    -moz-box-shadow: 0 0 5px 0px #999;
+    -webkit-box-shadow: 0 0 5px 0px #999;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 .pane .pane-cont {
     padding:20px;
@@ -991,9 +993,9 @@ a.pane:hover {
     display: block;
     padding:15px 0 ;
     text-align: center;
-    border-radius: 0 0 15px 15px;
-    -moz-border-radius: 0 0 15px 15px;
-    -webkit-border-radius: 0 0 15px 15px;
+    border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
     background: #76cc1e;
     background: -webkit-linear-gradient(top, #76cc1e, #38a404);
     background: -moz-linear-gradient(top, #76cc1e, #38a404);

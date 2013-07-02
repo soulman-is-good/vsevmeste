@@ -3,7 +3,7 @@
     <div class="tabs">
         <ul>
             <li><a href="/<?= $model->name ?>-project/">Проект</a></li>
-            <li><a href="/<?= $model->name ?>-project/events.html">События <i>13</i></a></li>
+            <li><a href="/<?= $model->name ?>-project/events.html">События <i>0</i></a></li>
             <li class="active">Комментарии</li>
             <? /* <li><a href="/<?=$model->name?>-project/gallery.html">Вложения <i>13</i></a></li> */ ?>
         </ul>
@@ -59,5 +59,3 @@
     </div>
     <div class="clear" style="height: 120px">&nbps;</div>
 </div>
-<script type="text/javascript" src="//yandex.st/share/share.js"
-charset="utf-8"></script>

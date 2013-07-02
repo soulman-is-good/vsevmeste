@@ -1,9 +1,35 @@
+<style>
+    .project-event {}
+    .event-avatar {
+        float:left;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+    }
+    .project-event-content {
+        margin-left: 115px;
+    }
+    .project-event-content a.grey_link {
+        font-size:16px;
+        font-style: italic;
+        color:#000;
+    }
+    .project-event-content i {
+        font-style: italic;
+        color:#999;
+        font-size: 13px;
+        padding-left:5px;
+    }
+    .project-event-content p {
+        margin-top:10px;
+    }
+</style>
 <?=$this->renderPartial('_item_head',array('model'=>$model));?>
 <div class="body" style="position: relative">
     <div class="tabs">
         <ul>
-            <li class="active">Проект</li>
-            <li><a href="/<?=$model->name?>-project/events.html">События <i>0</i></a></li>
+            <li><a href="/<?=$model->name?>-project/events.html">Проект</a></li>
+            <li class="active">События</li>
             <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=$model->comments?></i></a></li>
             <?/*<li><a href="/<?=$model->name?>-project/gallery.html">Вложения <i>13</i></a></li>*/?>
         </ul>
@@ -42,16 +68,15 @@
         <?endif;?>
     </div>
     <div class="item-body">
-        <img width="100%" src="/images/03.jpg" alt="" />
-        <div class="share">
-            <b>Поделиться ссылкой</b> <input style="width:235px;" class="search_field" type="text" value="http://<?=$_SERVER['HTTP_HOST']?>/<?=$model->name?>-project/" />
-            <div style="display:inline-block" class="yashare-auto-init" data-yashareL10n="ru"
-             data-yashareType="none" data-yashareQuickServices="vkontakte,facebook,twitter,gplus,odnoklassniki,moimir"
-            ></div> 
-        </div>
         <div class="pane">
             <div class="pane-cont">
-                <?=$model->full_content?>
+                <?php
+                if($models->count()>0):
+                foreach ($models as $event) {
+                    echo $this->renderPartial('_project_event',array('model'=>$event));
+                }else:?>
+                <?=X3::translate('Событий нет')?>.
+                <?endif;?>
             </div>
         </div>
     </div>
