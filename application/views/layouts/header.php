@@ -3,7 +3,7 @@
 		<div class="top">
 			<div class="logo"><a href="/" title="На главную"><h2>VSE<span>VMESTE</span></h2></a></div>
 			<div class="top_link_cont"><a href="/about-us.html" class="black_link">О VseVmeste</a><div class="top_link_dev"></div></div>
-			<div class="top_link_cont"><a href="/register/" class="green_link">Регистрация</a><span>&nbsp;/&nbsp;</span><a href="/login/" class="black_link">Вход</a><div class="top_link_dev"></div></div>
+			<div class="top_link_cont"><a href="/enter.html" class="green_link">Регистрация</a><span>&nbsp;/&nbsp;</span><a href="/enter.html" class="black_link">Вход</a><div class="top_link_dev"></div></div>
 			<div class="search_cont">
 				<div>
 					<input type="text" placeholder="Поиск проектов" title="Поиск проектов" class="search_field" />

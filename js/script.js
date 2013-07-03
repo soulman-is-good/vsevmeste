@@ -43,4 +43,12 @@ $(document).ready(function(){
             }
             $(this).animate({'opacity':1});
         });
-})
+        $('.admin-links a').each(function(){
+            $(this).on('click',function(){
+                var href = $(this).attr('href');
+                $.get(href);
+                $(this).parent().parent().animate({zoom:0.1,opacity:0.1},function(){$(this).remove();}).next('.hr').fadeOut();
+                return false;
+            });
+        });
+});

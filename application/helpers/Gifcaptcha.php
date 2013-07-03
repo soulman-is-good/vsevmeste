@@ -57,7 +57,7 @@ Class Gifcaptcha {
 	::                                         ::
 	:::::::::::::::::::::::::::::::::::::::::::::
 	*/
-    public function  __construct( $text, $font, $color ) {
+    public function  __construct( $text, $font, $color, $size = 0 ) {
     $var4 = HexDec($color);
     $this->var03 = floor($var4 / pow(256, 2));
     $this->var04 = floor(( $var4 % pow(256, 2) ) / pow(256, 1));
@@ -72,7 +72,7 @@ Class Gifcaptcha {
     $this->textcolor = ImageColorAllocate($this->image, 0, 0, 0);
 	$this->font = $font;
 	$this->text = $text;
-        $this->font_size = ($this->height - 8);
+        $this->font_size = $size == 0 ?($this->height - 8):$size;
         $this->font_color = 13;
     for ($x = 0; $x < $this->width; $x++) {
 		$xoffset = $x * $this->height;

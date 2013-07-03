@@ -1,5 +1,27 @@
 <style>
-    .project-event {}
+    .admin-links {
+        position: absolute;
+        right:0px;
+        top:0px;
+    }
+    .admin-links a {}
+    
+    .project-event .admin-links{
+        opacity:0;
+        transition: opacity 0.5s;
+        -webkit-transition: opacity 0.5s;
+        -moz-transition: opacity 0.5s;
+    }
+    .project-event:hover .admin-links{
+        opacity:1;
+        transition: opacity 0.5s;
+        -webkit-transition: opacity 0.5s;
+        -moz-transition: opacity 0.5s;
+    }
+    .project-event {
+        position:relative;
+        min-height:100px;
+    }
     .event-avatar {
         float:left;
         border-radius: 10px;
@@ -22,6 +44,7 @@
     }
     .project-event-content p {
         margin-top:10px;
+        text-align: justify;
     }
 </style>
 <?=$this->renderPartial('_item_head',array('model'=>$model));?>

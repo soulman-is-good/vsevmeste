@@ -35,7 +35,7 @@ String.prototype.repeat = function( num ){return new Array( num + 1 ).join( this
 <script type="text/javascript" src="/js/jquery.fcselect.js"></script>
 <script type="text/javascript" src="/js/jquery.fctabs.js"></script>
 <script type="text/javascript" src="/js/jquery.maskedinput.min.js"></script>
-<script type="text/javascript" src="/js/placeholder.js"></script>
+<script type="text/javascript" src="/js/placeholder.js?<?=  filemtime('js/placeholder.js')?>"></script>
 <script type="text/javascript" src="/js/wnd.js"></script>
 <script type="text/javascript" src="http://api-maps.yandex.ru/2.0-stable/?lang=ru-RU&coordorder=longlat&load=package.full"></script>
 
@@ -45,6 +45,6 @@ String.prototype.repeat = function( num ){return new Array( num + 1 ).join( this
     <?include("js/sfbrowser/connectors/php/init.php");?>
 <?endif;?>
 
-<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript" src="/js/script.js?<?=  filemtime('js/script.js')?>"></script>
 </body>
 </html>

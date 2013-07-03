@@ -72,6 +72,60 @@ div.clear {clear:both;height:0px;font-size:0px;}
 .mb-5 {margin:5px;}.mb-10 {margin:10px;}.mb-15 {margin:15px;}.mb-20 {margin:20px;}.mb-30 {margin:30px;}.mb-50 {margin:50px;}.mb-100 {margin:100px;}
 .ml-5 {margin:5px;}.ml-10 {margin:10px;}.ml-15 {margin:15px;}.ml-20 {margin:20px;}.ml-30 {margin:30px;}.ml-50 {margin:50px;}.ml-100 {margin:100px;}
 
+.form input[type="text"], .form input[type="password"], .form textarea {
+    border:1px solid #CCC;
+    padding: 5px;
+    margin:5px 0;
+    width:258px;
+}
+.errors {
+    border:1px solid #ff6666;
+    background: #ff9999;
+    color:#fff;
+    padding:10px;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    margin:0px 0px 10px 0px;
+}
+.errors ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.errors ul li {
+    padding: 0;
+    margin: 0;
+}
+.form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: JunegullRegular, Arial black;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 0px 1px 1px #238704;
+    -webkit-text-shadow: 0px 1px 1px #238704;
+    -moz-text-shadow: 0px 1px 1px #238704;
+    border-radius: 30px;
+    border:none;
+    background: #76cc1e;
+    background: -webkit-linear-gradient(top, #76cc1e, #38a404);
+    background: -moz-linear-gradient(top, #76cc1e, #38a404);
+    background: -o-linear-gradient(top, #76cc1e, #38a404);
+    background: -ms-linear-gradient(top, #76cc1e, #38a404);
+    background: linear-gradient(top, #76cc1e, #38a404);
+    background: -webkit-gradient(linear, left top, left bottom, 
+        color-stop(0%,#76cc1e), color-stop(100%,#38a404));
+    transition: background 0.5s;
+    -moz-transition: background 0.5s;
+    -webkit-transition: background 0.5s;
+}
+
+.form .placeholder, .form ::placeholder {
+    color:#CCC;
+}
+
 body {
     position: relative;
     z-index: -50;

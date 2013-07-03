@@ -30,6 +30,17 @@ class Project_Event extends X3_Module_Table {
             'created_at' => 'Дата публикации',
         );
     }
+    
+    public function actionDelete(){
+        if(IS_AJAX && FALSE !== ($id = X3::request()->getRequest('id'))){
+            $model = self::get(array('id'=>$id),1);
+            if($model!== NULL){
+                self::deleteByPk($id);
+            }
+        }
+        throw new X3_404;
+    }
+    
     public static function newInstance($class = __CLASS__) {
         return parent::newInstance($class);
     }

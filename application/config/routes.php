@@ -2,6 +2,7 @@
 return
 array(
     //Common
+    '/^\/enter\.html$/' => array('/user/login', true), // first element - module/action, second - if either way then redirect
     '/^\/sitemap\.xml$/' => array('/site/map/type/xml', true), // first element - module/action, second - if either way then redirect
     '/^\/sitemap.html$/' => array('/site/map/type/html'), 
     '/^\/sitemap\/(.*)$/' => array('/site/map/type/html$1'), 
