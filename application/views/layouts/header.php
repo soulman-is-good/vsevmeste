@@ -2,8 +2,12 @@
 	<div class="top_cont">
 		<div class="top">
 			<div class="logo"><a href="/" title="На главную"><h2>VSE<span>VMESTE</span></h2></a></div>
-			<div class="top_link_cont"><a href="/about-us.html" class="black_link">О VseVmeste</a><div class="top_link_dev"></div></div>
+			<div class="top_link_cont"><a href="/about-us.phtml" class="black_link">О VseVmeste</a><div class="top_link_dev"></div></div>
+                        <?if(X3::user()->isGuest()):?>
 			<div class="top_link_cont"><a href="/enter.html" class="green_link">Регистрация</a><span>&nbsp;/&nbsp;</span><a href="/enter.html" class="black_link">Вход</a><div class="top_link_dev"></div></div>
+                        <?else:?>
+			<div class="top_link_cont"><a href="/user/<?=X3::user()->id?>/" class="green_link"><?=X3::user()->fullname?></a><div class="top_link_dev"></div></div>
+                        <?endif;?>
 			<div class="search_cont">
 				<div>
 					<input type="text" placeholder="Поиск проектов" title="Поиск проектов" class="search_field" />

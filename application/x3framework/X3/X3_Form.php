@@ -43,10 +43,12 @@ class X3_Form extends X3_Renderer {
 
     public function input($value='',$attributes=array()) {
         $attributes['type'] = !isset($attributes['type'])?'text':$attributes['type'];
-        if((($this->module instanceof X3_Model) && isset($this->module[$value])) || (($this->module instanceof X3_Module_Table) && isset($this->module->table[$value]))){
-            $attributes['name'] = !isset($attributes['name'])?get_class($this->module) . '[' . $value . ']':$attributes['name'];
-            $attributes['id'] = !isset($attributes['id'])?get_class($this->module) . '_' . $value:$attributes['id'];
-            $attributes['value'] = !isset($attributes['value'])?$this->module->$value:$attributes['value'];
+        $tvalue = str_replace('[]', '', $value);
+        if((($this->module instanceof X3_Model) && isset($this->module[$tvalue])) || (($this->module instanceof X3_Module_Table) && isset($this->module->table[$tvalue]))){
+            $many = strpos($value,'[]')!==false?'[]':'';
+            $attributes['name'] = !isset($attributes['name'])?get_class($this->module) . '[' . $tvalue . ']'.$many:$attributes['name'];
+            $attributes['id'] = !isset($attributes['id'])?get_class($this->module) . '_' . $tvalue . ($many!=''?'_'.rand(10,100):''):$attributes['id'];
+            $attributes['value'] = !isset($attributes['value'])?$this->module->$tvalue:$attributes['value'];
         }else {
             $attributes['value'] = $value;
         }

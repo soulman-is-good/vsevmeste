@@ -72,11 +72,20 @@ div.clear {clear:both;height:0px;font-size:0px;}
 .mb-5 {margin:5px;}.mb-10 {margin:10px;}.mb-15 {margin:15px;}.mb-20 {margin:20px;}.mb-30 {margin:30px;}.mb-50 {margin:50px;}.mb-100 {margin:100px;}
 .ml-5 {margin:5px;}.ml-10 {margin:10px;}.ml-15 {margin:15px;}.ml-20 {margin:20px;}.ml-30 {margin:30px;}.ml-50 {margin:50px;}.ml-100 {margin:100px;}
 
-.form input[type="text"], .form input[type="password"], .form textarea {
+.project-add .form input[type="text"], .project-add .form input[type="password"], .project-add .form textarea {
+    width:560px;
+}
+.project-add .form select {
+    width:571px;
+}
+.form input[type="text"], .form input[type="password"], .form textarea, .form select {
     border:1px solid #CCC;
     padding: 5px;
     margin:5px 0;
     width:258px;
+}
+.form select {
+    width:269px;
 }
 .errors {
     border:1px solid #ff6666;
@@ -96,6 +105,9 @@ div.clear {clear:both;height:0px;font-size:0px;}
 .errors ul li {
     padding: 0;
     margin: 0;
+}
+.form .field {
+    padding:5px 0;
 }
 .form button {
     padding: 10px 20px;
@@ -893,6 +905,11 @@ a:hover .menu {
     padding:0;
     margin:0;
 }
+.tabs ul li em {
+    font-size:24px;
+    font-family: JunegullRegular, Arial black;
+    font-style: normal;
+}
 .tabs ul li {
     float:left;
     margin-right: 5px;
@@ -962,7 +979,7 @@ a:hover .menu {
     margin:0 auto;    
 }
 .item-head .item-head-body .item-desc {
-    margin: 0 0 0 240px;
+    margin: 0 0 0 270px;
 }
 .item-head .item-head-body .item-desc h1 {
     margin-bottom: 20px;
@@ -973,6 +990,7 @@ a:hover .menu {
 .item-head .item-head-body img.logo {
     float:left;
     width:220px;
+    margin:0 0 0 30px;
     border-radius: 20px;
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;

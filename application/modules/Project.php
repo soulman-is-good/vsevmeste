@@ -18,7 +18,11 @@ class Project extends X3_Module_Table {
         'user_id'=>array('integer[10]','unsigned','index','ref'=>array('User','id','default'=>"name")),
         'city_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('City','id','default'=>'title')),
         'category_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Category','id','default'=>'title')),
-//        'gallery_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Project_Gallery','id','default'=>'title')),
+        'image' => array('file', 'allowed' => array('jpg', 'gif', 'png', 'jpeg'), 'max_size' => 10240),
+        'video'=>array('string[128]','default'=>'NULL'),
+        'links'=>array('content','default'=>'NULL'),
+        'company_name'=>array('string[32]','default'=>'NULL'),
+        'company_bin'=>array('string[32]','default'=>'NULL'),
         'title'=>array('string[32]'),
         'name'=>array('string[32]','unique'),
         'current_sum'=>array('integer[11]','default'=>'0'), 
@@ -47,6 +51,11 @@ class Project extends X3_Module_Table {
             'created_at'=>X3::translate('Дата создания'),
             'end_at'=>X3::translate('Дата окончания'),
             'status'=>X3::translate('Опубликован'),
+            'image'=>X3::translate('Изображение'),
+            'video'=>X3::translate('Видео'),
+            'links'=>X3::translate('Ссылки на проект'),
+            'company_name'=>X3::translate('Название компании'),
+            'company_bin'=>X3::translate('ИИН/БИН компании'),
         );
     }
     
@@ -195,36 +204,26 @@ class Project extends X3_Module_Table {
         }
     }
     
-    public function actionCreate() {
+    public function actionAdd() {
         $id = X3::user()->id;
-        if(isset($_GET['id']) && (int)$_GET['id']>0){
-            $model = Project::getByPk((int)$_GET['id']);
-        }else{
-            $model = new Project();
-        }
+        $model = new Project();
         if(isset($_POST['Project'])){
+            throw new X3_404;
             $data = $_POST['Project'];
             $model->getTable()->acquire($data);
-            if($model->getTable()->getIsNewRecord())
-                $model->user_id = $id;
-            if(!array_reduce($ans = explode('||',$model->answer), create_function('$v,$w', 'return $w && trim($v)!="";'),true)){
-                $model->addError('answer',X3::translate('Заполните все ответы'));
-            }elseif(count(array_unique($ans))<count($ans)){
-                $model->addError('answer',X3::translate('Ответы не должны повторяться'));
+            $i = new Upload($model,'image');
+            if($i->message == null && !$i->source){
+                $i->save();
             }
-            if(X3::user()->isKsk())
-                $model->type = 'user';
-            if(isset($_POST['public']))
-                $model->status = '1';
+            $model->links = implode("\n",$model->links);
+            $model->user_id = $id;
             if($model->save()){
-                if(isset($_POST['public'])){
-                    $this->notify($model);
-                }
-                $this->redirect('/vote/');
+                Notify::sendMail('Project.Created',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>"/{$model->name}-project.html"));
+                $this->redirect('/project/add/step2.html');
             }
         }
         X3::app()->datapicker = true;
-        $this->template->render('form', array('model' => $model));
+        $this->template->render('add_step1', array('model' => $model));
     }
     
     public function actionDelete(){

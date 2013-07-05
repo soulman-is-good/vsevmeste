@@ -14,7 +14,7 @@ array(
     //Video/Photos
     '/^\/video\/([0-9]+)(.*)$/' => array('/video/show/id/$1$2', true),
     //Page
-    '/^\/page\/(.+)?$/' => array('/page/show/name/$1', true),
+    '/^\/(.+)\.phtml$/' => array('/page/show/name/$1', true),
     //Articles/News
     '/^\/news\/([0-9]+)?(.*)$/' => array('/news/show/id/$1$2', true),
     //Projects
@@ -28,7 +28,8 @@ array(
     
     '/^\/user\/login.html$/' => array('/user/login.html', true),
     //'/^\/user\/logout.html$/' => array('/user/login.html', true),
-    '/^\/user\/([0-9]+)(.*)$/' => array('/user/index/id/$1$2', true),
+    '/^\/user\/([0-9]+)\/$/' => array('/user/index/id/$1', true),
+    '/^\/user\/([0-9]+)\/projects(.+)$/' => array('/user/projects/id/$1$2', true),
     '/^\/admins(.*)$/' => array('/user/admins/$1', true),
 )
 ?>

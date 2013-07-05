@@ -9,7 +9,7 @@ $sorts = array(
 ?>
 <div class="body">
     <div class="clearfix" style="height:40px;">&nbsp;</div>
-    <div style="float:right;width:230px;">
+    <div style="float:right;width:210px;">
         <h2 class="title_subcont">По категориям</h2>
         <ul class="cats">
             <?foreach($cats as $cat):?>
@@ -51,14 +51,14 @@ $sorts = array(
             <?/*<li><a href="/projects<?=isset($category)?$category:''?>/curator/"><?=X3::translate('Куратор Страницы');?></a></li>*/?>
         </ul>
     </div>
-    <h1 class="title_cont" style="float: none">
+    <h1 class="title_cont" style="float: none;margin-left: 0;">
         <?if($category!==null):?>
         <?=$sort==null?'<a href="/projects/">'.X3::translate('Проекты'):$sorts[$sort].' <a href="/projects/">'.mb_strtolower(X3::translate('Проекты'))?></a> / <?=$category->title?>
         <?else:?>
         <?=$sort==null?X3::translate('Проекты'):$sorts[$sort].' '.mb_strtolower(X3::translate('Проекты'))?>
         <?endif;?>
     </h1>
-    <div class="main_projects_cont" style="margin-left: 35px;width:715px">
+    <div class="main_projects_cont" style="width:715px">
         <?foreach($models as $model):?>
         <?=$this->renderPartial('@views:project:_project_item.php',array('model'=>$model));?>
         <?endforeach;?>

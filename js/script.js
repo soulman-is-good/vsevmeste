@@ -51,4 +51,10 @@ $(document).ready(function(){
                 return false;
             });
         });
+        $('#upl').on('click',function(){
+            $('#p-file').click();
+        });
+        $('#p-file').on('change',function(){
+            $('#str').html($(this).val().split('\\').pop().split('/').pop());
+        });
 });

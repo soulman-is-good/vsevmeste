@@ -548,7 +548,7 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
     public function afterSave($bNew=false) {
         if(!$this->getTable()->getIsNewRecord() && X3::app()->user->id == $this->id){
             if(!is_null($this->name))
-                X3::app()->user->fullname = $this->name . " " . $this->surname;
+                X3::app()->user->fullname = $this->fullname;
             if(!is_null($this->role))
                 X3::app()->user->role = $this->role;
             if(!is_null($this->email))
@@ -558,7 +558,7 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
     }
     
     public function getFullname(){
-        return $this->name . " " . $this->surname;
+        return ($this->name!='' || $this->surname!='')?($this->name . " " . $this->surname):$this->email;
     }
 
         public function onDelete($tables, $condition) {
