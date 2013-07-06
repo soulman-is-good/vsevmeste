@@ -18,6 +18,7 @@ array(
     //Articles/News
     '/^\/news\/([0-9]+)?(.*)$/' => array('/news/show/id/$1$2', true),
     //Projects
+//    '/^\/project\/add\/step(.+)$/' => array('/project/step$1', true),
     '/^\/(.+)\-project\/comments.html(.*)$/' => array('/project/comments/name/$1$2', true),
     '/^\/(.+)\-project\/events.html(.*)$/' => array('/project/events/name/$1$2', true),
     '/^\/(.+)\-project.*$/' => array('/project/show/name/$1', true),

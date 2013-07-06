@@ -49,6 +49,8 @@ class X3_Form extends X3_Renderer {
             $attributes['name'] = !isset($attributes['name'])?get_class($this->module) . '[' . $tvalue . ']'.$many:$attributes['name'];
             $attributes['id'] = !isset($attributes['id'])?get_class($this->module) . '_' . $tvalue . ($many!=''?'_'.rand(10,100):''):$attributes['id'];
             $attributes['value'] = !isset($attributes['value'])?$this->module->$tvalue:$attributes['value'];
+            if($this->module->hasError($tvalue))
+                $attributes['class'] .= 'error';
         }else {
             $attributes['value'] = $value;
         }
@@ -63,6 +65,8 @@ class X3_Form extends X3_Renderer {
             $attributes['id'] = !isset($attributes['id'])?get_class($this->module) . '_' . $checked:$attributes['id'];
             if($this->module->$checked)
                 $attributes['checked'] = "checked";
+            if($this->module->hasError($value))
+                $attributes['class'] .= 'error';
         }else {
             if($checked)
                 $attributes['checked'] = "checked";
@@ -79,6 +83,8 @@ class X3_Form extends X3_Renderer {
 			if(!isset($attributes['value'])) $attributes['value'] = '1';
             if($this->module->$checked == $attributes['value'])
                 $attributes['checked'] = "checked";
+            if($this->module->hasError($value))
+                $attributes['class'] .= 'error';
         }else {
             if($checked)
                 $attributes['checked'] = "checked";
@@ -100,6 +106,8 @@ class X3_Form extends X3_Renderer {
             $attributes['id'] = !isset($attributes['id'])?get_class($this->module) . '_' . $text:$attributes['id'];
             $attributes['%content'] = $this->module->$text;
             $attributes['%content'] = !isset($attributes['%content'])?$this->module->$value:$attributes['%content'];
+            if($this->module->hasError($value))
+                $attributes['class'] .= 'error';
         }
         else
             $attributes['%content'] = $text;
@@ -113,13 +121,15 @@ class X3_Form extends X3_Renderer {
             $attributes['name'] = !isset($attributes['name'])?get_class($this->module) . '[' . $text . ']':$attributes['name'];
             $attributes['id'] = !isset($attributes['id'])?get_class($this->module) . '_' . $text:$attributes['id'];
             $attributes['value'] = $this->module->$text;
+            if($this->module->hasError($value))
+                $attributes['class'] .= 'error';
             if(!isset($attributes['%content'])) $attributes['%content'] = "";
             $attributes['%content'] .= X3_Html::form_tag('input', array('type'=>'hidden','name'=>get_class($this->module) . '[' . $value . '_source]','value'=>$this->module->$text));
             $file = 'uploads/'.  get_class($this->module) .'/'.$this->module->$text;
             if(in_array('fromurl',$this->module->_fields[$text]))
                 $attributes['%content'] .= '<br/>URL: '.X3_Html::form_tag('input', array('type'=>'text','name'=>get_class($this->module) . '[' . $value . '_url]'));
             if(is_file($file)){
-                $attributes['%content'] .= "<br />" . X3_Html::open_tag('a', array('href'=>'/'.$file,'target'=>'_blank','style'=>'margin-right:120px')) . $this->module->$text . X3_Html::close_tag('a');
+                $attributes['%content'] .= "<br />" . X3_Html::open_tag('a', array('href'=>'/'.$file,'target'=>'_blank','class'=>'image-link','style'=>'margin-right:120px')) . $this->module->$text . X3_Html::close_tag('a');
                 if((isset($this->module->_fields[$text]['default']) && $this->module->_fields[$text]['default']=='NULL') || (in_array('null', $this->module->_fields[$text]))){
                     $attributes['%content'] .= X3_Html::form_tag('input', array('type'=>'checkbox','name'=>get_class($this->module) . '[' . $value . '_delete]')).'Удалить?';
                 }
@@ -157,6 +167,8 @@ class X3_Form extends X3_Renderer {
                 unset($attributes['%options']);
             }else
                 $attrs = array();
+            if($this->module->hasError($value))
+                $attributes['class'] .= 'error';
             if(isset($this->module->_fields[$options]['ref'])){
                 if(isset($this->module->_fields[$options]['ref'][0])){
                     $class = $this->module->_fields[$options]['ref'][0];

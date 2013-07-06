@@ -13,11 +13,18 @@ $form = new Form($model);
             <li><a href="#" onclick="return false;"><em>2</em> - Необходимая сумма</a></li>
         </ul>
     </div>
-    <div class="pane" style="margin:30px 0">
+    <div class="pane" style="margin:30px 0;width:615px">
         <div class="pane-cont">
             <div class="form">
+                <?if($model->getTable()->getErrors()):?>
+                <?=  X3_Html::errorSummary($model);?>
+               <?endif;?> 
                 <?=$form->start();?>
                 <h3>Опишите Ваш проект</h3>
+                <div class="field">
+                    <?=$form->select('city_id')?>
+                    <div class="info">Выберите город проекта</div>
+                </div>
                 <div class="field">
                     <?=$form->input('title',array('placeholder'=>'Название проекта'))?>
                 </div>
@@ -25,10 +32,12 @@ $form = new Form($model);
                     <?=$form->textarea('short_content',array('placeholder'=>'Краткое описание'))?>
                 </div>
                 <div class="field">
-                    <?=$form->textarea('full_content',array('placeholder'=>'Подробное описание проекта'))?>
+                    <?=$form->textarea('full_content')?>
+                    <div class="info">Введите полное описание проекта</div>
                 </div>
                 <div class="field">
                     <div><strong>Изображение проекта 600x400</strong> <button id="upl" type="button">Загрузить</button> <i id="str"></i> </div>
+                    <div id="blah"></div>
                     <?=$form->file('image',array('style'=>'position:absolute;left:-9999px;','id'=>'p-file'))?>
                 </div>
                 <div class="field">
@@ -52,6 +61,9 @@ $form = new Form($model);
                 <div class="field">
                     <div><strong>Укажите ИИН/БИН компании</strong></div>
                     <div><?=$form->input('company_bin',array('placeholder'=>'ИИН/БИН компании'))?></div>
+                </div>
+                <div class="field">
+                    <button type="submit">Далее</button>
                 </div>
                 <?=$form->end();?>
             </div>

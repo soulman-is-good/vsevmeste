@@ -19,10 +19,11 @@ config.font_names =
     'chibrush, sans-serif;' +
     'lombardina, sans-serif;' +
     'diavlo, sans-serif;';
-config.extraPlugins = 'sfbrowser';
+config.extraPlugins = 'sfbrowser,youtube';
+config.allowedContent = true;
 config.toolbar = 'Full';
 config.toolbar_Custom =[
-	['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','SFbrowser']
+	['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','youtube','SFbrowser']
 	];
 config.toolbar_Full =
 [

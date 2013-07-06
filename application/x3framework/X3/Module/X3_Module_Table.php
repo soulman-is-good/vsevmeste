@@ -17,6 +17,9 @@ class X3_Module_Table extends X3_Module implements Iterator, ArrayAccess {
     public $relations = array();
     private $tables = array();
     private $position = 0;
+    /**
+     * @var X3_Model
+     */
     private $table = null;
 
     public function __construct($action = null) {
@@ -401,6 +404,15 @@ return array(false);//TODO: not tested!!!
             throw new X3_Exception("Missing relation '$relation'.");
         return $this->relations[$relation];
     }
+    
+    /**
+     * Chech if attribute error exists
+     * @param string $attribute attribute name
+     * @return boolean if error exists on this attribute
+     */
+    public function hasError($attribute) {
+        return $this->table->hasError($attribute);
+    }    
     
     public function hasErrors() {
         return $this->getTable()->hasErrors();

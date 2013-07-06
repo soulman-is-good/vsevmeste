@@ -14,17 +14,23 @@ class Upload extends X3_Component {
             $class = get_class($file);
             $this->model = $model = $file;
             $this->field = $field = $filename;
+            $filename = false;
             if(isset($file->_fields[$field]['allowed'])){
                 $allowed = $file->_fields[$field]['allowed'];
             }
             if(isset($file->_fields[$field]['max_size']))
                 $max_size = $file->_fields[$field]['max_size'] * 1024;            
             $file = $_FILES[$class];
-            if(isset($file))
-            foreach ($file as $k=>$f){
-                $file[$k] = $f[$field];
+            if(isset($file)){
+                foreach ($file as $k=>$f){
+                    $file[$k] = $f[$field];
+                    if($k === 'tmp_name' && $f[$field] != ''){
+                        $filename = sha1_file($f[$field]);
+                    }
+                }
             }
-            $filename = $class . "-" . time() . rand(100,999);
+            if(!$filename)
+                $filename = $class . "-" . time() . rand(100,999);
         }else{
             if(is_string($file))
                 $file = isset($_FILES[$file])?$_FILES[$file]:null;

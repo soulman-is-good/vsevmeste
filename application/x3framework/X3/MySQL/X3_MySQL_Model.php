@@ -551,6 +551,15 @@ class X3_MySQL_Model extends X3_Model implements ArrayAccess {
         return mysql_insert_id();
     }
 
+    /**
+     * Chech if attribute error exists
+     * @param string $attribute attribute name
+     * @return boolean if error exists on this attribute
+     */
+    public function hasError($attribute) {
+        return !empty($this->_errors) && isset($this->_errors[$attribute]);
+    }
+
     public function hasErrors() {
         return !empty($this->_errors);
     }

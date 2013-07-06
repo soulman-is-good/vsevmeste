@@ -75,6 +75,13 @@ div.clear {clear:both;height:0px;font-size:0px;}
 .project-add .form input[type="text"], .project-add .form input[type="password"], .project-add .form textarea {
     width:560px;
 }
+.project-add .form .interest-add {
+    padding:20px;
+    background: #e0e6da;
+}
+.project-add .form .interest-add input[type="text"], .project-add .form .interest-add input[type="password"], .project-add .form .interest-add textarea {
+    width:520px;
+}
 .project-add .form select {
     width:571px;
 }
@@ -83,6 +90,12 @@ div.clear {clear:both;height:0px;font-size:0px;}
     padding: 5px;
     margin:5px 0;
     width:258px;
+}
+.form input[type="text"].error, .form input[type="password"].error, .form textarea.error, .form select.error {
+    border-color: #ff0000;
+}
+.form .info {
+    font-size:13px;
 }
 .form select {
     width:269px;

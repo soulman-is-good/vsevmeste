@@ -1,0 +1,20 @@
+CKEDITOR.plugins.setLang('youtube', 'ru', {
+	button : 'Встроенное видео YouTube',
+	title : 'Встроенное видео YouTube',
+	txtEmbed : 'Вставте встроенный код YouTube сюда',
+	txtUrl : 'Вставте сюда URL видео YouTube',
+	txtWidth : 'Ширина',
+	txtHeight : 'Высота',
+	chkRelated : 'Показывать похожие видео после проигрывания',
+	chkSecure : 'Использовать HTTPS',
+	chkPrivacy : 'Включить усиленный режим конфиденциальности',
+	chkOlderCode : 'Использовать старый код вставки',
+	noCode : 'Вы должны указать код или URL видео',
+	invalidEmbed : 'Введенный код не верен',
+	invalidUrl : 'URL не верен',
+	or : 'или',
+	noWidth : 'Нужно указать ширину',
+	invalidWidth : 'Укажите ширину',
+	noHeight : 'Нужно указать высоту',
+	invalidHeight : 'Укажите высоту'
+});

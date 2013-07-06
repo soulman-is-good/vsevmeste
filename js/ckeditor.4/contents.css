@@ -12,18 +12,7 @@ body
 	/* Text color */
 	/*color: #333;*/
 
-	/* Remove the background color to make it transparent */
-	background: url(/images/page_background.jpg);
-
 	margin: 20px;
-}
-
-.celtic-border {
-    border: 30px solid #c28b7b; /* IE */
-    -moz-border-image: url(/images/border.png) 44 46 44 47 round; /* Firefox 4 */
-    -webkit-border-image: url(/images/border.png) 44 46 44 47 round; /* Safari 5 и Chrome */
-    -o-border-image: url(/images/border.png) 44 46 44 47 round; /* Opera 10.5 */
-    border-image: url(/images/border.png) 44 46 44 47 round; /* CSS3 */
 }
 
 .cke_editable

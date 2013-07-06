@@ -2,7 +2,7 @@
 $styles = array('margin-left'=>'30px');
 $left = time()+604800;//left 7 days
 $models = Project::get(array(
-    '@condition'=>array('project.end_at'=>array('<'=>$left)),
+    '@condition'=>array('project.end_at'=>array('<'=>$left),'project.status'=>'1'),
     '@with'=>array('user_id','city_id'),
     '@order'=>'end_at DESC',
     '@limit'=>10

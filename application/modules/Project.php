@@ -23,7 +23,7 @@ class Project extends X3_Module_Table {
         'links'=>array('content','default'=>'NULL'),
         'company_name'=>array('string[32]','default'=>'NULL'),
         'company_bin'=>array('string[32]','default'=>'NULL'),
-        'title'=>array('string[32]'),
+        'title'=>array('string[64]'),
         'name'=>array('string[32]','unique'),
         'current_sum'=>array('integer[11]','default'=>'0'), 
         'needed_sum'=>array('integer[11]'),
@@ -95,7 +95,7 @@ class Project extends X3_Module_Table {
     public function actionIndex() {
         $id = X3::user()->id;
         $q = array(
-            '@condition'=>array(),
+            '@condition'=>array('project.status'=>'1'),
             '@with'=>array('user_id','city_id'),
             '@order'=>'created_at DESC'
         );
@@ -205,10 +205,22 @@ class Project extends X3_Module_Table {
     }
     
     public function actionAdd() {
+        if(X3::user()->isGuest())
+            $this->redirect('/enter.html');
+        if(X3::user()->new_project != null){
+            X3::user()->new_project = null;
+        }
+        $this->redirect('/project/step1.html');
+    }
+    public function actionStep1() {
+        if(X3::user()->isGuest())
+            $this->redirect('/enter.html');
         $id = X3::user()->id;
         $model = new Project();
+        if(X3::user()->new_project != null){
+            $model->getTable()->acquire(X3::user()->new_project);
+        }
         if(isset($_POST['Project'])){
-            throw new X3_404;
             $data = $_POST['Project'];
             $model->getTable()->acquire($data);
             $i = new Upload($model,'image');
@@ -217,16 +229,56 @@ class Project extends X3_Module_Table {
             }
             $model->links = implode("\n",$model->links);
             $model->user_id = $id;
-            if($model->save()){
-                Notify::sendMail('Project.Created',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>"/{$model->name}-project.html"));
-                $this->redirect('/project/add/step2.html');
+            $model->needed_sum = 1;
+            $model->created_at = time();
+            if($model->validate()){
+                X3::user()->new_project = $model->getTable()->getAttributes();
+                //Notify::sendMail('Project.Created',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>"/{$model->name}-project.html"));
+                $this->redirect('/project/step2.html');
             }
         }
-        X3::app()->datapicker = true;
+        if(!file_exists("upload/User/Files{$id}"))
+            @mkdir("upload/User/Files{$id}",0777,true);
+        
+        X3::clientScript()->registerScriptFile('/js/ckeditor.4/ckeditor.js?'.rand(0,100),  X3_ClientScript::POS_END);
+        X3::clientScript()->registerCssFile('/js/sfbrowser/css/sfbrowser.min.css',  'screen');
+        X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/filetree.css');
+        X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/screen.min.css','screen');
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/SWFObject.min.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/jquery.tinysort.min.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/jquery.sfbrowser.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/lang/ru.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/filetree/jquery.sfbrowser.filetree.min.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/imageresize/jquery.sfbrowser.imageresize.min.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/config.js?1',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
+        
         $this->template->render('add_step1', array('model' => $model));
     }
     
+    public function actionStep2(){
+        if(X3::user()->isGuest())
+            $this->redirect('/enter.html');
+        if(X3::user()->new_project == null){
+            $this->redirect('/project/add/');
+        }
+        $model = new Project;
+        $data = X3::user()->new_project;
+        $model->getTable()->acquire($data);
+        $model->needed_sum = null;
+        if(isset($_POST['Project'])){
+            $data = $_POST['Project'];
+            $model->getTable()->acquire($data);
+            $model->created_at = time();
+            
+        }
+        X3::app()->datapicker = true;
+        $this->template->render('add_step2', array('model' => $model));
+    }
+    
     public function actionDelete(){
+        if(X3::user()->isGuest())
+            throw new X3_404;
         if(isset($_GET['id']) && (int)$_GET['id']>0)
             Project::delete(array('id'=>$_GET['id']));
         

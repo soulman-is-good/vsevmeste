@@ -54,7 +54,31 @@ $(document).ready(function(){
         $('#upl').on('click',function(){
             $('#p-file').click();
         });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var img = $('<img />').attr('src', e.target.result);
+                    $('#blah').html(img.width(300)).height(200).css({'overflow':'hidden','margin-top':'20px'});
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
         $('#p-file').on('change',function(){
             $('#str').html($(this).val().split('\\').pop().split('/').pop());
+            readURL($('#p-file')[0]);
         });
+        $('.image-link').each(function(){
+            var src = $(this).attr('href');
+            var self = this;
+            var img = $('<img />').on('load',function(){
+                $('#blah').html($(this).width(300)).height(200).css({'overflow':'hidden','margin-top':'20px'});
+                $(self).remove();
+            }).attr('src', src);
+        });
+        if(typeof document.getElementById('Project_full_content') !== 'undefined') {
+            CKEDITOR.replace( 'Project_full_content',{toolbar : 'Custom',width:570});
+        }
 });

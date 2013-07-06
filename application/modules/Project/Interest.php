@@ -19,7 +19,7 @@ class Project_Interest extends X3_Module_Table {
       'id'=>array('integer[10]','unsigned','primary','auto_increment'),
       'project_id'=>array('integer[10]','unsigned','index','ref'=>array('Project','id','default'=>'title')),
       'title'=>array('string[128]'),
-      'notes'=>array('string[128]','default'=>'NULL'),
+      'notes'=>array('string[255]','default'=>'NULL'),
       'sum'=>array('integer[10]'),
       'left'=>array('integer[10]'),
       'limit'=>array('integer[10]'),

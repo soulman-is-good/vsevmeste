@@ -14,9 +14,9 @@ $sorts = array(
         <ul class="cats">
             <?foreach($cats as $cat):?>
             <?if($cat->id === $category->id):?>
-            <li><span><?=$cat->title?></span></li>
+            <li><span><?=X3_Html::encode($cat->title)?></span></li>
             <?else:?>
-            <li><a href="/projects-<?=$cat->name?>/<?=X3::request()->getRequest('sort')?>"><?=$cat->title?></a></li>
+            <li><a href="/projects-<?=$cat->name?>/<?=X3::request()->getRequest('sort')?>"><?=X3_Html::encode($cat->title)?></a></li>
             <?endif;?>
             <?endforeach;?>
         </ul>
