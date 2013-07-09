@@ -21,8 +21,6 @@ class Project extends X3_Module_Table {
         'image' => array('file', 'allowed' => array('jpg', 'gif', 'png', 'jpeg'), 'max_size' => 10240),
         'video'=>array('string[128]','default'=>'NULL'),
         'links'=>array('content','default'=>'NULL'),
-        'company_name'=>array('string[32]','default'=>'NULL'),
-        'company_bin'=>array('string[32]','default'=>'NULL'),
         'title'=>array('string[64]'),
         'name'=>array('string[32]','unique'),
         'current_sum'=>array('integer[11]','default'=>'0'), 
@@ -217,6 +215,8 @@ class Project extends X3_Module_Table {
             $this->redirect('/enter.html');
         $id = X3::user()->id;
         $model = new Project();
+        $user = User::getByPk($id);
+        $model->city_id = $user->city_id;
         if(X3::user()->new_project != null){
             $model->getTable()->acquire(X3::user()->new_project);
         }
@@ -237,10 +237,10 @@ class Project extends X3_Module_Table {
                 $this->redirect('/project/step2.html');
             }
         }
-        if(!file_exists("upload/User/Files{$id}"))
-            @mkdir("upload/User/Files{$id}",0777,true);
+        if(!file_exists("uploads/User/Files{$id}"))
+            @mkdir("uploads/User/Files{$id}",0777,true);
         
-        X3::clientScript()->registerScriptFile('/js/ckeditor.4/ckeditor.js?'.rand(0,100),  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/ckeditor.4/ckeditor.js?2223',  X3_ClientScript::POS_END);
         X3::clientScript()->registerCssFile('/js/sfbrowser/css/sfbrowser.min.css',  'screen');
         X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/filetree.css');
         X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/screen.min.css','screen');
@@ -253,7 +253,7 @@ class Project extends X3_Module_Table {
         X3::clientScript()->registerScriptFile('/js/sfbrowser/config.js?1',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
         
-        $this->template->render('add_step1', array('model' => $model));
+        $this->template->render('add_step1', array('model' => $model, 'user'=>$user));
     }
     
     public function actionStep2(){
@@ -262,18 +262,84 @@ class Project extends X3_Module_Table {
         if(X3::user()->new_project == null){
             $this->redirect('/project/add/');
         }
+        $id = X3::user()->id;
         $model = new Project;
         $data = X3::user()->new_project;
         $model->getTable()->acquire($data);
         $model->needed_sum = null;
+        $user = User::getByPk($id);
+        if($model->id>0)
+            $interests = Project_Interest::get(array('project_id'=>$model->id));
+        else
+            $interests = array();
+        $hasErrors = false;
         if(isset($_POST['Project'])){
             $data = $_POST['Project'];
             $model->getTable()->acquire($data);
             $model->created_at = time();
-            
+            $model->status = 0;
+            if($model->save()){
+                $_interests = $_POST['Project_Interest'];
+                if(count($_interests)>1 || ($_interests[0]['sum']>0 || trim($_interests[0]['title'])!='' || trim($_interests[0]['notes'],"\t\r\n ")!='')){
+                    Project_Interest::delete(array('project_id'=>$model->id));
+                    $interests = array();
+                    foreach($_interests as $idata) {
+                        $interest = new Project_Interest;
+                        $interest->getTable()->acquire($idata);
+                        $interest->project_id = $model->id;
+                        $interest->sum = abs($interest->sum);
+                        if($interest->id>0)
+                            $interest->getTable()->setIsNewRecord(false);
+                        $hasErrors = $hasErrors || $interest->save();
+                        $interests[] = $interest;
+                    }
+                }
+                if(!$hasErrors){
+                    if($user->filled){
+                        $this->redirect("/$model->name-project.html");
+                    }else{
+                        $t = X3::user()->new_project;
+                        $t['name'] = $model->name;
+                        X3::user()->new_project = $t;
+                        $this->redirect("/project/step3.html");
+                    }
+                }
+            }
         }
         X3::app()->datapicker = true;
-        $this->template->render('add_step2', array('model' => $model));
+        X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/step2.js',  X3_ClientScript::POS_END);
+        $this->template->render('add_step2', array('model' => $model,'interests'=>$interests,'user'=>$user));
+    }
+    
+    public function actionStep3(){
+        if(X3::user()->isGuest())
+            $this->redirect('/enter.html');
+        if(X3::user()->new_project == null){
+            $this->redirect('/project/add/');
+        }
+        $id = X3::user()->id;
+        $model = User::getByPk($id);
+        if(isset($_POST['User'])){
+            $data = $_POST['User'];
+            $model->getTable()->acquire($data);
+            if(trim($model->name) == '') 
+                $model->addError ('name', 'Необходимо ввести ваше имя');
+            if(trim($model->surname) == '') 
+                $model->addError ('surname', 'Необходимо ввести вашу фамилию');
+            if(trim($model->debitcard) == '') 
+                $model->addError ('debitcard', 'Необходимо ввести номер вашей банковской карты');
+            if(NULL === City::findByPk($model->city_id)) 
+                $model->addError ('city_id', 'Выберите город из списка');
+            if($model->save()){
+                $name = X3::user()->new_project['name'];
+                $this->redirect("/$name-project.html");
+            }
+        }
+        X3::app()->datapicker = true;
+        X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/step3.js?1',  X3_ClientScript::POS_END);
+        $this->template->render('add_step3', array('model' => $model));
     }
     
     public function actionDelete(){
@@ -359,6 +425,11 @@ class Project extends X3_Module_Table {
                 $this->name = $this->title;
             }
             $this->name = str_replace(" ","_",preg_replace("/[^0-9a-z\- ]+/", "", strtolower(X3_String::create($this->name)->translit())));
+            $i = 1;
+            while(NULL!=self::get(array('name'=>$this->name),1)){
+                $this->name .= $i;
+                $i++;
+            }
         }
     }
     

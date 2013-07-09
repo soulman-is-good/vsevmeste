@@ -10,7 +10,7 @@ if(is_array($styles)){
 <div class="project_cont" style="<?=$styles?>">
     <div class="green_bg">
         <div class="white_bg">
-            <div class="project_pic"><a href="/<?=$model->name?>-project/"><img src="/images/03.jpg" alt="" /></a></div>
+            <div class="project_pic"><a href="/<?=$model->name?>-project/"><img src="/uploads/Project/<?=$model->image?>" alt="" /></a></div>
             <div class="project_text_cont">
                 <div class="project_title" style="margin-bottom: 10px;"><a href="/<?=$model->name?>-project.html" class="green_link t16"><b><?=X3_Html::encode($model->title)?></b></a></div>
                 <div class="name"><a href="/user/<?=$model->user_id()->id?>/projects.html" class="grey_link"><?=$model->user_id()->fullName?></a></div>

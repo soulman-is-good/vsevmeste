@@ -18,7 +18,7 @@ class Notify extends X3_Module_Table{
     public $_fields = array(
         'id'=>array('integer[10]','unsigned','primary','auto_increment'),
         'to'=>array('string[255]','default'=>'NULL'),
-        'from'=>array('string[255]','default'=>'NULL'),
+        'from'=>array('string[255]','default'=>'noreply@vsevmeste.kz'),
         'title'=>array('string[255]','language'),
         'name'=>array('string[32]','unique'),
         'text'=>array('text','language'),
@@ -85,9 +85,61 @@ class Notify extends X3_Module_Table{
             return "Нет письма с именем '$mailName'";
         if($mail->status==0)
             return "Письмо '$mailName' не открыто к рассылке";
+        require_once X3::app()->basePath . '/application/extensions/swift/lib/swift_required.php';
+        $letter = Swift_Message::newInstance();
+        $letter->setCc($cc);
+        $letter->setFrom('noreply@vsevmeste.kz');
+        //$mailer->encoding = 'UTF-8';
+        if(!isset($data['title']))
+            $data['title'] = $mail->title;
+        $data['title'] = $mail->formLetter($data,$letter,$data['title']);
+        $message = $mail->formLetter($data,$letter);
+        if(is_null($from) && !empty($mail->from)){
+            $from = $mail->from;
+            $letter->setFrom($from);
+        }
+        if(is_null($to) && !empty($mail->to)){
+            $rcps = explode(',',$mail->to);
+        }elseif(is_null($to))
+            $rcps = array('info@vsevmeste.kz');
+        else 
+            $rcps = explode(',',$to);
+        $errs = '';
+        foreach($rcps as $to)
+            try{
+                $to = trim($to);
+                $letter->setTo($to);
+                $letter->setSubject($data['title']);
+                $letter->setBody($message,'text/html')
+                        ->addPart(strip_tags($message));
+                $msgId = $letter->getHeaders()->get('Message-ID');
+                $msgId->setId(time() . '.' . uniqid(rand(100, 1000).rand(9, 55).rand(4, 76)) . '@vsevmeste.kz');
+                $letter->getHeaders()->addTextHeader('X-Mru-PTR', 'vsevmeste.kz');
+                $letter->setReturnPath('noreply@vsevmeste.kz');
+                $transport = Swift_MailTransport::newInstance();
+                $mailer = Swift_Mailer::newInstance($transport);
+                $msg = $mailer->send($letter);
+                $mail->sent_at = time();
+                if($msg != 1)
+                    X3::log($msg,'mailer');
+                else{
+                    $mail->save();
+                }
+            }catch(Exception $e){
+                $errs .= $e->getMessage();
+                X3::log($e->getMessage(),'mailer');
+            }
+        return $errs==''?true:$errs;
+    }
+    
+    public static function sendMail_old($mailName,$data=array(),$to=null,$from=null,$cc=array()) {
+        if(NULL===($mail = self::get(array('name'=>$mailName),1)))
+            return "Нет письма с именем '$mailName'";
+        if($mail->status==0)
+            return "Письмо '$mailName' не открыто к рассылке";
         $mailer = new X3_Mailer();
         $mailer->copy = $cc;
-        $mailer->email = 'noreply@eksk.kz';
+        $mailer->email = 'noreply@vsevmeste.kz';
         $mailer->encoding = 'UTF-8';
         if(!isset($data['title']))
             $data['title'] = $mail->title;
@@ -99,17 +151,17 @@ class Notify extends X3_Module_Table{
         if(is_null($to) && !empty($mail->to)){
             $rcps = explode(',',$mail->to);
         }elseif(is_null($to))
-            $rcps = array('info@eksk.kz');
+            $rcps = array('info@vsevmeste.kz');
         else 
             $rcps = explode(',',$to);
         $errs = '';
         foreach($rcps as $to)
             try{
                 $to = trim($to);
-                $msg = $mailer->send($to, $data['title'], $message,$from);
+                $errs = $mailer->send($to, $data['title'], $message,$from);
                 $mail->sent_at = time();
-                if(is_string($msg))
-                    X3::log($msg,'mailer');
+                if(is_string($errs))
+                    X3::log($errs,'mailer');
                 else{
                     $mail->save();
                 }

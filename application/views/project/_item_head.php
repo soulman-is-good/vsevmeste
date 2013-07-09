@@ -1,6 +1,6 @@
 <div class="item-head">
     <div class="item-head-body">
-        <img class="logo" src="/images/03.jpg" alt="" />
+        <img class="logo" src="/uploads/Project/<?=$model->image?>" alt="" />
         <div class="item-desc">
             <h1><?=X3_Html::encode($model->title)?></h1>
             <p><?=X3_Html::encode($model->short_content)?></p>

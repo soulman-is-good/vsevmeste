@@ -42,7 +42,7 @@
         <?endif;?>
     </div>
     <div class="item-body">
-        <img width="100%" src="/images/03.jpg" alt="" />
+        <img width="100%" src="/uploads/Project/<?=$model->image?>" alt="" />
         <div class="share">
             <b>Поделиться ссылкой</b> <input style="width:235px;" class="search_field" type="text" value="http://<?=$_SERVER['HTTP_HOST']?>/<?=$model->name?>-project/" />
             <div style="display:inline-block" class="yashare-auto-init" data-yashareL10n="ru"
@@ -51,7 +51,7 @@
         </div>
         <div class="pane">
             <div class="pane-cont">
-                <?=X3_Html::encode($model->full_content)?>
+                <?=$model->full_content?>
             </div>
         </div>
     </div>

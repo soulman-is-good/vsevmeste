@@ -121,7 +121,7 @@ class X3_Html extends X3_Component {
     }
     public static function encode($text)
     {
-            return htmlspecialchars($text,ENT_QUOTES,X3::app()->module->encoding);
+            return htmlspecialchars($text,ENT_QUOTES,X3::app()->encoding);
     }
     
     public static function errorSummary($model) {

@@ -1,0 +1,37 @@
+<?php
+if(X3::user()->id === $user->id)
+    $labels = array(
+        "Мой профиль",
+        "Мои проекты",
+        "Мои вложения",
+        "Мне вложили",
+    );
+else
+    $labels = array(
+        "Профиль",
+        "Проекты",
+        "Вложения",
+    );
+?>
+<?=$this->renderPartial('_user_head',array('user'=>$user));?>
+<div class="body" style="position: relative">
+    <div class="tabs">
+        <ul>
+            <li class="active"><?=$labels[0]?></li>
+            <li><a href="/user/<?=$user->id?>/projects.html"><?=$labels[1]?></a></li>
+            <li><a href="/user/<?=$user->id?>/investments.html"><?=$labels[2]?></a></li>
+            <?if(X3::user()->id === $user->id):?>
+            <li><a href="/user/<?=$user->id?>/donations.html"><?=$labels[3]?></a></li>
+            <?endif;?>
+        </ul>
+    </div>
+    <div class="clearfix" style="height:30px;">&nbsp;</div>
+    <div class="item-body">
+        <div class="pane">
+            <div class="pane-cont">
+                Test
+            </div>
+        </div>
+    </div>
+    <div class="clear" style="height: 120px">&nbps;</div>
+</div>

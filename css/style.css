@@ -78,6 +78,14 @@ div.clear {clear:both;height:0px;font-size:0px;}
 .project-add .form .interest-add {
     padding:20px;
     background: #e0e6da;
+    margin:10px 0;
+}
+.project-add .form .interest-add .ui-datepicker-trigger {
+    cursor:pointer;
+}
+.project-add .form .interest-add .remove-interest {
+    float:right;
+    margin-right:5px;
 }
 .project-add .form .interest-add input[type="text"], .project-add .form .interest-add input[type="password"], .project-add .form .interest-add textarea {
     width:520px;
@@ -145,6 +153,17 @@ div.clear {clear:both;height:0px;font-size:0px;}
     transition: background 0.5s;
     -moz-transition: background 0.5s;
     -webkit-transition: background 0.5s;
+}
+.form button.red {
+    background: #cb1e1e;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2NiMWUxZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhNDA0MDQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top,  #cb1e1e 0%, #a40404 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cb1e1e), color-stop(100%,#a40404));
+    background: -webkit-linear-gradient(top,  #cb1e1e 0%,#a40404 100%);
+    background: -o-linear-gradient(top,  #cb1e1e 0%,#a40404 100%);
+    background: -ms-linear-gradient(top,  #cb1e1e 0%,#a40404 100%);
+    background: linear-gradient(to bottom,  #cb1e1e 0%,#a40404 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb1e1e', endColorstr='#a40404',GradientType=0 );
 }
 
 .form .placeholder, .form ::placeholder {

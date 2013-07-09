@@ -564,6 +564,12 @@ class X3_MySQL_Model extends X3_Model implements ArrayAccess {
         return !empty($this->_errors);
     }
 
+    public function getError($attribute) {
+        if($this->hasError($attribute))
+            return $this->_errors[$attribute];
+        return null;
+    }
+
     public function getErrors() {
         return $this->_errors;
     }

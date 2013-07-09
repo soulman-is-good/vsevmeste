@@ -11,6 +11,9 @@ $form = new Form($model);
         <ul>
             <li class="active"><em>1</em> - Проект</li>
             <li><a href="#" onclick="return false;"><em>2</em> - Необходимая сумма</a></li>
+            <?if(!$user->filled):?>
+            <li><a href="#" onclick="return false;"><em>3</em> - Личная информация</a></li>
+            <?endif;?>
         </ul>
     </div>
     <div class="pane" style="margin:30px 0;width:615px">
@@ -53,14 +56,6 @@ $form = new Form($model);
                     <div><?=$form->input('links[]',array('placeholder'=>'Twitter'))?></div>
                     <div><?=$form->input('links[]',array('placeholder'=>'Мой Мир'))?></div>
                     <div><?=$form->input('links[]',array('placeholder'=>'YouTube'))?></div>
-                </div>
-                <div class="field">
-                    <div><strong>Если у вас компания, укажите здесь</strong></div>
-                    <div><?=$form->input('company_name',array('placeholder'=>'Название компании'))?></div>
-                </div>
-                <div class="field">
-                    <div><strong>Укажите ИИН/БИН компании</strong></div>
-                    <div><?=$form->input('company_bin',array('placeholder'=>'ИИН/БИН компании'))?></div>
                 </div>
                 <div class="field">
                     <button type="submit">Далее</button>

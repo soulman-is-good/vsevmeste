@@ -21,9 +21,12 @@ class User extends X3_Module_Table {
     public $_fields = array(
         'id' => array('integer[10]', 'unsigned', 'primary', 'auto_increment'),
         'image' => array('file', 'default' => 'NULL', 'allowed' => array('jpg', 'gif', 'png', 'jpeg'), 'max_size' => 10240),
+        'city_id' => array('integer[10]', 'unsigned', 'default'=>'NULL', 'index', 'ref'=>array('City','id','default'=>'title')),
         'name' => array('string[255]', 'default' => ''),
         'surname' => array('string[255]', 'default' => ''),
         'debitcard' => array('string[20]', 'default' => 'NULL'),
+        'company_name'=>array('string[32]','default'=>'NULL'),
+        'company_bin'=>array('string[32]','default'=>'NULL'),
         'email' => array('email', 'unique'), //as login
         'password' => array('string[5|50]', 'password'),
         'role' => array('string[255]', 'default' => 'user'),
@@ -85,19 +88,23 @@ class User extends X3_Module_Table {
 
     public function filter() {
         return array(
-            'allow' => array(
-                '*' => array('login', 'logout', 'deny', 'add', 'rank'),
-                'user' => array('index', 'edit', 'logout', 'password', 'list'),
-                'ksk' => array('index', 'edit', 'logout', 'password', 'list', 'send', 'block', 'unblock'),
-                'admin' => array('index', 'edit', 'admins', 'logout', 'password', 'delete', 'list', 'block', 'send', 'block', 'unblock')
-            ),
-            'deny' => array(
-                '*' => array('*')
-            ),
-            'handle' => 'redirect:/user/login.html'
+//            'allow' => array(
+//                '*' => array('login', 'logout', 'deny', 'add', 'rank'),
+//                'user' => array('index', 'edit', 'logout', 'password', 'list'),
+//                'ksk' => array('index', 'edit', 'logout', 'password', 'list', 'send', 'block', 'unblock'),
+//                'admin' => array('index', 'edit', 'admins', 'logout', 'password', 'delete', 'list', 'block', 'send', 'block', 'unblock')
+//            ),
+//            'deny' => array(
+//                '*' => array('*')
+//            ),
+//            'handle' => 'redirect:/user/login.html'
         );
     }
 
+    public function getFilled() {
+        return !empty($this->name) && !empty($this->surname) && !empty($this->debitcard) && !empty($this->city_id);
+    }
+    
     /**
      * Get either a Gravatar URL or complete image tag for a specified email address.
      *
@@ -136,20 +143,6 @@ class User extends X3_Module_Table {
         return '/uploads/User/' . $this->image;
     }
 
-    public static function isMyNeibor($id) {
-        $i = X3::user()->id;
-        $i = X3::db()->fetch("SELECT ($i IN (SELECT a1.user_id FROM user_address a1, user_address a2 
-WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id AND `a2`.`region_id` = a1.region_id AND `a2`.`house` = a1.house) AND (SELECT role FROM data_user WHERE id=$id)='user') AS `ismyksk`");
-        return $i['ismyksk'] == '1';
-    }
-
-    public static function isMyKsk($id) {
-        $i = X3::user()->id;
-        $i = X3::db()->fetch("SELECT ($i IN (SELECT a1.user_id FROM user_address a1, user_address a2 
-WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id AND `a2`.`region_id` = a1.region_id AND `a2`.`house` = a1.house AND a2.status=1) AND (SELECT role FROM data_user WHERE id=$id)='ksk') AS `ismyksk`");
-        return $i['ismyksk'] == '1';
-    }
-
     public function isOnline() {
         $online = null;
         if (X3::app()->hasComponent('mongo') && X3::mongo() != null) {
@@ -164,9 +157,24 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
         else
             $id = X3::user()->id;
         $user = User::getByPk($id);
-        if ($user == null || ($user->role == 'admin' && !X3::user()->isAdmin()) || (X3::user()->isUser() && $user->role == 'ksk' && !self::isMyKsk($id)) || (X3::user()->isUser() && $user->role == 'user' && !self::isMyNeibor($id)))
-            throw new X3_404();
-        $this->template->render('@views:site:index.php', array('user' => $user));
+        $this->template->render('index', array('user' => $user));
+    }
+
+    public function actionProjects() {
+        if (isset($_GET['id']))
+            $id = (int) $_GET['id'];
+        else
+            $id = X3::user()->id;
+        $user = User::getByPk($id);
+        $q = array('@condition'=>array('user_id'=>$id));
+        if(X3::user()->id !== $user->id)
+            $q['@condition']['status'] = 1;
+        $count = Project::num_rows($q);
+        $paginator = new Paginator('User/Projects',$count);
+        $q['@limit'] = $paginator->limit;
+        $q['@offset'] = $paginator->offset;
+        $projects = Project::get($q);
+        $this->template->render('projects', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
     }
 
     /**
@@ -366,6 +374,8 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
     }
 
     public function actionLogin() {
+        $link = "http://vsevmeste.kz/user/add/key/".base64_encode("69734acd718363750f7b08ca7059dc3e18|4");
+        Notify::sendMail('User.Registered', array('link' => $link), 'i@soulman.kz');
         if (!X3::user()->isGuest())
             $this->redirect('/');
         $error = false;
@@ -379,39 +389,16 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
                 $pass = false;
             }
             $user->getTable()->acquire($_POST['User']);
-            $address->getTable()->acquire($_POST['User_Address']);
             $user->role = 'user';
             $user->status = 0;
-            $address->user_id = 1;
-            if (!$user->iagree) {
-                $user->addError('iagree', X3::translate('Вы должны быть согласны с правилами сайта'));
-            }
             if ($user->password != $user->password_repeat) {
                 $user->addError('password_repeat', X3::translate('Пароли не совпадают'));
             }
-            if (trim($address->flat) == '' || preg_match("/^[0-9A-Za-z]+$/", $address->flat) == 0) {
-                $address->addError('flat', X3::translate('Нужно ввести номер квартиры'));
-                $pass = false;
-            }
-            if (NULL == City_Region::getByPk($address->region_id)) {
-                $address->addError('region_id', X3::translate('Нужно выбрать улицу'));
-                $pass = false;
-            }
-            if (($a = array_pop(X3::db()->fetch("SELECT '$address->house' IN (SELECT house FROM user_address WHERE region_id='$address->region_id')"))) == 0) {
-                var_dump("SELECT '$address->house' IN (SELECT id FROM user_address WHERE region_id='$address->region_id')", $a);
-                exit;
-                $address->addError('house', X3::translate('Нужно выбрать дом'));
-                $pass = false;
-            }
-            if ($user->validate() && $pass && $address->getTable()->validate()) {
-                if ($user->save()) {
-                    $address->user_id = $user->id;
-                    if ($address->save()) {
-                        $link = base64_encode($user->akey . "|" . X3::user()->id);
-                        Notify::sendMail('welcomeUser', array('link' => $link), $user->email);
-                        $this->redirect('/page/success.html');
-                    }
-                }
+            $user->password = md5($user->password);
+            if ($user->save()) {
+                $link = "http://vsevmeste.kz/user/add/key/".base64_encode($user->akey . "|" . $user->id);
+                Notify::sendMail('User.Registered', array('link' => $link), $user->email);
+                $this->redirect('/registration-succeeded.phtml');
             }
         }
         if (!isset($_POST['captcha']) && isset($_POST['User'])) {
@@ -482,61 +469,14 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
             throw new X3_404();
         $key = base64_decode($_GET['key']);
         $key = explode('|', $key);
-        if (NULL === ($user = User::get(array('akey' => $key[0]), 1)))
+        if (NULL === ($user = User::get(array('akey' => $key[0],'id'=>$key[1]), 1)))
             throw new X3_404();
-        $address = null;
-        if ($user->role == 'ksk') {
-            $address = new User_Address();
-            $address->user_id = $user->id;
-        }
-        if (isset($_POST['User'])) {
-            $post = $_POST['User'];
-            $user->getTable()->acquire($post);
-            if ($user->password == '') {
-                $user->addError('password', X3::translate('Нужно задать пароль'));
-            }
-            if ($user->name == '') {
-                if ($user->role == 'ksk')
-                    $user->addError('name', X3::translate('Введите название КСК'));
-                else
-                    $user->addError('name', X3::translate('Введите Ваше имя'));
-            }
-            if ($user->surname == '' && $user->role != 'ksk') {
-                $user->addError('surname', X3::translate('Введите Вашу фамилию'));
-            }
-            $user->status = 1;
-            $errors = $user->getTable()->getErrors();
-            if ($user->role == 'ksk') {
-                $address->getTable()->acquire($_POST['User_Address']);
-                if (trim($address->house) == '') {
-                    $address->addError('house', X3::translate('Нужно ввести дом'));
-                }
-                if (trim($address->flat) == '') {
-                    $address->addError('flat', X3::translate('Нужно ввести квартиру'));
-                }
-                $address->status = '0';
-                $address->save();
-            }
-            if (empty($errors) && $user->save()) {
-                Notify::sendMessage("Пользователь $user->name $user->surname ($user->email) зарегистрировался на сайте.");
-                Notify::sendMail('userActivated', array('name' => $user->fullname, 'email' => $user->email, 'password' => $post['password']), $user->email);
-                if (X3::user()->isGuest()) {
-                    $u = new UserIdentity($user->email, $post['password']);
-                    if ($u->login())
-                        $this->redirect('/');
-                }
-                $this->redirect($_SERVER['HTTP_REFERER']);
-            }
-        }
-        $this->template->render('@views:user:adduser.php', array('user' => $user, 'address' => $address));
+        $user->status = 1;
+        $user->save();
+        $this->redirect('/activated.phtml');
     }
 
     public function beforeValidate() {
-        if (isset($this->id) && (!isset($_POST['User']['password']) || $_POST['User']['password'] == '')) {
-            $user = User::newInstance()->table->select('password')->where("id=$this->id")->asArray(true);
-            $this->password = $user['password'];
-            $_POST['notouch'] = true;
-        }
         if ($this->getTable()->getIsNewRecord()) {
             $this->created_at = time();
             $this->akey = md5(time() . rand(10, 99)) . rand(10, 99);
@@ -544,8 +484,6 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
     }
 
     public function afterValidate() {
-        if (isset($_POST['User']['password']) && $_POST['User']['password'] != '' && !isset($_POST['notouch']))
-            $this->password = md5($_POST['User']['password']);
     }
 
     public function afterSave($bNew = false) {
@@ -558,7 +496,7 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
                 X3::app()->user->email = $this->email;
         }
         if($this->getTable()->getIsNewRecord()){
-            @mkdir("upload/User/Files{$this->id}",0777,true);
+            @mkdir("uploads/User/Files{$this->id}",0777,true);
         }
         return TRUE;
     }
@@ -571,10 +509,6 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
         if (strpos($tables, $this->tableName) !== false) {
             $model = $this->table->select('*')->where($condition)->asObject(true);
             Uploads::cleanUp($model, $model->image);
-            Forum::delete(array('user_id' => $model->id));
-            User_Address::delete(array('user_id' => $model->id));
-            User_Settings::delete(array('user_id' => $model->id));
-            Message::delete(array(array('user_to' => $model->id), array('user_from' => $model->id)));
         }
         parent::onDelete($tables, $condition);
     }

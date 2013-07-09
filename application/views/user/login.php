@@ -78,12 +78,12 @@ $errors = $user->getTable()->getErrors();
             </tr>
             <tr>
                 <td class="field" colspan="2">
-                    <?=$form->input('password',array('placeholder'=>'Пароль'));?>
+                    <?=$form->input('password',array('placeholder'=>'Пароль','type'=>'password'));?>
                 </td>
             </tr>
             <tr>
                 <td class="field" colspan="2">
-                    <?=$form->input('password_repeat',array('placeholder'=>'Повторите пароль'));?>
+                    <?=$form->input('password_repeat',array('placeholder'=>'Повторите пароль','type'=>'password'));?>
                 </td>
             </tr>
             <tr>

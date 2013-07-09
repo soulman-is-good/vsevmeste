@@ -78,7 +78,7 @@ $(document).ready(function(){
                 $(self).remove();
             }).attr('src', src);
         });
-        if(typeof document.getElementById('Project_full_content') !== 'undefined') {
+        if(typeof document.getElementById('Project_full_content') !== 'undefined' && document.getElementById('Project_full_content') !== null) {
             CKEDITOR.replace( 'Project_full_content',{toolbar : 'Custom',width:570});
         }
 });

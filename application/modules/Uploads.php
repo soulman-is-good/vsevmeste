@@ -112,6 +112,8 @@ class Uploads extends X3_Module_Table {
         else
             return false;
         $dir = "uploads/$class";
+        if(!is_file($dir))
+            return false;
         $h = opendir($dir);
         while(FALSE!==($fs = readdir($h))){
             if($fs!='.' && $fs!='..' && is_dir("$dir/$fs")){

@@ -110,14 +110,14 @@
 											id : 'txtWidth',
 											width : '60px',
 											label : editor.lang.youtube.txtWidth,
-											'default' : '640',
+											'default' : '560',
 											validate : function ()
 											{
 												if ( this.getValue() )
 												{
 													var width = parseInt ( this.getValue() ) || 0;
 
-													if ( width === 0 )
+													if ( width === 0 || width > 560)
 													{
 														alert( editor.lang.youtube.invalidWidth );
 														return false;	

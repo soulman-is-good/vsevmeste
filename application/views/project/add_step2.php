@@ -12,6 +12,9 @@ $form1 = new Form(new Project_Interest);
         <ul>
             <li><a href="/project/step1.html"><em>1</em> - Проект</a></li>
             <li class="active"><em>2</em> - Необходимая сумма</li>
+            <?if(!$user->filled):?>
+            <li><a href="#" onclick="return false;"><em>3</em> - Личная информация</a></li>
+            <?endif;?>
         </ul>
     </div>
     <div class="pane" style="margin:30px 0;width:615px">
@@ -26,34 +29,82 @@ $form1 = new Form(new Project_Interest);
                     </div>
                 </div>
                 <div class="field">
-                    <?=$form->input('end_at')?>
+                    <?=$form->input('end_at',array('value'=>date('d.m.Y',$model->end_at)))?>
                     <div class="info">
                         Укажите за какое время вы хотите получить вложения в проект
                     </div>
                 </div>
                 <h3>Чем вы наградите ваших вкладчиков при вложении...</h3>
-                <div class="interest-add">
-                    <div class="field">
-                        <?=$form1->input('sum',array('placeholder'=>'Сумма вложения (тенге)'))?>
+                <div id="interests">
+                    <?foreach($interests as $i=>$interest):$ierrors = $interest->getTable()->getErrors();?>
+                    <div class="interest-add interest-<?=$i?>">
+                        <div class="field">
+                            <?if(!$interest->getTable()->getIsNewRecord()):?>
+                            <input type="hidden" name="Project_Interest[][id]" id="Project_Interest_<?=$i?>_id" value="<?=$interest->id?>"/>
+                            <?endif;?>
+                            <input placeholder="Сумма вложения (тенге)" class="<?=$interest->getTable()->hasError('sum')?'error':'';?>" type="text" name="Project_Interest[][sum]" id="Project_Interest_<?=$i?>_sum" value="<?=$interest->sum?>"/> 
+                        </div>
+                        <div class="field">
+                            <input placeholder="Название интереса вкладчика" class="<?=$interest->getTable()->hasError('title')?'error':'';?>" type="text" name="Project_Interest[][title]" id="Project_Interest_<?=$i?>_title" value="<?=$interest->sum?>"/>
+                        </div>
+                        <div class="field">
+                            <textarea placeholder="Описание интереса вкладчика" class="<?=$interest->getTable()->hasError('notes')?'error':'';?>" rows="7" cols="30" name="Project_Interest[][notes]" id="Project_Interest_<?=$i?>_notes"><?=$interest->notes?></textarea>
+                        </div>
+                        <div class="field">
+                            <input placeholder="Количество интересов" type="text" name="Project_Interest[][limit]" class="<?=$interest->getTable()->hasError('limit')?'error':'';?>" id="Project_Interest_<?=$i?>_limit" value="<?=$interest->limit?>"/>
+                        </div>
+                        <div class="field">
+                            <div class="info">
+                                Дата доставки интереса вкладчику
+                                <input style="width:257px;margin:0 7px" type="text" name="Project_Interest[][deliver_at]" class="<?=$interest->getTable()->hasError('deliver_at')?'error':'';?>" value="<?=date('d.m.Y',$interest->deliver_at)?>" id="Project_Interest_<?=$i?>_deliver_at">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <button type="button" class="add-interest">Добавить еще интерес</button>
+                            <?if($i>0):?>
+                            <button type="button" class="red remove-interest">Удалить</button>
+                            <?endif?>
+                        </div>
                     </div>
-                    <div class="field">
-                        <?=$form1->input('title',array('placeholder'=>'Название интереса вкладчика'))?>
-                    </div>
-                    <div class="field">
-                        <?=$form1->textarea('notes',array('placeholder'=>'Описание интереса вкладчика'))?>
-                    </div>
-                    <div class="field">
-                        <?=$form1->input('limit',array('placeholder'=>'Количество интересов'))?>
-                    </div>
-                    <div class="field">
-                        <button type="button">Добавить еще интерес</button>
-                    </div>
+                    <?endforeach;?>
                 </div>
+                <?if(!$user->filled):?>
                 <div class="field" style="margin-top:20px">
-                    <button name="draft" type="submit">Сохранить в черновик</button>&nbsp;<button name="send" type="submit">Опубликовать проект</button>
+                    <button name="next" type="submit">Далее</button>
                 </div>
+                <?else:?>
+                <div class="field" style="margin-top:20px">
+                    <?/*<button name="draft" type="submit">Сохранить в черновик</button>&nbsp;*/?><button name="send" type="submit">Опубликовать проект</button>
+                </div>
+                <?endif;?>
                 <?=$form->end();?>
             </div>
         </div>
     </div>
 </div>
+<script type="text/html" id="interest-tmpl">
+<div class="interest-add interest-{index}">
+    <div class="field">
+        <input placeholder="Сумма вложения (тенге)" type="text" name="Project_Interest[][sum]" id="Project_Interest_{index}_sum" value=""/>                    </div>
+    <div class="field">
+        <input placeholder="Название интереса вкладчика" type="text" name="Project_Interest[][title]" id="Project_Interest_{index}_title" value=""/>                    </div>
+    <div class="field">
+        <textarea placeholder="Описание интереса вкладчика" rows="7" cols="30" name="Project_Interest[][notes]" id="Project_Interest_{index}_notes"></textarea>                    </div>
+    <div class="field">
+        <input placeholder="Количество интересов" type="text" name="Project_Interest[][limit]" id="Project_Interest_{index}_limit" value=""/>                    </div>
+    <div class="field">
+        <div class="info">
+            Дата доставки интереса вкладчику
+            <input style="width:257px;margin:0 7px" type="text" name="Project_Interest[][deliver_at]" value="<?=date('d.m.Y')?>" id="Project_Interest_{index}_deliver_at">
+        </div>
+    </div>
+    <div class="field">
+        <button type="button" class="add-interest">Добавить еще интерес</button>
+        <button type="button" class="red remove-interest">Удалить</button>
+    </div>
+</div>
+</script>
+<script>
+    var interest_index = <?=count($interests)?>;
+    var interest_count = <?=count($interests)?>;
+</script>
