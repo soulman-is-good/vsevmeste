@@ -92,6 +92,15 @@ class X3_MySQLConnection extends X3_Component {
         return false;
     }
 
+    public function fetchScalar($sql = null) {
+        $res = $this->query($sql);
+        if (is_resource($res)){
+            $result = mysql_fetch_row($res);
+            return $result[0];
+        }
+        return false;
+    }
+
     public function fetchAll($sql = null) {
         $this->connect();
         $data = array();

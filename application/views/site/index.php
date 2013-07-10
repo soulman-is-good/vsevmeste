@@ -18,7 +18,6 @@
 			<div class="partner"><a href="#"><img src="images/partner.png" alt="" /></a></div>
 			<div class="partner"><a href="#"><img src="images/partner.png" alt="" /></a></div>
 			<div class="partner"><a href="#"><img src="images/partner.png" alt="" /></a></div>
-			<div class="partner"><a href="#"><img src="images/partner.png" alt="" /></a></div>
 		</div>
 	</div>
 <!-- Нижний текстовы блок -->

@@ -173,6 +173,7 @@ class User extends X3_Module_Table {
         $paginator = new Paginator('User/Projects',$count);
         $q['@limit'] = $paginator->limit;
         $q['@offset'] = $paginator->offset;
+        $q['@with'] = array('user_id','city_id');
         $projects = Project::get($q);
         $this->template->render('projects', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
     }
@@ -213,119 +214,47 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
     }
 
     public function actionEdit() {
-        $id = X3::app()->user->id;
-        $user = User::getByPk($id);
-        $hash = false;
-        if ($user == null)
-            throw new X3_404();
-        $profile = User_Settings::get(array('user_id' => $user->id), 1);
-        if ($profile == null) {
-            $profile = new User_Settings();
-            $profile->user_id = $id;
-        }
-        if (isset($_POST['User'])) {
-            if (isset($_POST['User']['date_of_birth']))
-                $_POST['User']['date_of_birth'] = mktime(12, 0, 0, $_POST['User']['date_of_birth'][1], $_POST['User']['date_of_birth'][0], $_POST['User']['date_of_birth'][2]);
-            $user->getTable()->acquire($_POST['User']);
-            if ($user->name == '') {
-                if ($user->type == 'ksk')
-                    $user->addError('name', X3::translate('Введите название КСК'));
-                else
-                    $user->addError('name', X3::translate('Введите Ваше имя'));
-            }
-            if (X3::user()->isUser() && $user->surname == '') {
-                $user->addError('surname', X3::translate('Введите Вашу фамилию'));
-            }
-            if (isset($_POST['User']['date_of_birth'])) {
-                $h = new Upload($user, 'image');
-                if (isset($_POST['User']['image_delete'])) {
-                    Uploads::cleanUp('User', $user->image);
-                    $user->image = null;
-                } elseif (!$h->message == '' || !$h->save()) {
-                    $user->addError('image', $h->message);
+        $id = X3::user()->id;
+        $model = User::getByPk($id);
+        if(isset($_POST['User'])){
+            $data = $_POST['User'];
+            $model->getTable()->acquire($data);
+            if(trim($model->name) == '') 
+                $model->addError ('name', 'Необходимо ввести ваше имя');
+            if(trim($model->surname) == '') 
+                $model->addError ('surname', 'Необходимо ввести вашу фамилию');
+            if(trim($model->debitcard) == '') 
+                $model->addError ('debitcard', 'Необходимо ввести номер вашей банковской карты');
+            if(NULL === City::findByPk($model->city_id)) 
+                $model->addError ('city_id', 'Выберите город из списка');
+            if (isset($_POST['Change'])) {
+                $data = $_POST['Change'];
+                if ($data['password_old'] != '' && $data['password_new'] != '' && $data['password_repeat'] != '') {
+                    if (md5($data['password_old']) != $model->password)
+                        $model->addError('password_old', X3::translate('Пароли не совпадают'));
+                    if ($data['password_new'] != $data['password_repeat'])
+                        $model->addError('password_repeat', X3::translate('Пароли не совпадают'));
+                    if (!$model->getTable()->hasErrors()) {
+                        $model->password = md5($data['password_new']);
+                    }
+                } elseif ($data['password_old'] != '' || $data['password_new'] != '' || $data['password_repeat'] != '') {
+                    if ($data['password_old'] == '')
+                        $model->addError('password_old', X3::translate('Поле `{attribute}` не должно быть пустым', array('{attribute}' => $model->fieldName('password_old'))));
+                    if ($data['password_new'] == '')
+                        $model->addError('password_new', X3::translate('Поле `{attribute}` не должно быть пустым', array('{attribute}' => $model->fieldName('password_new'))));
+                    if ($data['password_repeat'] == '')
+                        $model->addError('password_repeat', X3::translate('Поле `{attribute}` не должно быть пустым', array('{attribute}' => $model->fieldName('password_repeat'))));
                 }
             }
-            if (!$user->save()) {
-                if (isset($_POST['User']['phone']))
-                    $hash = '#login-settings';
-                //if(X3::user()->superAdmin){
-                //var_dump($user->getTable()->getErrors());
-                //exit;
-                //}
+            if($model->save()){
+                $this->redirect("/user/$model->id/");
             }
         }
-        if (isset($_POST['User_Settings'])) {
-            $data = $_POST['User_Settings'];
-            //$_POST['User']['date_of_birth'] = mktime(12,0,0,$_POST['User']['date_of_birth'][1],$_POST['User']['date_of_birth'][0],$_POST['User']['date_of_birth'][2]);
-            $profile->getTable()->acquire($data);
-            $profile->mailWarning = (int) isset($data['mailWarning']);
-            $profile->smsWarning = (int) isset($data['smsWarning']);
-            $profile->mailMessages = (int) isset($data['mailMessages']);
-            $profile->smsMessages = (int) isset($data['smsMessages']);
-            $profile->mailForum = (int) isset($data['mailForum']);
-            $profile->smsForum = (int) isset($data['smsForum']);
-            $profile->mailVote = (int) isset($data['mailVote']);
-            $profile->smsVote = (int) isset($data['smsVote']);
-            if (!$profile->save() && X3::user()->isAdmin()) {
-                echo '<h1>Это сообщение видят только администраторы: ' . X3_HTML::errorSummary($profile) . ' ' . X3::db()->getErrors();
-            }
-            if (isset($data['smsTime']))
-                $hash = '#mail-settings';
-        }
-        $address_errors = array();
-        if (isset($_POST['Address'])) {
-            $data = $_POST['Address'];
-            foreach ($data as $adr) {
-                if (isset($adr['delete'])) {
-                    User_Address::deleteByPk($adr['id']);
-                } else if (trim($adr['flat']) != '' && trim($adr['house']) != '') {
-                    if ($adr['id'] > 0) {
-                        $address = User_Address::get(array('user_id' => $id, 'id' => $adr['id']), 1);
-                    } else {
-                        $address = new User_Address;
-                        if (X3::user()->isKsk() && X3::db()->count("SELECT id FROM user_address WHERE user_id=$id AND house='" . trim($adr['house']) . "'") > 0)
-                            continue;
-                        if (X3::user()->isKsk() && (FALSE != ($e = X3::db()->fetch("SELECT u.name AS `name` FROM user_address a INNER JOIN data_user u ON u.id=a.user_id WHERE role='ksk' AND user_id<>$id AND house='" . trim($adr['house']) . "'")))) {
-                            $address_errors[] = strtr(X3::translate("Дом номер {number} зарегистрирован за '{ksk}'"), array('{number}' => $adr['house'], '{ksk}' => $e['name']));
-                            continue;
-                        }
-                    }
-                    $address->user_id = $id;
-                    $address->getTable()->acquire($adr);
-                    if (!$address->save()) {
-                        if (X3::user()->superAdmin)
-                            var_dump($address->getTable()->getErrors());
-                    }
-                }
-            }
-        }
-        if (isset($_POST['Change'])) {
-            $data = $_POST['Change'];
-            if ($data['password_old'] != '' && $data['password_new'] != '' && $data['password_repeat'] != '') {
-                $hash = '#login-settings';
-                if (md5($data['password_old']) != $user->password)
-                    $user->addError('password_old', X3::translate('Пароли не совпадают'));
-                if ($data['password_new'] != $data['password_repeat'])
-                    $user->addError('password_repeat', X3::translate('Пароли не совпадают'));
-                $ers = $user->getTable()->getErrors();
-                if (empty($ers)) {
-                    $user->password = md5($data['password_new']);
-                    if ($user->save()) {
-                        $hash = false;
-                    }
-                }
-            } elseif ($data['password_old'] != '' || $data['password_new'] != '' || $data['password_repeat'] != '') {
-                $hash = '#login-settings';
-                if ($data['password_old'] == '')
-                    $user->addError('password_old', X3::translate('Поле `{attribute}` не должно быть пустым', array('{attribute}' => $user->fieldName('password_old'))));
-                if ($data['password_new'] == '')
-                    $user->addError('password_new', X3::translate('Поле `{attribute}` не должно быть пустым', array('{attribute}' => $user->fieldName('password_new'))));
-                if ($data['password_repeat'] == '')
-                    $user->addError('password_repeat', X3::translate('Поле `{attribute}` не должно быть пустым', array('{attribute}' => $user->fieldName('password_repeat'))));
-            }
-        }
+        X3::app()->datapicker = true;
+        X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/step3.js?1',  X3_ClientScript::POS_END);
 
-        $this->template->render('edit', array('user' => $user, 'profile' => $profile, 'hash' => $hash, 'adrerrors' => $address_errors));
+        $this->template->render('edit', array('model'=>$model));
     }
 
     public function actionBlock() {
@@ -374,8 +303,6 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
     }
 
     public function actionLogin() {
-        $link = "http://vsevmeste.kz/user/add/key/".base64_encode("69734acd718363750f7b08ca7059dc3e18|4");
-        Notify::sendMail('User.Registered', array('link' => $link), 'i@soulman.kz');
         if (!X3::user()->isGuest())
             $this->redirect('/');
         $error = false;
@@ -481,6 +408,8 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
             $this->created_at = time();
             $this->akey = md5(time() . rand(10, 99)) . rand(10, 99);
         }
+        if(!is_numeric($this->date_of_birth))
+            $this->date_of_birth = strtotime ($this->date_of_birth);
     }
 
     public function afterValidate() {

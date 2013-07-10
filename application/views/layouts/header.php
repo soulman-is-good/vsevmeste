@@ -6,7 +6,7 @@
                         <?if(X3::user()->isGuest()):?>
 			<div class="top_link_cont"><a href="/enter.html" class="green_link">Регистрация</a><span>&nbsp;/&nbsp;</span><a href="/enter.html" class="black_link">Вход</a><div class="top_link_dev"></div></div>
                         <?else:?>
-			<div class="top_link_cont"><a href="/user/<?=X3::user()->id?>/" class="green_link"><?=X3::user()->fullname?></a><div class="top_link_dev"></div></div>
+			<div class="top_link_cont"><a href="/user/<?=X3::user()->id?>/" class="green_link"><?=X3::user()->fullname?></a><span>&nbsp;/&nbsp;</span><a href="/user/logout.html" class="black_link">Выход</a><div class="top_link_dev"></div></div>
                         <?endif;?>
 			<div class="search_cont">
 				<div>

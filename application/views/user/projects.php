@@ -17,7 +17,7 @@ else
 <div class="body" style="position: relative">
     <div class="tabs">
         <ul>
-            <li><a href="/user/<?=$user->id?>/projects.html"><?=$labels[0]?></a></li>
+            <li><a href="/user/<?=$user->id?>/"><?=$labels[0]?></a></li>
             <li class="active"><?=$labels[1]?></li>
             <li><a href="/user/<?=$user->id?>/investments.html"><?=$labels[2]?></a></li>
             <?if(X3::user()->id === $user->id):?>
