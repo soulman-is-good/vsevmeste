@@ -81,4 +81,23 @@ $(document).ready(function(){
         if(typeof document.getElementById('Project_full_content') !== 'undefined' && document.getElementById('Project_full_content') !== null) {
             CKEDITOR.replace( 'Project_full_content',{toolbar : 'Custom',width:570});
         }
+        if(typeof $('.slideshow')[0] !== 'undefined'){
+            $('.change_link').each(function(i){
+                $(this).on('click',function(e){
+                    if(!$(this).hasClass('active')){
+                        $('.change_link.active').removeClass('active');
+                        $(this).addClass('active');
+                        var idx = $(this).index();
+                        $('.slideshow').blinds_change(idx);
+                        var div = $('.slider-content').find('li').eq(idx).children('div').clone();
+                        $('.slideshow .slider_text_cont').fadeOut(function(){$(this).remove();});
+                        $('.slideshow').prepend(div.fadeIn());
+
+                    }
+                    return false;
+                });
+            });
+            $('.slideshow').blinds();
+            $('.slideshow').prepend($('.slider-content').find('li').eq(0).children('div').clone());
+        }
 });

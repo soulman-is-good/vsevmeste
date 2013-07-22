@@ -34,6 +34,7 @@ class User extends X3_Module_Table {
         'date_of_birth' => array('integer[11]', 'default' => '0'),
         'lastbeen_at' => array('datetime', 'default' => '0'),
         'created_at' => array('datetime', 'default' => '0'),
+        'ispartner' => array('boolean', 'unsigned', 'default' => '0'),
         'status' => array('integer[1]', 'unsigned', 'default' => '0'),
         //unused
         'password_old' => array('string[6|50]', 'password', 'default' => '', 'unused'),
@@ -83,6 +84,7 @@ class User extends X3_Module_Table {
             'role' => X3::translate('Роль'),
             'lastbeen_at' => X3::translate('Последнее посещение'),
             'date_of_birth' => X3::translate('Дата рождения'),
+            'ispartner' => X3::translate('Партнер'),
         );
     }
 

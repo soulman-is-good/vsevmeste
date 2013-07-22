@@ -16,11 +16,11 @@
 			</div>
 			<div class="clear"></div>
 		</div>
-<?if(count(X3::app()->promo) == 0):?>
+<?if(!X3::app()->promo || !$main):?>
 	<?=  X3_Widget::run('@views:_widgets:menu.php')?>
 <?endif;?>
 	</div>
-<?if(count(X3::app()->promo) > 0):?>
+<?if(X3::app()->promo && $main):?>
 <!-- Слайдер -->
 	<?=  X3_Widget::run('@views:_widgets:promo_slider.php')?>
 <!-- Меню -->

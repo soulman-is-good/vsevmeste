@@ -2,118 +2,51 @@
 
 class Admin extends X3_Module {
     
+    public $menu = array(
+                '/admin/list/module/User'=>array('User','Пользователи','icon-user'),
+                '/admin/list/module/Page'=>array('Page','Текстовые страницы','icon-font'),
+                '/admin/list/module/Notify'=>array('Notify','Шаблоны','icon-envelope'),
+                '/admin/list/module/City'=>array('City','Города','icon-road'),
+                '/admin/list/module/Project'=>array('Project','Проекты','icon-leaf'),
+                '/admin/list/module/SysSettings'=>array('SysSettings','Настройки','icon-cog'),
+            );
+    
     public function beforeAction(){
-        $this->template->layout = null;
+        $this->template->layout = 'admin';
+        $html = '';
+        if($this->controller->action == 'index')
+            $html = '<li class="active"><a href="#" onclick="return false;"><i class="icon-home icon-white"></i> Основная информация</a></li>';
+        else
+            $html = '<li><a href="/admin/"><i class="icon-home icon-black"></i> Основная информация</a></li>';
+        foreach($this->menu as $link=>$menu){
+            if(isset($_GET['module']) && $menu[0] === $_GET['module'])
+                $html .= '<li class="active"><a href="#" onclick="return false;"><i class="'.$menu[2].' icon-white"></i> '.$menu[1].'</a></li>';
+            else
+                $html .= '<li><a href="'.$link.'"><i class="'.$menu[2].' icon-black"></i> '.$menu[1].'</a></li>';
+        }
+        X3::app()->menus = $html;
     }
     
     public function filter() {
         return array(
             'allow'=>array(
-                '*'=>array('add'),
-                'admin'=>array('add','send','links','list','edit')
+                'admin'=>array('index','send','links','list','edit','update','delete','view')
             ),
             'deny'=>array(
-                '*'
+                '*'=>array('*')
             ),
             'handle'=>'redirect:/user/login.html'
         );
-    }    
-    
-    public function actionSend() {
-        if(IS_AJAX && isset($_POST['email'])){
-            $email = $_POST['email'];
-           
-            $user = new User();
-            $user->password = $email . "password";
-            $user->role = 'admin';
-            $user->email = $email;
-            $user->status = 0;
-            if(!$user->save()){
-                echo json_encode(array('status'=>'error','message'=>X3::translate('Введен не верный E-Mail адрес')));
-                exit;
-            }
-            
-            $link = base64_encode($user->akey . "|" . X3::user()->id);
-            if(TRUE === ($msg=Notify::sendMail('welcomeAdmin', array('link'=>$link),$email)))
-                echo json_encode(array('status'=>'ok','message'=>X3::translate('Письмо успешно отправлено')));
-            else
-                echo json_encode(array('status'=>'error','message'=>$msg));
-            exit;
-        }
-        throw new X3_404();
     }
     
-    public function actionDeny() {
-        if(!isset($_GET['key']))
-            throw new X3_404();
-        $key = base64_decode($_GET['key']);
-        $key = explode('|',$key);
-        User::delete(array('akey'=>$key[0]));
-        $this->redirect('/');
-    }
-    
-    public function actionAdd() {
-        if(!isset($_GET['key']))
-            throw new X3_404();
-        $key = base64_decode($_GET['key']);
-        $key = explode('|',$key);
-        if(NULL === ($user = User::get(array('akey'=>$key[0]),1)))
-            throw new X3_404();
-        if(isset($_POST['User'])){
-            $post = $_POST['User'];
-            $user->getTable()->acquire($post);
-            if($user->password == ''){
-                $user->addError('password', X3::translate('Нужно задать пароль'));
-            }
-            if($user->name == ''){
-                $user->addError('name', X3::translate('Введите Ваше имя'));
-            }
-            if($user->surname == ''){
-                $user->addError('surname', X3::translate('Введите Вашу фамилию'));
-            }
-            $user->status = 1;
-            $errors = $user->getTable()->getErrors();
-            if(empty($errors) && $user->save()){
-                Notify::sendMessage('');
-                if(X3::user()->isGuest()){
-                    $u = new UserIdentity($user->email, $post['password']);
-                    if($u->login())
-                        $this->redirect('/');
-                }
-                $this->redirect('/admins/');
-            }
-        }
-        $this->template->render('@views:user:addadmin.php',array('user'=>$user));
-    }
-    
-    
-    /**
-     * Admin tools
-     */
-    
-    public function actionLinks() {
-        if(!IS_AJAX) throw new X3_404();
-        if(!X3_DEBUG && X3::user()->superAdmin){
-            echo json_encode(array(
-                '/admin/list/module/Menu'=>'Меню',
-                '/admin/list/module/Page'=>'Тестовые страницы',
-                '/admin/list/module/Notify'=>'Письма',
-                '/admin/list/module/City'=>'Города',
-                '/admin/list/module/City_Region'=>'Улицы',
-                '/admin/list/module/SysSettings'=>'Настройки',
-            ));
-        }
-        exit;
+    public function actionIndex() {
+        $this->template->render('index');
     }
     
     public function actionList() {
         if(!X3_DEBUG && !X3::user()->superAdmin)
             throw new X3_404();
         $action = strtolower($_GET['module']);
-        $path = X3::app()->getPathFromAlias("@views:admin:sudo:$action.php");
-        if(is_file($path)){
-            $this->template->render("sudo/$action",array('class'=>$class));
-        }
         $class = ucfirst($_GET['module']);
         $module = X3_Module::getInstance($class);
         $scope = $module->getDefaultScope();
@@ -122,12 +55,14 @@ class Admin extends X3_Module {
         $scope['@limit'] = $paginator->limit;
         $scope['@offset'] = $paginator->offset;
         $models = X3_Module_Table::get($scope,0,$class,1);
-        $this->template->render('sudo/list',array('models'=>$models,'module'=>$module,'paginator'=>$paginator,'count'=>$count,'class'=>$class));
+        $path = X3::app()->getPathFromAlias("@views:admin:sudo:$action.php");
+        if(is_file($path)){
+            $this->template->render("sudo/$action",array('models'=>$models,'module'=>$module,'paginator'=>$paginator,'count'=>$count,'class'=>$class));
+        }else
+            $this->template->render('sudo/list',array('models'=>$models,'module'=>$module,'paginator'=>$paginator,'count'=>$count,'class'=>$class));
     }
     
     public function actionView() {
-        if(!X3_DEBUG && !X3::user()->superAdmin)
-            throw new X3_404();
         $action = strtolower($_GET['module']);
         $path = X3::app()->getPathFromAlias("@views:admin:sudo:view:$action.php");
         $class = ucfirst($_GET['module']);
@@ -142,8 +77,6 @@ class Admin extends X3_Module {
     }
     
     public function actionEdit() {
-        if(!X3_DEBUG && !X3::user()->superAdmin)
-            throw new X3_404();
         $action = strtolower($_GET['module']);
         $path = X3::app()->getPathFromAlias("@views:admin:sudo:form:$action.php");
         $class = ucfirst($_GET['module']);
@@ -164,8 +97,6 @@ class Admin extends X3_Module {
     }
     
     public function actionCreate() {
-        if(!X3_DEBUG && !X3::user()->superAdmin)
-            throw new X3_404();
         $action = strtolower($_GET['module']);
         $path = X3::app()->getPathFromAlias("@views:admin:sudo:form:$action.php");
         $class = ucfirst($_GET['module']);
@@ -183,13 +114,25 @@ class Admin extends X3_Module {
     }
     
     public function actionDelete() {
-        if(!X3_DEBUG && !X3::user()->superAdmin)
-            throw new X3_404();
         $class = ucfirst($_GET['module']);
         $id = X3::db()->validateSQL($_GET['id']);
         $pk = X3_Module::getInstance($class)->getTable()->getPK();
         $scope = array("$pk" => $id);
         X3_Module_Table::delete($scope,$class);
+        $this->redirect("/admin/list/module/$class.html");
+    }
+    
+    public function actionUpdate() {
+        $class = ucfirst($_GET['module']);
+        $attr = $_GET['field'];
+        $value = $_GET['value'];
+        $id = X3::db()->validateSQL($_GET['id']);
+        $attr = X3::db()->validateSQL($attr);
+        $value = X3::db()->validateSQL($value);
+        $pk = X3_Module::getInstance($class)->getTable()->getPK();
+        $scope = array("$pk" => $id);
+        $update = array("$attr"=>$value);
+        X3_Module_Table::update($update,$scope,$class);
         $this->redirect("/admin/list/module/$class.html");
     }
 }

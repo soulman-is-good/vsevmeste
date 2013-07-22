@@ -17,12 +17,18 @@ $pk = $module->getTable()->getPK();
                     <div class="inside_block">
                         <div class="right_side" style="float:right;width:250px;text-align: right">
                             <div class="wrapper">
+                                <a href="/admin/update/module/<?=$class?>/id/<?=$model[$pk]?>.html?field=status&value=1" class="btn btn-mini btn-warning">Активироавть</a><br/>
                                 <a href="/admin/edit/module/<?=$class?>/id/<?=$model[$pk]?>.html" class="btn btn-mini">Редактировать</a><br/>
                                 <a href="/admin/delete/module/<?=$class?>/id/<?=$model[$pk]?>.html" class="btn btn-mini btn-danger" onclick="return confirm('Вы уверены?');">Удалить</a>
                             </div>
                         </div>
                         <div class="middle_side" style="width:auto"> 
-                                <a href="/admin/view/module/<?=$class?>/id/<?=$model[$pk]?>.html"><?=isset($model['title'])?$model['title']:(isset($model['name']) && !empty($model['name'])?$model['name']:$model[$pk])?></a>
+                                <a href="/admin/view/module/<?=$class?>/id/<?=$model[$pk]?>.html">
+                                <?=$model['title']?>
+                                </a>
+                            <?if($model['status']==0):?>
+                            <span class="label label-important">Для рассмотрения</span>
+                            <?endif;?>
                         </div>
                         <div class="clear">&nbsp;</div>
                     </div>

@@ -41,7 +41,14 @@ class Starter extends X3_Component {
     }
     
     public function onStartApp($controller,$action) {
-        X3::app()->promo = array();
+        X3::app()->promo = Project::num_rows(array(
+            '@condition' => array(
+                'image' => array('@@' => "image <> '' AND image IS NOT NULL"),
+                'status' => '1'
+            ),
+            '@order' => 'RAND()',
+            '@limit' => '5'
+        ))>0;
         if(!IS_AJAX)
             X3::user()->token = time() . rand(10,100);
         return array($controller,$action);

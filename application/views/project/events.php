@@ -51,7 +51,7 @@
 <div class="body" style="position: relative">
     <div class="tabs">
         <ul>
-            <li><a href="/<?=$model->name?>-project/events.html">Проект</a></li>
+            <li><a href="/<?=$model->name?>-project/">Проект</a></li>
             <li class="active">События</li>
             <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=$model->comments?></i></a></li>
             <?/*<li><a href="/<?=$model->name?>-project/gallery.html">Вложения <i>13</i></a></li>*/?>

@@ -264,6 +264,7 @@ class X3_Form extends X3_Renderer {
         }
         $class = get_class($this->module);
         $_html = '';
+        $scripts = '';
         foreach ($fields as $name => $field){
             if(!isset($this->module->_fields[$name])){
                 X3::log("No such field '$name' in '$class' but there is a label!");
@@ -325,7 +326,7 @@ class X3_Form extends X3_Renderer {
             }
             if(isset($this->defaultScripts[$type]))
                 $this->addScript($name, $this->defaultScripts[$type]);
-            $tmp .= $this->initScript($name);
+            $scripts .= $this->initScript($name);
             $required = $this->requiredLabel;
             if((isset($flds['default']) && ($flds['default']=='NULL' || is_null($flds['default']))) || in_array('null', $flds));
                 $required = '&nbsp;';
@@ -334,6 +335,11 @@ class X3_Form extends X3_Renderer {
             $tmp = str_replace("%label", $field, $tmp);
             $tmp = str_replace("%required", $required, $tmp);
             $_html .= $tmp;
+        }
+        if($scripts!=''){
+            $scripts = preg_replace("#<script[^>]*>#", "", $scripts);
+            $scripts = preg_replace("#</script>#", "", $scripts);
+            X3::clientScript()->registerScript("X3Form", $scripts, X3_ClientScript::POS_END);
         }
         return $_html;
     }

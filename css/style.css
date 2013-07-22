@@ -351,9 +351,9 @@ p {
 
 .slider_left_fade {
     position: absolute;
-    left: 0px;
+    left: 192px;
     top: 0px;
-    z-index: -1;
+    z-index: 3;
     width: 450px;
     height: 400px;
     background: url(../images/slider_left_fade.png) no-repeat;
@@ -361,15 +361,20 @@ p {
 
 .slider_right_fade {
     position: absolute;
-    right: 0px;
+    right: 20px;
     top: 0px;
+    z-index: 3;
     width: 50px;
     height: 400px;
     background: url(../images/slider_right_fade.png) no-repeat;
 }
 
-.slider_text_cont {
+.slideshow .slider_text_cont {
     width: 450px;
+    position: absolute;
+    top:40px;
+    left:240px;
+    z-index: 3;
 }
 
 .slider_title {
@@ -422,13 +427,22 @@ p {
         color-stop(0%,#92d839), color-stop(100%,#58b80a));
 }
 
+.slider-content {
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    left:-9999px;
+}
+
 .slider_pages {
     position: absolute;
     bottom: 40px;
-    left: 50px;
+    left: 240px;
+    z-index: 4;
 }
 
-.slider_page_active {
+.active .slider_page {
     float: left;
     margin-right: 10px;
     width: 15px;
