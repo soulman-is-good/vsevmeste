@@ -45,7 +45,6 @@ String.prototype.repeat = function( num ){return new Array( num + 1 ).join( this
 <script type="text/javascript" src="/js/admin.js"></script>
     <script type="text/javascript" src="/js/ckeditor.4/ckeditor.js"></script>
     <?include("js/sfbrowser/connectors/php/init.php");?>
-
 <script type="text/javascript" src="/js/script.js?<?=  filemtime('js/script.js')?>"></script>
 </body>
 </html>
