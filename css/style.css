@@ -182,6 +182,21 @@ body {
     background: #f1f2f0;
 }
 
+.partner-mark {
+    font-family: JunegullRegular, Arial black;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: #FFF;
+    display: inline-block;
+    width: 32px;
+    height:32px;
+    font-size: 2em;
+    text-align: center;
+    border: 5px solid #2af;
+    border-radius: 32px;
+    background: #00F;
+}
+
 h1 {
     margin: 0px;
     font-family: JunegullRegular, Arial black;

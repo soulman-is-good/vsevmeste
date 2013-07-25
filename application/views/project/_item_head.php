@@ -1,6 +1,9 @@
 <div class="item-head">
-    <div class="item-head-body">
-        <img class="logo" src="/uploads/Project/<?=$model->image?>" alt="" />
+    <div class="item-head-body"  style="position: relative">
+        <?if($model->user_id()->ispartner):?>
+        <span class="partner-mark" style="position: absolute;left:0;top:-16px">П</span>
+        <?endif;?>
+        <img class="logo" src="/uploads/Project/220x220xw/<?=$model->image?>" alt="" />
         <div class="item-desc">
             <h1><?=X3_Html::encode($model->title)?></h1>
             <p><?=X3_Html::encode($model->short_content)?></p>

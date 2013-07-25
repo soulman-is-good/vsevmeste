@@ -89,7 +89,15 @@ class Project extends X3_Module_Table {
         $parts .= "<b>$d</b> " . X3_String::create($d)->numeral($d, array('день остался','дня осталось','дней осталось'));
         return $parts;
     }
-        
+    
+    private function nostress() {
+        $last = (float)X3::user()->last_query;
+        if(microtime(true) - $last < 1) {
+            throw new X3_Exception('Слишком частые запросы',500);
+        }
+        X3::user()->last_query = microtime(true);
+    }
+
     public function actionIndex() {
         $id = X3::user()->id;
         $q = array(
@@ -140,8 +148,34 @@ class Project extends X3_Module_Table {
         $cats = Category::get();
         $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator,'cats'=>$cats,'category'=>$category,'sort'=>$sort));
     }
+
+    public function actionSearch() {
+        $id = X3::user()->id;
+        $this->nostress();
+        $q = array(
+            '@condition'=>array('project.status'=>'1'),
+            '@with'=>array('user_id','city_id'),
+            '@order'=>'created_at DESC'
+        );
+        if(isset($_GET['q'])) {
+            $w = X3_Html::encode($_GET['q']);
+            X3::user()->psearch = $w;
+        }
+        if(X3::user()->psearch!=''){
+            $w = X3::user()->psearch;
+            $w = X3::db()->validateSQL($w);
+            $q['@condition'][] = array(array('project.title' => array('LIKE'=>"'%$w%'")),array('project.full_content' => array('LIKE'=>"'%$w%'")));
+        }
+        $count = self::num_rows($q);
+        $paginator = new Paginator(__CLASS__, $count);
+        $q['@limit'] = $paginator->limit;
+        $q['@offset'] = $paginator->offset;
+        $models = self::get($q);
+        $this->template->render('search', array('models' => $models, 'count' => $count, 'paginator' => $paginator));
+    }
     
     public function actionShow() {
+        
         if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
             if(!isset($_COOKIE["clicked$model->id"])){
                 $model->scenario = 'click';
@@ -152,6 +186,9 @@ class Project extends X3_Module_Table {
             }
             $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
             X3::clientScript()->registerScriptFile('//yandex.st/share/share.js',  X3_ClientScript::POS_END);
+            X3::app()->og_title = X3::app()->name . " - " . $model->title;
+            X3::app()->og_url = X3::app()->baseUrl . "/$model->name-project.html";
+            X3::app()->og_image = X3::app()->baseUrl . "/uploads/Project/220x220xw/$model->image";
             $this->template->render('show', array('model' => $model,'interests'=>$interests));
         }else{
             throw new X3_404();
@@ -181,6 +218,24 @@ class Project extends X3_Module_Table {
         
     public function actionEvents() {
         if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
+            if(isset($_POST['eventtext'],$_POST['token'])){
+                require 'application/extensions/wikitexttohtml.php';
+                $text = $_POST['eventtext'];
+                $text = stripslashes($text);
+                if($text!='' && X3::user()->etoken === $_POST['token']){
+                    $wiki =  WikiTextToHTML::convertWikiTextToHTML(explode("\n",$text));
+                    $event = new Project_Event();
+                    $event->content = implode("\n",$wiki);
+                    $event->project_id = $model->id;
+                    $event->user_id = X3::user()->id;
+                    $event->created_at = time();
+                    if($event->save()){
+                        $this->controller->refresh();
+                        X3::user()->etoken = null;
+                    }
+                }
+            }
+            X3::user()->etoken = rand(10,100) . md5(time()) . rand(10,100);
             $limit = 10;
             $q = array('@condition'=>array('project_id'=>$model->id),'@limit'=>$limit,'@with'=>array('project_id','user_id'),'@order'=>'`created_at` DESC');
             if(IS_AJAX){
@@ -280,7 +335,7 @@ class Project extends X3_Module_Table {
             $model->status = 0;
             if($model->save()){
                 $_interests = $_POST['Project_Interest'];
-                if(count($_interests)>1 || ($_interests[0]['sum']>0 || trim($_interests[0]['title'])!='' || trim($_interests[0]['notes'],"\t\r\n ")!='')){
+                if(!empty($_interests)){
                     Project_Interest::delete(array('project_id'=>$model->id));
                     $interests = array();
                     foreach($_interests as $idata) {
@@ -288,6 +343,7 @@ class Project extends X3_Module_Table {
                         $interest->getTable()->acquire($idata);
                         $interest->project_id = $model->id;
                         $interest->sum = abs($interest->sum);
+                        $interest->created_at = time();
                         if($interest->id>0)
                             $interest->getTable()->setIsNewRecord(false);
                         $hasErrors = $hasErrors || $interest->save();

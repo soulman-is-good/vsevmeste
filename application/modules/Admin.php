@@ -30,7 +30,7 @@ class Admin extends X3_Module {
     public function filter() {
         return array(
             'allow'=>array(
-                'admin'=>array('index','send','links','list','edit','update','delete','view')
+                'admin'=>array('index','send','links','list','edit','update','delete','view','create')
             ),
             'deny'=>array(
                 '*'=>array('*')

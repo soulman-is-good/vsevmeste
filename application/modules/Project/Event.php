@@ -3,9 +3,8 @@
  * Description of Interest
  * @property integer $id primary key
  * @property integer $project_id Project reference
- * @property integer $limit Interest limit
- * @property integer $limit Interest limit
- * @property integer $deliver_at unix timestamp 
+ * @property integer $user_id Interest limit
+ * @property integer $content Interest limit
  * @property integer $created_at unix timestamp 
  * @author Soul_man
  */

@@ -100,6 +100,24 @@
                 }else:?>
                 <?=X3::translate('Событий нет')?>.
                 <?endif;?>
+                <?if($model->user_id == X3::user()->id):?>
+                <?php
+                $form = new Form('Event');
+                echo $form->start();
+                echo X3_Html::form_tag('input', array('type'=>'hidden','name'=>'token','value'=>X3::user()->etoken));
+                ?>
+                <div class="hr">&nbsp;</div>
+                <p>Добавьте событие:</p>
+                <div class="form">
+                    <div class="field">
+                        <textarea name="eventtext" id="eventtext" style="width:550px;height:96px"></textarea>
+                    </div>
+                    <div class="field">
+                        <button type="submit">Добавить</button>
+                    </div>
+                </div>
+                <?=$form->end();?>
+                <?endif;?>
             </div>
         </div>
     </div>

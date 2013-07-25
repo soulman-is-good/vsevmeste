@@ -21,7 +21,7 @@ class Project_Interest extends X3_Module_Table {
       'title'=>array('string[128]'),
       'notes'=>array('string[255]','default'=>'NULL'),
       'sum'=>array('integer[10]'),
-      'left'=>array('integer[10]'),
+      'bought'=>array('integer[10]','default'=>'0'),
       'limit'=>array('integer[10]'),
       'deliver_at'=>array('datetime'),
       'created_at'=>array('datetime')
@@ -33,6 +33,7 @@ class Project_Interest extends X3_Module_Table {
             'notes' => 'Заметки, способ доставки',
             'sum' => 'Цена',
             'limit' => 'Ограничение на количество',
+            'bought' => 'Куплено',
             'deliver_at' => 'Доставка до',
         );
     }

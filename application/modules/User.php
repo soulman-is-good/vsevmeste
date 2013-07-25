@@ -44,6 +44,10 @@ class User extends X3_Module_Table {
         'iagree' => array('boolean', 'default' => '0', 'unused'),
     );
 
+    public function moduleTitle() {
+        return 'Пользователи';
+    }
+    
     public function onValidate($attr, $pass) {
         $pass = false;
         if (isset($this->_fields[$attr]) && in_array('xss', $this->_fields[$attr]) && trim($this->$name) != '') {
@@ -440,6 +444,8 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
         if (strpos($tables, $this->tableName) !== false) {
             $model = $this->table->select('*')->where($condition)->asObject(true);
             Uploads::cleanUp($model, $model->image);
+            Project_Event::delete(array('user_id'=>$model->id));
+            Project::delete(array('user_id'=>$model->id));
         }
         parent::onDelete($tables, $condition);
     }
