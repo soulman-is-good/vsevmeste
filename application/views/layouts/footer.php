@@ -58,7 +58,7 @@
 			<div style="display: inline-block; margin-right: 40px;"><a href="#">Условия партнерства</a></div>
 			<div style="display: inline-block; margin-right: 40px;"><a href="#">Написать нам</a></div>
 			<div class="madeby_cont">
-				<a href="#" class="madeby_link"><div class="madeby"><div class="madeby_text">Шаблон<br />интернет-магазина</div><div class="madeby_pic"></div></div></a>
+				<a href="#" class="madeby_link"><div class="madeby"><div class="madeby_text">Разработка<br/> сайта</div><div class="madeby_pic"></div></div></a>
 			</div>	
 		</div>
 	</div>

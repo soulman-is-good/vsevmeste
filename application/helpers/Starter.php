@@ -46,8 +46,6 @@ class Starter extends X3_Component {
                 'image' => array('@@' => "image <> '' AND image IS NOT NULL"),
                 'status' => '1'
             ),
-            '@order' => 'RAND()',
-            '@limit' => '5'
         ))>0;
         X3::app()->og_title = X3::app()->name;
         X3::app()->og_url = X3::app()->baseUrl;

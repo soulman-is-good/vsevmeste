@@ -12,7 +12,7 @@
 				<div>
                                     <form action="/project/search.html" method="get">
                                         <input name="q" type="text" placeholder="Поиск проектов" value="<?=X3::user()->psearch!=''?X3::user()->psearch:X3::translate('Поиск проектов');?>" class="search_field" />
-					<a href="#" title="<?=X3::translate('Искать')?>"><div class="search_button"><img src="/images/search_button.png" alt="" /></div></a>
+					<a href="#" onclick="$(this).parent().submit();return false;" title="<?=X3::translate('Искать')?>"><div class="search_button"><img src="/images/search_button.png" alt="" /></div></a>
                                     </form>
 				</div>
 			</div>

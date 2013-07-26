@@ -49,7 +49,6 @@ $form = new Form($model);
                 <div class="field">
                     <?=$form->select('category_id')?>
                 </div>
-                <?/*
                 <div class="field">
                     <div><strong>Ссылки на проект на других источниках</strong></div>
                     <div><?=$form->input('links[]',array('placeholder'=>'Vkontakte'))?></div>
@@ -58,7 +57,6 @@ $form = new Form($model);
                     <div><?=$form->input('links[]',array('placeholder'=>'Мой Мир'))?></div>
                     <div><?=$form->input('links[]',array('placeholder'=>'YouTube'))?></div>
                 </div>
-                 */?>
                 <div class="field">
                     <button type="submit">Далее</button>
                 </div>

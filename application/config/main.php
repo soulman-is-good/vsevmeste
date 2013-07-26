@@ -16,13 +16,13 @@ return array(
         'profile'=>array(
             'class'=>'Profile',
             'time'=>microtime(true),
-            'enable'=>true
+            'enable'=>false
         ),
         'db'=>array(
             'host'=>'localhost',
-            'user'=>'root',
-            'password'=>'NjkmrjDgthtl',
-            'database'=>'vsevmeste'
+            'user'=>'c_448_vsevmeste',
+            'password'=>'RVjKxnNXtlHg',
+            'database'=>'c_448_vsevmeste'
         ),
         'mongo'=>array(
             'class'=>'X3_MongoConnection',

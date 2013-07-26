@@ -55,7 +55,7 @@ class Site extends X3_Module {
         );
     }
     public function actionIndex() {      
-        $this->template->render('index');
+        $this->template->render('index',array('main'=>true));
     }
     
     public function actionLimit() {
