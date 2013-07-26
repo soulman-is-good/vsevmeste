@@ -1,0 +1,405 @@
+[05.06.2013 16:20:45] SHOW TABLES
+[05.06.2013 16:20:45] SHOW COLUMNS FROM `project`
+[05.06.2013 16:20:45] SHOW COLUMNS FROM `data_user`
+[05.06.2013 16:20:45] SELECT `project`.`id`, `project`.`user_id`, `project`.`city_id`, `project`.`category_id`, `project`.`gallery_id`, `project`.`title`, `project`.`current_sum`, `project`.`needed_sum`, `project`.`short_content`, `project`.`full_content`, `project`.`status`, `project`.`created_at`, `project`.`end_at` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 16:20:45] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 16:20:45] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:45:14] SHOW TABLES
+[05.06.2013 20:45:14] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:45:14] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 20:49:45] SHOW TABLES
+[05.06.2013 20:49:45] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 20:49:45] SELECT value FROM `sys_languages`  WHERE value='Страница не найдена.'
+[05.06.2013 20:49:59] SHOW TABLES
+[05.06.2013 20:49:59] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:49:59] ALTER TABLE `data_user` DROP `kskname` 
+[05.06.2013 20:50:05] ALTER TABLE `data_user` DROP `ksksurname` 
+[05.06.2013 20:50:06] ALTER TABLE `data_user` DROP `duty` 
+[05.06.2013 20:50:07] ALTER TABLE `data_user` DROP `gender` 
+[05.06.2013 20:50:07] ALTER TABLE `data_user` DROP `phone` 
+[05.06.2013 20:50:07] ALTER TABLE `data_user` DROP `rank` 
+[05.06.2013 20:50:08] SELECT data_user.* FROM `data_user`  WHERE `akey` = 'Rǫ'
+[05.06.2013 20:50:08] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 20:50:08] SELECT value FROM `sys_languages`  WHERE value='Страница не найдена.'
+[05.06.2013 20:50:52] SHOW TABLES
+[05.06.2013 20:50:52] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 20:50:52] SELECT value FROM `sys_languages`  WHERE value='Страница не найдена.'
+[05.06.2013 20:51:41] SHOW TABLES
+[05.06.2013 20:51:41] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:51:41] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 20:51:41] SELECT data_user.* FROM `data_user`  WHERE 1 LIMIT 20
+[05.06.2013 20:51:41] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:51:41] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:51:44] SHOW TABLES
+[05.06.2013 20:51:44] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:51:45] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Я ознакомлен(а) и соглас(ен/на) с [правилами] сайта'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Аватарка'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Имя'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Фамилия'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Должность'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Пароль'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Старый пароль'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Новый пароль'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Повторите новый пароль'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Пол'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Роль'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Последнее посещение'
+[05.06.2013 20:51:45] SELECT value FROM `sys_languages`  WHERE value='Дата рождения'
+[05.06.2013 20:51:45] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:51:45] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:52:41] SHOW TABLES
+[05.06.2013 20:52:41] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:52:41] SELECT COUNT(0) AS `cnt` FROM `data_user` WHERE `email`='soulman.is.good@gmail.com' 
+[05.06.2013 20:52:41] INSERT INTO `data_user` (`id`, `image`, `name`, `surname`, `email`, `password`, `role`, `akey`, `date_of_birth`, `lastbeen_at`, `created_at`, `status`) VALUES (NULL, NULL, 'Максим', 'Савин', 'soulman.is.good@gmail.com', '853a4143ddb053f24ebcc1fe276b9326', 'admin', 'fe4738b161c53e8b07c4e4ad99cd0b1e34', '11.03.1986', '05.06.2013', '1370443961', '0')
+[05.06.2013 20:52:42] SHOW TABLES
+[05.06.2013 20:52:42] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:52:42] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 20:52:42] SELECT data_user.* FROM `data_user`  WHERE 1 LIMIT 20
+[05.06.2013 20:52:42] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:52:42] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:52:51] SHOW TABLES
+[05.06.2013 20:52:51] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:52:51] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Я ознакомлен(а) и соглас(ен/на) с [правилами] сайта'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Аватарка'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Имя'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Фамилия'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Должность'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Пароль'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Старый пароль'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Новый пароль'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Повторите новый пароль'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Пол'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Роль'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Последнее посещение'
+[05.06.2013 20:52:51] SELECT value FROM `sys_languages`  WHERE value='Дата рождения'
+[05.06.2013 20:52:51] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:52:51] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:53:28] SHOW TABLES
+[05.06.2013 20:53:28] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:53:28] SELECT COUNT(0) AS `cnt` FROM `data_user` WHERE `email`='eokz@bk.ru' 
+[05.06.2013 20:53:28] INSERT INTO `data_user` (`id`, `image`, `name`, `surname`, `email`, `password`, `role`, `akey`, `date_of_birth`, `lastbeen_at`, `created_at`, `status`) VALUES (NULL, NULL, 'Андрей', 'Никифоров', 'eokz@bk.ru', '44969da35d915da6920d9b8c8f6dc4df', 'admin', '47a8f233eafd2712833e9c1821ff335329', '05.06.1988', '05.06.2013', '1370444008', '0')
+[05.06.2013 20:53:28] SHOW TABLES
+[05.06.2013 20:53:28] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:53:28] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 20:53:28] SELECT data_user.* FROM `data_user`  WHERE 1 LIMIT 20
+[05.06.2013 20:53:28] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:53:28] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:53:39] SHOW TABLES
+[05.06.2013 20:53:39] SHOW COLUMNS FROM `project`
+[05.06.2013 20:53:39] SELECT * FROM `project`  WHERE 1
+[05.06.2013 20:53:39] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 20:53:39] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:53:39] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:53:41] SHOW TABLES
+[05.06.2013 20:53:41] SHOW COLUMNS FROM `project`
+[05.06.2013 20:53:41] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Создатель'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Создатель', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Город'
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Категория проекта'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Категория проекта', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Превью'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Превью', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Название'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Название', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Описание проекта'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Описание проекта', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Краткое описание проекта'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Краткое описание проекта', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Вложенная сумма'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Вложенная сумма', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Нужная сумма'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Нужная сумма', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Дата создания'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Дата создания', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Дата окончания'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Дата окончания', 'Прочие')
+[05.06.2013 20:53:41] SELECT value FROM `sys_languages`  WHERE value='Опубликован'
+[05.06.2013 20:53:41] INSERT INTO `sys_languages` (`id`, `value`, `group`) VALUES (NULL, 'Опубликован', 'Прочие')
+[05.06.2013 20:53:41] SHOW COLUMNS FROM `data_user`
+[05.06.2013 20:53:41] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 20:53:41] SHOW COLUMNS FROM `data_city`
+[05.06.2013 20:53:41] SELECT * FROM `data_city`  WHERE 1
+[05.06.2013 20:53:47] SHOW TABLES
+[05.06.2013 20:53:47] SHOW COLUMNS FROM `project`
+[05.06.2013 20:53:47] SELECT * FROM `project`  WHERE 1
+[05.06.2013 20:53:47] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 20:53:47] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:53:47] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:54:36] SHOW TABLES
+[05.06.2013 20:54:36] SHOW COLUMNS FROM `project`
+[05.06.2013 20:54:36] SELECT * FROM `project`  WHERE 1
+[05.06.2013 20:54:36] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 20:54:36] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:54:36] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:54:41] SHOW TABLES
+[05.06.2013 20:54:41] SHOW COLUMNS FROM `project`
+[05.06.2013 20:54:41] SELECT * FROM `project`  WHERE 1
+[05.06.2013 20:54:41] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 20:54:41] SHOW COLUMNS FROM `sys_settings`
+[05.06.2013 20:54:41] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[05.06.2013 20:54:55] SHOW TABLES
+[05.06.2013 20:54:55] SHOW COLUMNS FROM `project`
+[05.06.2013 20:54:55] SELECT * FROM `project`  WHERE 1
+[05.06.2013 20:54:55] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 21:00:15] SHOW TABLES
+[05.06.2013 21:00:15] SHOW COLUMNS FROM `project`
+[05.06.2013 21:00:15] SELECT * FROM `project`  WHERE 1
+[05.06.2013 21:00:15] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 21:00:21] SHOW TABLES
+[05.06.2013 21:00:21] CREATE TABLE  `project_category` (`id` INT(10) UNSIGNED NOT NULL  AUTO_INCREMENT PRIMARY KEY, `title` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL   , `weight` INT(11) NOT NULL DEFAULT '0'  , `status` TINYINT(1) NOT NULL DEFAULT '1'  )
+[05.06.2013 21:00:24] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:00:24] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight
+[05.06.2013 21:00:24] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:00:27] SHOW TABLES
+[05.06.2013 21:00:27] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:00:56] SHOW TABLES
+[05.06.2013 21:00:56] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:00:56] INSERT INTO `project_category` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Искусство', '0', '1')
+[05.06.2013 21:00:56] SHOW TABLES
+[05.06.2013 21:00:56] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:00:56] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight
+[05.06.2013 21:00:56] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:00:57] SHOW TABLES
+[05.06.2013 21:00:57] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:28] SHOW TABLES
+[05.06.2013 21:01:28] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:28] INSERT INTO `project_category` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Музыка', '0', '1')
+[05.06.2013 21:01:28] SHOW TABLES
+[05.06.2013 21:01:29] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:29] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight
+[05.06.2013 21:01:29] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:01:30] SHOW TABLES
+[05.06.2013 21:01:30] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:44] SHOW TABLES
+[05.06.2013 21:01:44] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:44] INSERT INTO `project_category` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Видео', '0', '1')
+[05.06.2013 21:01:44] SHOW TABLES
+[05.06.2013 21:01:44] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:44] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight
+[05.06.2013 21:01:44] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:01:45] SHOW TABLES
+[05.06.2013 21:01:45] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:50] SHOW TABLES
+[05.06.2013 21:01:50] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:50] INSERT INTO `project_category` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Мода', '0', '1')
+[05.06.2013 21:01:50] SHOW TABLES
+[05.06.2013 21:01:50] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:01:50] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight
+[05.06.2013 21:01:50] SELECT project_category.* FROM `project_category`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:01:57] SHOW TABLES
+[05.06.2013 21:01:57] SHOW COLUMNS FROM `project`
+[05.06.2013 21:01:57] SELECT * FROM `project`  WHERE 1
+[05.06.2013 21:01:57] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 21:01:59] SHOW TABLES
+[05.06.2013 21:01:59] SHOW COLUMNS FROM `project`
+[05.06.2013 21:01:59] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Создатель'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Город'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Категория проекта'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Превью'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Название'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Описание проекта'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Краткое описание проекта'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Вложенная сумма'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Нужная сумма'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Дата создания'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Дата окончания'
+[05.06.2013 21:02:00] SELECT value FROM `sys_languages`  WHERE value='Опубликован'
+[05.06.2013 21:02:00] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:02:00] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 21:02:00] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:02:00] SELECT * FROM `data_city`  WHERE 1
+[05.06.2013 21:02:00] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:02:00] SELECT * FROM `project_category`  WHERE 1
+[05.06.2013 21:02:38] SHOW TABLES
+[05.06.2013 21:02:38] SHOW COLUMNS FROM `project`
+[05.06.2013 21:02:38] ALTER TABLE `project` DROP `gallery_id` 
+[05.06.2013 21:02:38] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Создатель'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Город'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Категория проекта'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Превью'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Название'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Описание проекта'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Краткое описание проекта'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Вложенная сумма'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Нужная сумма'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Дата создания'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Дата окончания'
+[05.06.2013 21:02:38] SELECT value FROM `sys_languages`  WHERE value='Опубликован'
+[05.06.2013 21:02:38] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:02:38] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 21:02:38] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:02:38] SELECT * FROM `data_city`  WHERE 1
+[05.06.2013 21:02:38] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:02:38] SELECT * FROM `project_category`  WHERE 1
+[05.06.2013 21:02:54] SHOW TABLES
+[05.06.2013 21:02:54] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:04] SHOW TABLES
+[05.06.2013 21:03:04] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:04] INSERT INTO `data_city` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Алматы', '0', '1')
+[05.06.2013 21:03:05] SHOW TABLES
+[05.06.2013 21:03:05] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:05] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight
+[05.06.2013 21:03:05] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:03:06] SHOW TABLES
+[05.06.2013 21:03:06] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:10] SHOW TABLES
+[05.06.2013 21:03:10] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:10] INSERT INTO `data_city` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Астана', '0', '1')
+[05.06.2013 21:03:10] SHOW TABLES
+[05.06.2013 21:03:10] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:10] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight
+[05.06.2013 21:03:10] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:03:11] SHOW TABLES
+[05.06.2013 21:03:11] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:15] SHOW TABLES
+[05.06.2013 21:03:15] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:15] INSERT INTO `data_city` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Караганда', '0', '1')
+[05.06.2013 21:03:15] SHOW TABLES
+[05.06.2013 21:03:15] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:15] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight
+[05.06.2013 21:03:15] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:03:19] SHOW TABLES
+[05.06.2013 21:03:19] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:23] SHOW TABLES
+[05.06.2013 21:03:23] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:23] INSERT INTO `data_city` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Семей', '0', '1')
+[05.06.2013 21:03:23] SHOW TABLES
+[05.06.2013 21:03:23] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:23] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight
+[05.06.2013 21:03:23] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:03:27] SHOW TABLES
+[05.06.2013 21:03:27] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:33] SHOW TABLES
+[05.06.2013 21:03:33] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:33] INSERT INTO `data_city` (`id`, `title`, `weight`, `status`) VALUES (NULL, 'Ускаман', '0', '1')
+[05.06.2013 21:03:33] SHOW TABLES
+[05.06.2013 21:03:33] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:33] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight
+[05.06.2013 21:03:33] SELECT data_city.* FROM `data_city`  WHERE 1 ORDER BY weight LIMIT 20
+[05.06.2013 21:03:43] SHOW TABLES
+[05.06.2013 21:03:43] SHOW COLUMNS FROM `project`
+[05.06.2013 21:03:43] ALTER TABLE `project` ADD `gallery_id` INT(10) UNSIGNED NOT NULL   
+[05.06.2013 21:03:44] ALTER TABLE `project` ADD `gallery_id` INT(10) UNSIGNED NOT NULL   
+[05.06.2013 21:03:47] SHOW TABLES
+[05.06.2013 21:03:47] SHOW COLUMNS FROM `project`
+[05.06.2013 21:03:47] ALTER TABLE `project` ADD INDEX (`gallery_id`) 
+[05.06.2013 21:03:48] ALTER TABLE `project` ADD INDEX (`gallery_id`) 
+[05.06.2013 21:03:48] SELECT * FROM `project`  WHERE 1
+[05.06.2013 21:03:48] ALTER TABLE `project` ADD INDEX (`gallery_id`) 
+[05.06.2013 21:03:48] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 21:03:50] SHOW TABLES
+[05.06.2013 21:03:50] SHOW COLUMNS FROM `project`
+[05.06.2013 21:03:50] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Создатель'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Город'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Категория проекта'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Превью'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Название'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Описание проекта'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Краткое описание проекта'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Вложенная сумма'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Нужная сумма'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Дата создания'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Дата окончания'
+[05.06.2013 21:03:50] SELECT value FROM `sys_languages`  WHERE value='Опубликован'
+[05.06.2013 21:03:50] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:03:50] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 21:03:50] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:50] SELECT * FROM `data_city`  WHERE 1
+[05.06.2013 21:03:50] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:03:50] SELECT * FROM `project_category`  WHERE 1
+[05.06.2013 21:03:56] SHOW TABLES
+[05.06.2013 21:03:56] SHOW COLUMNS FROM `project`
+[05.06.2013 21:03:56] ALTER TABLE `project` DROP `gallery_id` 
+[05.06.2013 21:03:56] SHOW COLUMNS FROM `sys_languages`
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Создатель'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Город'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Категория проекта'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Превью'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Название'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Описание проекта'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Краткое описание проекта'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Вложенная сумма'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Нужная сумма'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Дата создания'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Дата окончания'
+[05.06.2013 21:03:56] SELECT value FROM `sys_languages`  WHERE value='Опубликован'
+[05.06.2013 21:03:56] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:03:56] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 21:03:56] SHOW COLUMNS FROM `data_city`
+[05.06.2013 21:03:56] SELECT * FROM `data_city`  WHERE 1
+[05.06.2013 21:03:56] SHOW COLUMNS FROM `project_category`
+[05.06.2013 21:03:56] SELECT * FROM `project_category`  WHERE 1
+[05.06.2013 21:07:12] SHOW TABLES
+[05.06.2013 21:07:12] SHOW COLUMNS FROM `project`
+[05.06.2013 21:07:48] SHOW TABLES
+[05.06.2013 21:07:48] SHOW COLUMNS FROM `project`
+[05.06.2013 21:07:48] INSERT INTO `project` (`id`, `user_id`, `city_id`, `category_id`, `title`, `current_sum`, `needed_sum`, `short_content`, `full_content`, `status`, `created_at`, `end_at`) VALUES (NULL, '1', '1', '1', 'В зените славы', '0', '150000000', 'Быть знаменитым, кто об этом не мечтал? \r\nНо не каждому это по силам.\r\nНаш проект создается как раз для того чтобы помочь начинающим обрести славй и стать всемирно известными!', 'Хочешь ли ты стать знаменитым?\r\nВЛИВАЙСЯ!!!', '1', '1370368800', '1401991199')
+[05.06.2013 21:07:48] SHOW TABLES
+[05.06.2013 21:07:48] SHOW COLUMNS FROM `project`
+[05.06.2013 21:07:48] SELECT * FROM `project`  WHERE 1
+[05.06.2013 21:07:48] SELECT project.* FROM `project`  WHERE 1 LIMIT 20
+[05.06.2013 21:07:58] SHOW TABLES
+[05.06.2013 21:07:58] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:07:58] SELECT * FROM `data_user`  WHERE 1
+[05.06.2013 21:09:07] SHOW TABLES
+[05.06.2013 21:09:07] SHOW COLUMNS FROM `project`
+[05.06.2013 21:09:07] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:09:07] SELECT `project`.`id`, `project`.`user_id`, `project`.`city_id`, `project`.`category_id`, `project`.`title`, `project`.`current_sum`, `project`.`needed_sum`, `project`.`short_content`, `project`.`full_content`, `project`.`status`, `project`.`created_at`, `project`.`end_at` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:16:08] SHOW TABLES
+[05.06.2013 21:16:08] SHOW COLUMNS FROM `project`
+[05.06.2013 21:16:08] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:16:08] SELECT `project`.`id`, `project`.`user_id`, `project`.`city_id`, `project`.`category_id`, `project`.`title`, `project`.`current_sum`, `project`.`needed_sum`, `project`.`short_content`, `project`.`full_content`, `project`.`status`, `project`.`created_at`, `project`.`end_at`, Array, `data_user`.* FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:16:31] SHOW TABLES
+[05.06.2013 21:16:31] SHOW COLUMNS FROM `project`
+[05.06.2013 21:16:31] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:16:31] SELECT `project`.`id`, `project`.`user_id`, `project`.`city_id`, `project`.`category_id`, `project`.`title`, `project`.`current_sum`, `project`.`needed_sum`, `project`.`short_content`, `project`.`full_content`, `project`.`status`, `project`.`created_at`, `project`.`end_at`, Array, `data_user`.* FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:16:58] SHOW TABLES
+[05.06.2013 21:16:58] SHOW COLUMNS FROM `project`
+[05.06.2013 21:16:58] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:16:58] SELECT `project`.`id`, `project`.`user_id`, `project`.`city_id`, `project`.`category_id`, `project`.`title`, `project`.`current_sum`, `project`.`needed_sum`, `project`.`short_content`, `project`.`full_content`, `project`.`status`, `project`.`created_at`, `project`.`end_at`, Array, `data_user`.* FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:19:13] SHOW TABLES
+[05.06.2013 21:19:13] SHOW COLUMNS FROM `project`
+[05.06.2013 21:19:13] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:19:13] SELECT project.*, `data_user`.* FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:21:53] SHOW TABLES
+[05.06.2013 21:21:53] SHOW COLUMNS FROM `project`
+[05.06.2013 21:21:53] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:21:53] SELECT project.*, `data_user`.* FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:25:21] SHOW TABLES
+[05.06.2013 21:25:21] SHOW COLUMNS FROM `project`
+[05.06.2013 21:25:21] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:25:21] SELECT project.*, `data_user`.`id` AS `data_user_id`, `data_user`.`image` AS `data_user_image`, `data_user`.`name` AS `data_user_name`, `data_user`.`surname` AS `data_user_surname`, `data_user`.`email` AS `data_user_email`, `data_user`.`password` AS `data_user_password`, `data_user`.`role` AS `data_user_role`, `data_user`.`akey` AS `data_user_akey`, `data_user`.`date_of_birth` AS `data_user_date_of_birth`, `data_user`.`lastbeen_at` AS `data_user_lastbeen_at`, `data_user`.`created_at` AS `data_user_created_at`, `data_user`.`status` AS `data_user_status`, `data_user`.`password_old` AS `data_user_password_old`, `data_user`.`password_new` AS `data_user_password_new`, `data_user`.`password_repeat` AS `data_user_password_repeat`, `data_user`.`captcha` AS `data_user_captcha`, `data_user`.`iagree` AS `data_user_iagree` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:26:08] SHOW TABLES
+[05.06.2013 21:26:08] SHOW COLUMNS FROM `project`
+[05.06.2013 21:26:08] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:26:08] SELECT project.*, `data_user`.`password_old` AS `data_user_password_old`, `data_user`.`password_new` AS `data_user_password_new`, `data_user`.`password_repeat` AS `data_user_password_repeat`, `data_user`.`captcha` AS `data_user_captcha`, `data_user`.`iagree` AS `data_user_iagree` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:26:32] SHOW TABLES
+[05.06.2013 21:26:32] SHOW COLUMNS FROM `project`
+[05.06.2013 21:26:32] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:26:32] SELECT project.*, `data_user`.`id` AS `data_user_id`, `data_user`.`image` AS `data_user_image`, `data_user`.`name` AS `data_user_name`, `data_user`.`surname` AS `data_user_surname`, `data_user`.`email` AS `data_user_email`, `data_user`.`password` AS `data_user_password`, `data_user`.`role` AS `data_user_role`, `data_user`.`akey` AS `data_user_akey`, `data_user`.`date_of_birth` AS `data_user_date_of_birth`, `data_user`.`lastbeen_at` AS `data_user_lastbeen_at`, `data_user`.`created_at` AS `data_user_created_at`, `data_user`.`status` AS `data_user_status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:26:48] SHOW TABLES
+[05.06.2013 21:26:48] SHOW COLUMNS FROM `project`
+[05.06.2013 21:26:48] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:26:48] SELECT project.*, `data_user`.`id` AS `(data_user)id`, `data_user`.`image` AS `(data_user)image`, `data_user`.`name` AS `(data_user)name`, `data_user`.`surname` AS `(data_user)surname`, `data_user`.`email` AS `(data_user)email`, `data_user`.`password` AS `(data_user)password`, `data_user`.`role` AS `(data_user)role`, `data_user`.`akey` AS `(data_user)akey`, `data_user`.`date_of_birth` AS `(data_user)date_of_birth`, `data_user`.`lastbeen_at` AS `(data_user)lastbeen_at`, `data_user`.`created_at` AS `(data_user)created_at`, `data_user`.`status` AS `(data_user)status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:26:57] SHOW TABLES
+[05.06.2013 21:26:57] SHOW COLUMNS FROM `project`
+[05.06.2013 21:26:57] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:26:57] SELECT project.*, `data_user`.`id` AS `data_user:id`, `data_user`.`image` AS `data_user:image`, `data_user`.`name` AS `data_user:name`, `data_user`.`surname` AS `data_user:surname`, `data_user`.`email` AS `data_user:email`, `data_user`.`password` AS `data_user:password`, `data_user`.`role` AS `data_user:role`, `data_user`.`akey` AS `data_user:akey`, `data_user`.`date_of_birth` AS `data_user:date_of_birth`, `data_user`.`lastbeen_at` AS `data_user:lastbeen_at`, `data_user`.`created_at` AS `data_user:created_at`, `data_user`.`status` AS `data_user:status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:27:03] SHOW TABLES
+[05.06.2013 21:27:03] SHOW COLUMNS FROM `project`
+[05.06.2013 21:27:03] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:27:03] SELECT project.*, `data_user`.`id` AS `data_user.id`, `data_user`.`image` AS `data_user.image`, `data_user`.`name` AS `data_user.name`, `data_user`.`surname` AS `data_user.surname`, `data_user`.`email` AS `data_user.email`, `data_user`.`password` AS `data_user.password`, `data_user`.`role` AS `data_user.role`, `data_user`.`akey` AS `data_user.akey`, `data_user`.`date_of_birth` AS `data_user.date_of_birth`, `data_user`.`lastbeen_at` AS `data_user.lastbeen_at`, `data_user`.`created_at` AS `data_user.created_at`, `data_user`.`status` AS `data_user.status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:27:21] SHOW TABLES
+[05.06.2013 21:27:21] SHOW COLUMNS FROM `project`
+[05.06.2013 21:27:21] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:27:21] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4
+[05.06.2013 21:27:51] SHOW TABLES
+[05.06.2013 21:27:51] SHOW COLUMNS FROM `project`
+[05.06.2013 21:27:52] SHOW COLUMNS FROM `data_user`
+[05.06.2013 21:27:52] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` WHERE 1 ORDER BY end_at DESC LIMIT 4

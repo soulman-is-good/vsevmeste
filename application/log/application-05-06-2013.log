@@ -1,0 +1,20 @@
+[05.06.2013 20:49:59] Applying SQL 'ALTER TABLE `data_user` DROP `kskname` ' for X3_MySQL_Model
+[05.06.2013 20:50:05] Applying SQL 'ALTER TABLE `data_user` DROP `ksksurname` ' for X3_MySQL_Model
+[05.06.2013 20:50:06] Applying SQL 'ALTER TABLE `data_user` DROP `duty` ' for X3_MySQL_Model
+[05.06.2013 20:50:07] Applying SQL 'ALTER TABLE `data_user` DROP `gender` ' for X3_MySQL_Model
+[05.06.2013 20:50:07] Applying SQL 'ALTER TABLE `data_user` DROP `phone` ' for X3_MySQL_Model
+[05.06.2013 20:50:07] Applying SQL 'ALTER TABLE `data_user` DROP `rank` ' for X3_MySQL_Model
+[05.06.2013 20:51:45] No such field 'duty' in 'User' but there is a label!
+[05.06.2013 20:51:45] No such field 'gender' in 'User' but there is a label!
+[05.06.2013 20:52:51] No such field 'duty' in 'User' but there is a label!
+[05.06.2013 20:52:51] No such field 'gender' in 'User' but there is a label!
+[05.06.2013 21:00:21] Applying SQL 'CREATE TABLE  `project_category` (`id` INT(10) UNSIGNED NOT NULL  AUTO_INCREMENT PRIMARY KEY, `title` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL   , `weight` INT(11) NOT NULL DEFAULT '0'  , `status` TINYINT(1) NOT NULL DEFAULT '1'  )' for X3_MySQL_Model
+[05.06.2013 21:02:38] Applying SQL 'ALTER TABLE `project` DROP `gallery_id` ' for X3_MySQL_Model
+[05.06.2013 21:02:38] No such field 'gallery_id' in 'Project' but there is a label!
+[05.06.2013 21:03:43] Applying SQL 'ALTER TABLE `project` ADD `gallery_id` INT(10) UNSIGNED NOT NULL   ' for X3_MySQL_Model
+[05.06.2013 21:03:44] Applying SQL 'ALTER TABLE `project` ADD `gallery_id` INT(10) UNSIGNED NOT NULL   ' for X3_MySQL_Model
+[05.06.2013 21:03:47] Applying SQL 'ALTER TABLE `project` ADD INDEX (`gallery_id`) ' for X3_MySQL_Model
+[05.06.2013 21:03:48] Applying SQL 'ALTER TABLE `project` ADD INDEX (`gallery_id`) ' for X3_MySQL_Model
+[05.06.2013 21:03:48] Applying SQL 'ALTER TABLE `project` ADD INDEX (`gallery_id`) ' for X3_MySQL_Model
+[05.06.2013 21:03:56] Applying SQL 'ALTER TABLE `project` DROP `gallery_id` ' for X3_MySQL_Model
+[05.06.2013 21:03:56] No such field 'gallery_id' in 'Project' but there is a label!

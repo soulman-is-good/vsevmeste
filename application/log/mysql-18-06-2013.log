@@ -1,0 +1,145 @@
+[18.06.2013 08:58:56] SHOW TABLES
+[18.06.2013 08:58:56] SHOW COLUMNS FROM `project`
+[18.06.2013 08:58:56] SHOW COLUMNS FROM `data_user`
+[18.06.2013 08:58:56] SHOW COLUMNS FROM `data_city`
+[18.06.2013 08:58:56] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE `project`.`end_at` < 1372129136 ORDER BY end_at DESC LIMIT 10
+[18.06.2013 08:58:56] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE `project`.`created_at` > 1370919536 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 08:58:56] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE `current_sum`>`needed_sum`/2 ORDER BY created_at DESC LIMIT 1
+[18.06.2013 08:58:56] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 08:58:56] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[18.06.2013 08:59:33] SHOW TABLES
+[18.06.2013 08:59:33] SHOW COLUMNS FROM `project`
+[18.06.2013 08:59:33] SHOW COLUMNS FROM `data_user`
+[18.06.2013 08:59:33] SHOW COLUMNS FROM `data_city`
+[18.06.2013 08:59:33] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC
+[18.06.2013 08:59:33] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 08:59:33] SELECT * FROM `sys_settings`  WHERE name='Project.Limit'
+[18.06.2013 08:59:33] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 08:59:33] SHOW COLUMNS FROM `project_category`
+[18.06.2013 08:59:33] SELECT * FROM `project_category`  WHERE 1
+[18.06.2013 08:59:33] SHOW COLUMNS FROM `sys_languages`
+[18.06.2013 08:59:33] SELECT value FROM `sys_languages`  WHERE value='Популярные'
+[18.06.2013 08:59:33] SELECT value FROM `sys_languages`  WHERE value='Недавно начатые'
+[18.06.2013 08:59:33] SELECT value FROM `sys_languages`  WHERE value='Заканчивающиеся'
+[18.06.2013 08:59:33] SELECT value FROM `sys_languages`  WHERE value='Малые проекты'
+[18.06.2013 08:59:33] SELECT value FROM `sys_languages`  WHERE value='Почти собрали'
+[18.06.2013 08:59:33] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[18.06.2013 08:59:54] SHOW TABLES
+[18.06.2013 08:59:54] SHOW COLUMNS FROM `project`
+[18.06.2013 21:08:31] SHOW TABLES
+[18.06.2013 21:08:31] SHOW COLUMNS FROM `project`
+[18.06.2013 21:08:31] SHOW COLUMNS FROM `data_user`
+[18.06.2013 21:08:31] SHOW COLUMNS FROM `data_city`
+[18.06.2013 21:08:31] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE `project`.`end_at` < 1372172911 ORDER BY end_at DESC LIMIT 10
+[18.06.2013 21:08:31] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE `project`.`created_at` > 1370963311 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 21:08:31] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE `current_sum`>`needed_sum`/2 ORDER BY created_at DESC LIMIT 1
+[18.06.2013 21:08:31] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 21:08:31] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[18.06.2013 21:55:35] SHOW TABLES
+[18.06.2013 21:55:35] SHOW COLUMNS FROM `project`
+[18.06.2013 21:55:35] SHOW COLUMNS FROM `data_user`
+[18.06.2013 21:55:35] SHOW COLUMNS FROM `data_city`
+[18.06.2013 21:55:35] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC
+[18.06.2013 21:55:35] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 21:55:35] SELECT * FROM `sys_settings`  WHERE name='Project.Limit'
+[18.06.2013 21:55:35] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 21:55:35] SHOW COLUMNS FROM `project_category`
+[18.06.2013 21:55:35] SELECT * FROM `project_category`  WHERE 1
+[18.06.2013 21:55:35] SHOW COLUMNS FROM `sys_languages`
+[18.06.2013 21:55:35] SELECT value FROM `sys_languages`  WHERE value='Популярные'
+[18.06.2013 21:55:35] SELECT value FROM `sys_languages`  WHERE value='Недавно начатые'
+[18.06.2013 21:55:35] SELECT value FROM `sys_languages`  WHERE value='Заканчивающиеся'
+[18.06.2013 21:55:35] SELECT value FROM `sys_languages`  WHERE value='Малые проекты'
+[18.06.2013 21:55:35] SELECT value FROM `sys_languages`  WHERE value='Почти собрали'
+[18.06.2013 21:55:35] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[18.06.2013 21:55:42] SHOW TABLES
+[18.06.2013 21:55:42] SHOW COLUMNS FROM `project`
+[18.06.2013 21:55:43] SHOW COLUMNS FROM `sys_languages`
+[18.06.2013 21:55:43] SELECT value FROM `sys_languages`  WHERE value='Страница не найдена.'
+[18.06.2013 21:55:44] SHOW TABLES
+[18.06.2013 21:55:44] SHOW COLUMNS FROM `project`
+[18.06.2013 21:55:44] SHOW COLUMNS FROM `data_user`
+[18.06.2013 21:55:44] SHOW COLUMNS FROM `data_city`
+[18.06.2013 21:55:44] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC
+[18.06.2013 21:55:44] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 21:55:44] SELECT * FROM `sys_settings`  WHERE name='Project.Limit'
+[18.06.2013 21:55:44] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 21:55:44] SHOW COLUMNS FROM `project_category`
+[18.06.2013 21:55:44] SELECT * FROM `project_category`  WHERE 1
+[18.06.2013 21:55:44] SHOW COLUMNS FROM `sys_languages`
+[18.06.2013 21:55:44] SELECT value FROM `sys_languages`  WHERE value='Популярные'
+[18.06.2013 21:55:44] SELECT value FROM `sys_languages`  WHERE value='Недавно начатые'
+[18.06.2013 21:55:44] SELECT value FROM `sys_languages`  WHERE value='Заканчивающиеся'
+[18.06.2013 21:55:44] SELECT value FROM `sys_languages`  WHERE value='Малые проекты'
+[18.06.2013 21:55:44] SELECT value FROM `sys_languages`  WHERE value='Почти собрали'
+[18.06.2013 21:55:44] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[18.06.2013 23:17:33] SHOW TABLES
+[18.06.2013 23:17:33] SHOW COLUMNS FROM `project`
+[18.06.2013 23:17:33] SHOW COLUMNS FROM `data_user`
+[18.06.2013 23:17:33] SHOW COLUMNS FROM `data_city`
+[18.06.2013 23:17:33] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC
+[18.06.2013 23:17:33] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 23:17:33] SELECT * FROM `sys_settings`  WHERE name='Project.Limit'
+[18.06.2013 23:17:33] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 23:17:33] SHOW COLUMNS FROM `project_category`
+[18.06.2013 23:17:33] SELECT * FROM `project_category`  WHERE 1
+[18.06.2013 23:17:33] SHOW COLUMNS FROM `sys_languages`
+[18.06.2013 23:17:33] SELECT value FROM `sys_languages`  WHERE value='Популярные'
+[18.06.2013 23:17:33] SELECT value FROM `sys_languages`  WHERE value='Недавно начатые'
+[18.06.2013 23:17:33] SELECT value FROM `sys_languages`  WHERE value='Заканчивающиеся'
+[18.06.2013 23:17:33] SELECT value FROM `sys_languages`  WHERE value='Малые проекты'
+[18.06.2013 23:17:33] SELECT value FROM `sys_languages`  WHERE value='Почти собрали'
+[18.06.2013 23:17:33] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[18.06.2013 23:17:37] SHOW TABLES
+[18.06.2013 23:17:37] SHOW COLUMNS FROM `project`
+[18.06.2013 23:17:39] SHOW TABLES
+[18.06.2013 23:17:39] SHOW COLUMNS FROM `project`
+[18.06.2013 23:17:39] SHOW COLUMNS FROM `data_user`
+[18.06.2013 23:17:39] SHOW COLUMNS FROM `data_city`
+[18.06.2013 23:17:39] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC
+[18.06.2013 23:17:39] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 23:17:39] SELECT * FROM `sys_settings`  WHERE name='Project.Limit'
+[18.06.2013 23:17:39] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 23:17:39] SHOW COLUMNS FROM `project_category`
+[18.06.2013 23:17:39] SELECT * FROM `project_category`  WHERE 1
+[18.06.2013 23:17:39] SHOW COLUMNS FROM `sys_languages`
+[18.06.2013 23:17:39] SELECT value FROM `sys_languages`  WHERE value='Популярные'
+[18.06.2013 23:17:39] SELECT value FROM `sys_languages`  WHERE value='Недавно начатые'
+[18.06.2013 23:17:39] SELECT value FROM `sys_languages`  WHERE value='Заканчивающиеся'
+[18.06.2013 23:17:39] SELECT value FROM `sys_languages`  WHERE value='Малые проекты'
+[18.06.2013 23:17:39] SELECT value FROM `sys_languages`  WHERE value='Почти собрали'
+[18.06.2013 23:17:39] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[18.06.2013 23:17:50] SHOW TABLES
+[18.06.2013 23:17:50] SHOW COLUMNS FROM `project`
+[18.06.2013 23:17:50] SHOW COLUMNS FROM `data_user`
+[18.06.2013 23:17:50] SHOW COLUMNS FROM `data_city`
+[18.06.2013 23:17:50] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC
+[18.06.2013 23:17:50] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 23:17:50] SELECT * FROM `sys_settings`  WHERE name='Project.Limit'
+[18.06.2013 23:17:50] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 23:17:50] SHOW COLUMNS FROM `project_category`
+[18.06.2013 23:17:50] SELECT * FROM `project_category`  WHERE 1
+[18.06.2013 23:17:50] SHOW COLUMNS FROM `sys_languages`
+[18.06.2013 23:17:50] SELECT value FROM `sys_languages`  WHERE value='Популярные'
+[18.06.2013 23:17:50] SELECT value FROM `sys_languages`  WHERE value='Недавно начатые'
+[18.06.2013 23:17:50] SELECT value FROM `sys_languages`  WHERE value='Заканчивающиеся'
+[18.06.2013 23:17:51] SELECT value FROM `sys_languages`  WHERE value='Малые проекты'
+[18.06.2013 23:17:51] SELECT value FROM `sys_languages`  WHERE value='Почти собрали'
+[18.06.2013 23:17:51] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[18.06.2013 23:17:54] SHOW TABLES
+[18.06.2013 23:17:54] SHOW COLUMNS FROM `project`
+[18.06.2013 23:17:54] SHOW COLUMNS FROM `data_user`
+[18.06.2013 23:17:54] SHOW COLUMNS FROM `data_city`
+[18.06.2013 23:17:54] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC
+[18.06.2013 23:17:54] SHOW COLUMNS FROM `sys_settings`
+[18.06.2013 23:17:54] SELECT * FROM `sys_settings`  WHERE name='Project.Limit'
+[18.06.2013 23:17:54] SELECT project.*, `data_user`.`id` AS `data_user->id`, `data_user`.`image` AS `data_user->image`, `data_user`.`name` AS `data_user->name`, `data_user`.`surname` AS `data_user->surname`, `data_user`.`email` AS `data_user->email`, `data_user`.`password` AS `data_user->password`, `data_user`.`role` AS `data_user->role`, `data_user`.`akey` AS `data_user->akey`, `data_user`.`date_of_birth` AS `data_user->date_of_birth`, `data_user`.`lastbeen_at` AS `data_user->lastbeen_at`, `data_user`.`created_at` AS `data_user->created_at`, `data_user`.`status` AS `data_user->status`, `data_city`.`id` AS `data_city->id`, `data_city`.`title` AS `data_city->title`, `data_city`.`weight` AS `data_city->weight`, `data_city`.`status` AS `data_city->status` FROM `project`  INNER JOIN `data_user` ON `project`.`user_id` = `data_user`.`id` INNER JOIN `data_city` ON `project`.`city_id` = `data_city`.`id` WHERE 1 ORDER BY created_at DESC LIMIT 10
+[18.06.2013 23:17:54] SHOW COLUMNS FROM `project_category`
+[18.06.2013 23:17:54] SELECT * FROM `project_category`  WHERE 1
+[18.06.2013 23:17:54] SHOW COLUMNS FROM `sys_languages`
+[18.06.2013 23:17:54] SELECT value FROM `sys_languages`  WHERE value='Популярные'
+[18.06.2013 23:17:54] SELECT value FROM `sys_languages`  WHERE value='Недавно начатые'
+[18.06.2013 23:17:54] SELECT value FROM `sys_languages`  WHERE value='Заканчивающиеся'
+[18.06.2013 23:17:54] SELECT value FROM `sys_languages`  WHERE value='Малые проекты'
+[18.06.2013 23:17:54] SELECT value FROM `sys_languages`  WHERE value='Почти собрали'
+[18.06.2013 23:17:54] SELECT * FROM `sys_settings`  WHERE name='Copyright'

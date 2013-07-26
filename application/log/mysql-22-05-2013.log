@@ -1,0 +1,15 @@
+[22.05.2013 20:23:29] SHOW TABLES
+[22.05.2013 20:23:29] SHOW COLUMNS FROM `sys_settings`
+[22.05.2013 20:23:29] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[22.05.2013 20:29:22] SHOW TABLES
+[22.05.2013 20:29:22] SHOW COLUMNS FROM `sys_settings`
+[22.05.2013 20:29:22] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[22.05.2013 20:29:33] SHOW TABLES
+[22.05.2013 20:29:33] SHOW COLUMNS FROM `sys_settings`
+[22.05.2013 20:29:33] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[22.05.2013 20:31:52] SHOW TABLES
+[22.05.2013 20:31:52] SHOW COLUMNS FROM `sys_settings`
+[22.05.2013 20:31:52] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[22.05.2013 20:31:55] SHOW TABLES
+[22.05.2013 20:31:55] SHOW COLUMNS FROM `sys_settings`
+[22.05.2013 20:31:55] SELECT * FROM `sys_settings`  WHERE name='Copyright'

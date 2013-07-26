@@ -1,0 +1,3 @@
+[29.05.2013 06:29:03] SHOW TABLES
+[29.05.2013 06:29:03] SHOW COLUMNS FROM `sys_settings`
+[29.05.2013 06:29:03] SELECT * FROM `sys_settings`  WHERE name='Copyright'

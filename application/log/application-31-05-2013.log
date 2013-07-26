@@ -1,0 +1,5 @@
+[31.05.2013 17:06:40] Applying SQL 'CREATE TABLE  `project` (`id` INT(10) UNSIGNED NOT NULL  AUTO_INCREMENT PRIMARY KEY, `user_id` INT(10) UNSIGNED NOT NULL   , `city_id` INT(10) UNSIGNED NOT NULL   , `category_id` INT(10) UNSIGNED NOT NULL   , `gallery_id` INT(10) UNSIGNED NOT NULL   , `title` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL   , `current_sum` INT(11) NOT NULL DEFAULT '0'  , `needed_sum` INT(11) NOT NULL   , `short_content` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL   , `full_content` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL   , `status` TINYINT(1) NOT NULL DEFAULT '0'  , `created_at` INT(11) NOT NULL   , `end_at` INT(11) NOT NULL   )' for X3_MySQL_Model
+[31.05.2013 17:06:40] Applying SQL 'ALTER TABLE `project` ADD INDEX (`user_id`) ' for X3_MySQL_Model
+[31.05.2013 17:06:40] Applying SQL 'ALTER TABLE `project` ADD INDEX (`city_id`) ' for X3_MySQL_Model
+[31.05.2013 17:06:40] Applying SQL 'ALTER TABLE `project` ADD INDEX (`category_id`) ' for X3_MySQL_Model
+[31.05.2013 17:06:40] Applying SQL 'ALTER TABLE `project` ADD INDEX (`gallery_id`) ' for X3_MySQL_Model

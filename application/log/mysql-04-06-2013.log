@@ -1,0 +1,52 @@
+[04.06.2013 15:37:32] SHOW TABLES
+[04.06.2013 15:37:32] SHOW COLUMNS FROM `sys_settings`
+[04.06.2013 15:37:32] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[04.06.2013 15:43:17] SHOW TABLES
+[04.06.2013 15:43:17] SHOW COLUMNS FROM `project`
+[04.06.2013 15:43:17] SHOW TABLES
+[04.06.2013 15:43:17] SHOW COLUMNS FROM `data_user`
+[04.06.2013 15:43:17] SHOW COLUMNS FROM `user_address`
+[04.06.2013 15:43:17] SHOW COLUMNS FROM `sys_languages`
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Зарегистрироваться'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Авторизация'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Ваш E-mail или мобильный телефон'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Пароль'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Войти'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Авторизироваться'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Регистрация жильца'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Ваш E-mail'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Повторите пароль'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Город проживания'
+[04.06.2013 15:43:17] SHOW COLUMNS FROM `data_city`
+[04.06.2013 15:43:17] SELECT * FROM `data_city`  WHERE 1
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Дядя'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Город'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Улица'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='На карте'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='№ дома'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='№ квартиры'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='После регистрации Вы сможете добавить еще адреса'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Введите код на картинке'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Я ознакомлен(а) и соглас(ен/на) с [правилами] сайта'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Аватарка'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Имя'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Название КСК'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Должность'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Фамилия'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Телефон'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Старый пароль'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Новый пароль'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Повторите новый пароль'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Пол'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Роль'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Последнее посещение'
+[04.06.2013 15:43:17] SELECT value FROM `sys_languages`  WHERE value='Дата рождения'
+[04.06.2013 15:43:17] SHOW COLUMNS FROM `sys_settings`
+[04.06.2013 15:43:17] SELECT * FROM `sys_settings`  WHERE name='Copyright'
+[04.06.2013 15:43:17] SHOW TABLES
+[04.06.2013 15:43:17] SHOW COLUMNS FROM `data_uploads`
+[04.06.2013 15:43:18] SHOW TABLES
+[04.06.2013 15:43:18] SHOW COLUMNS FROM `data_user`
+[04.06.2013 21:01:37] SHOW TABLES
+[04.06.2013 21:01:37] SHOW COLUMNS FROM `sys_settings`
+[04.06.2013 21:01:37] SELECT * FROM `sys_settings`  WHERE name='Copyright'
