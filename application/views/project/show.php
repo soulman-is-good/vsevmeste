@@ -3,9 +3,9 @@
     <div class="tabs">
         <ul>
             <li class="active">Проект</li>
-            <li><a href="/<?=$model->name?>-project/events.html">События <i>0</i></a></li>
-            <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=$model->comments?></i></a></li>
-            <?/*<li><a href="/<?=$model->name?>-project/gallery.html">Вложения <i>13</i></a></li>*/?>
+            <li><a href="/<?=$model->name?>-project/events.html">События <i><?=Project_Event::num_rows(array('project_id'=>$model->id))?></i></a></li>
+            <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=Project_Comments::num_rows(array('project_id'=>$model->id))?></i></a></li>
+            <li><a href="/<?=$model->name?>-project/investments.html">Вложения <i><?=Project_Invest::num_rows(array('project_id'=>$model->id))?></i></a></li>
         </ul>
     </div>
     <div class="clearfix" style="height:30px;">&nbsp;</div>

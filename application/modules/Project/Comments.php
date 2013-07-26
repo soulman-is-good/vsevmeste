@@ -8,11 +8,11 @@
  * @property integer $created_at unix timestamp 
  * @author Soul_man
  */
-class Project_Event extends X3_Module_Table {
+class Project_Comments extends X3_Module_Table {
 
     public $encoding = 'UTF-8';
 
-    public $tableName = 'project_event';
+    public $tableName = 'project_comments';
 
     public $_fields = array(
       'id'=>array('integer[10]','unsigned','primary','auto_increment'),

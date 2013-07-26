@@ -53,8 +53,8 @@
         <ul>
             <li><a href="/<?=$model->name?>-project/">Проект</a></li>
             <li class="active">События</li>
-            <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=$model->comments?></i></a></li>
-            <?/*<li><a href="/<?=$model->name?>-project/gallery.html">Вложения <i>13</i></a></li>*/?>
+            <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=Project_Comments::num_rows(array('project_id'=>$model->id));?></i></a></li>
+            <li><a href="/<?=$model->name?>-project/investments.html">Вложения <i><?=Project_Invest::num_rows(array('project_id'=>$model->id))?></i></a></li>
         </ul>
     </div>
     <div class="clearfix" style="height:30px;">&nbsp;</div>

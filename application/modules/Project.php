@@ -8,6 +8,7 @@ class Project extends X3_Module_Table {
             
     public $encoding = 'UTF-8';
     public $scenario = 'update';
+    private $partners = array();
     /*
      * uncomment if want new model functional
      */
@@ -148,6 +149,59 @@ class Project extends X3_Module_Table {
         $cats = Category::get();
         $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator,'cats'=>$cats,'category'=>$category,'sort'=>$sort));
     }
+    public function actionPartner() {
+        if(X3::user()->isGuest())
+            throw new X3_404();
+        $id = X3::user()->id;
+        if(null!=($code = X3::request()->getRequest('code'))){
+            if(NULL === ($model = Project_Partner::get(array('@condition'=>array('confirmation'=>$code),'@with'=>'project_id'),1)) || Project_Partner::num_rows(array('status'=>'1','project_id'=>$model->project_id)) > 0) {
+                throw new X3_404();
+            }
+            $model->status = 1;
+            $model->confirmation = NULL;
+            $model->save();
+            $back = "/".$model->project_id()->name . "-project/";
+            $this->redirect($back);
+        }
+        $pid = (int)X3::request()->getRequest('id');
+        $this->nostress();
+        if(NULL === ($model = Project::getByPk($pid)) || $model->partner() !== NULL)
+            throw new X3_404();
+        $a = X3::db()->fetch("SELECT UUID() AS uuid");
+        $part = new Project_Partner;
+        $part->user_id = $id;
+        $part->project_id = $pid;
+        $part->confirmation = $a['uuid'];//md5(time().rand(100,999)).rand(100,999);
+        $part->status = 0;
+        if($part->save()){
+            $partner = User::getByPk($id);
+            $user = User::getByPk($model->user_id);
+            $link = X3::request()->baseUrl . "/partner/confirm/$part->confirmation.html";
+            $partner_link = X3::request()->baseUrl . "/user/$partner->id/";
+            Notify::sendMail('PartnerConfirm',array('link'=>$link,'partner'=>$partner->fullName,'name'=>$user->fullName,'partner_link'=>$partner_link),$user->email);
+            $this->redirect($_SERVER['HTTP_REFERER']);
+        }else {
+            echo X3_Html::errorSummary($part);
+            exit;
+        }
+    }
+    public function actionCity() {
+        $id = X3::user()->id;
+        $cid = (int)X3::request()->getRequest('id');
+        $this->nostress();
+        $q = array(
+            '@condition'=>array('project.status'=>'1','project.city_id'=>$cid),
+            '@with'=>array('user_id','city_id'),
+            '@order'=>'created_at DESC'
+        );
+
+        $count = self::num_rows($q);
+        $paginator = new Paginator(__CLASS__, $count);
+        $q['@limit'] = $paginator->limit;
+        $q['@offset'] = $paginator->offset;
+        $models = self::get($q);
+        $this->template->render('search', array('models' => $models, 'count' => $count, 'paginator' => $paginator));
+    }
 
     public function actionSearch() {
         $id = X3::user()->id;
@@ -195,7 +249,7 @@ class Project extends X3_Module_Table {
         }
     }
     
-    public function actionComments() {
+    public function actionCommentsVK() {
         if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
             if(IS_AJAX){
                 if(isset($_GET['update'])){// && X3::user()->token === X3::request()->getRequest('token')){
@@ -210,7 +264,7 @@ class Project extends X3_Module_Table {
             $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
             X3::clientScript()->registerScriptFile('//vk.com/js/api/openapi.js?96');
             X3::clientScript()->registerScript('VkComments','VK.init({apiId: 3736088, onlyWidgets: true});',  X3_ClientScript::POS_HEAD);
-            $this->template->render('comments', array('model' => $model,'interests'=>$interests));
+            $this->template->render('comments.vk', array('model' => $model,'interests'=>$interests));
         }else{
             throw new X3_404();
         }
@@ -219,6 +273,7 @@ class Project extends X3_Module_Table {
     public function actionEvents() {
         if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
             if(isset($_POST['eventtext'],$_POST['token'])){
+                $this->nostress();
                 require 'application/extensions/wikitexttohtml.php';
                 $text = $_POST['eventtext'];
                 $text = stripslashes($text);
@@ -252,6 +307,48 @@ class Project extends X3_Module_Table {
             $models = Project_Event::get($q);
             $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
             $this->template->render('events', array('models' => $models,'model'=>$model,'interests'=>$interests));
+        }else{
+            throw new X3_404();
+        }
+    }
+    
+    public function actionComments() {
+        if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
+            if(isset($_POST['commenttext'],$_POST['token'])){
+                $this->nostress();
+                $text = X3_Html::encode($_POST['commenttext']);
+                if($text!='' && X3::user()->ctoken === $_POST['token']){
+                    $event = new Project_Comments();
+                    $event->content = $text;
+                    $event->project_id = $model->id;
+                    $event->user_id = X3::user()->id;
+                    $event->created_at = time();
+                    if($event->save()){
+                        $this->controller->refresh();
+                        X3::user()->etoken = null;
+                    }else {
+                        echo X3_Html::errorSummary($event);
+                        exit;
+                    }
+                }
+            }
+            X3::user()->ctoken = rand(10,100) . md5(time()) . rand(10,100);
+            $limit = 10;
+            $q = array('@condition'=>array('project_id'=>$model->id),'@limit'=>$limit,'@with'=>array('project_id','user_id'),'@order'=>'`created_at` ASC');
+            if(IS_AJAX){
+                if(isset($_GET['page'])){// && X3::user()->token === X3::request()->getRequest('token')){
+                    $page = (int)$_GET['page'];
+                    $q['@offset'] = $page * $limit;
+                    $models = Project_Event::get($q);
+                    foreach ($models as $model) {
+                        echo $this->template->renderPartial('_project_event',array('model'=>$model));
+                    }
+                }
+                exit;
+            }
+            $models = Project_Comments::get($q);
+            $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            $this->template->render('comments', array('models' => $models,'model'=>$model,'interests'=>$interests));
         }else{
             throw new X3_404();
         }
@@ -497,49 +594,11 @@ class Project extends X3_Module_Table {
         parent::onDelete($tables, $condition);
     }
     
-    public static function search($word) {
-        $id = X3::user()->id;
-        $query = array();
-        $date = X3::db()->fetch("SELECT created_at FROM data_user WHERE id=$id");
-        $type = X3::user()->isUser()?"(f.type='user' OR f.type='*')":(X3::user()->isKsk()?"(f.type='ksk' OR f.type='*')":"(f.type='admin' OR f.type='*')");
-        if(X3::user()->isUser() || 1){
-            $cond = array();
-            $query['@select']='f.*';
-            $query['@group']='f.id';
-            $query['@order']='f.created_at DESC';
-            $query['@from']=array('data_vote'=>'f');
-            $query['@join']="INNER JOIN data_user u ON u.id=f.user_id LEFT JOIN user_address a ON a.user_id=$id";
-            $cond['id']=array(
-                '@@'=>"f.title LIKE '%$word%' AND f.end_at>={$date['created_at']} AND (
-            (f.user_id=$id)
-                OR
-            (f.status AND 
-                $type AND u.role='admin' AND 
-                (
-                   (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat=a.flat) OR 
-                   (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat IS NULL) OR 
-                   (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house IS NULL AND f.flat IS NULL) OR 
-                   (f.city_id=a.city_id AND f.region_id IS NULL) OR
-                   (f.city_id IS NULL)
-                )
-            )
-                OR
-            (f.status AND $type AND u.role='ksk' AND
-             (
-                (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat=a.flat) OR 
-                (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house=a.house AND f.flat IS NULL) OR 
-                (f.city_id=a.city_id AND f.region_id=a.region_id AND f.house IS NULL AND f.flat IS NULL AND a.house IN (SELECT house FROM user_address WHERE user_id=u.id AND status=1)) OR 
-                (f.city_id=a.city_id AND f.region_id IS NULL AND a.region_id IN (SELECT region_id FROM user_address WHERE user_id=u.id AND status=1) AND a.house IN (SELECT house FROM user_address WHERE user_id=u.id AND status=1)) OR
-                (f.city_id IS NULL AND a.city_id IN (SELECT city_id FROM user_address aa WHERE aa.user_id=u.id AND aa.status=1) AND a.region_id IN (SELECT region_id FROM user_address aa WHERE aa.user_id=u.id AND aa.status=1) AND a.house IN (SELECT house FROM user_address aa WHERE aa.user_id=u.id AND aa.status=1))
-             )
-             )
-            )"
-            );
-            $query['@condition'] = $cond;
-        }elseif(X3::user()->isKsk()){
-            
+    public function partner() {
+        if(!array_key_exists($this->id, $this->partners)){
+            $this->partners[$this->id] = Project_Partner::get(array('@condition'=>array('project_id'=>$this->id),'@order'=>'created_at','@with'=>'user_id'),1);
         }
-        return $query;
+        return $this->partners[$this->id];
     }
 }
 ?>

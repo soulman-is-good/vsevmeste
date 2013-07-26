@@ -227,6 +227,10 @@ class X3_Request extends X3_Component {
         if($this->url == $trueurl || $this->uri[0]==$trueurl) return true;
         return false;
     }
+    
+    public function getBaseUrl() {
+        return "http://{$_SERVER['HTTP_HOST']}";
+    }
 
 }
 ?>

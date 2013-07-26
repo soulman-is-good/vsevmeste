@@ -8,9 +8,16 @@ if(is_array($styles)){
 //$user = User::getByPk($model->user_id);    
 ?>
 <div class="project_cont" style="<?=$styles?>">
-    <div class="green_bg">
+    <div class="green_bg" style="position: relative">
+            <?if($model->partner()!==null && $model->partner()->status == 1):?>
+            <span class="partner-mark"><i>&nbsp;</i><b>&nbsp;</b>
+                <a title="<?=$model->partner()->user_id()->fullName?>" href="/user/<?=$model->partner()->user_id?>/">
+                P
+                </a>
+            </span>
+            <?endif;?>
         <div class="white_bg">
-            <div class="project_pic"><a href="/<?=$model->name?>-project/"><img src="/uploads/Project/<?=$model->image?>" alt="" /></a></div>
+            <div class="project_pic" style="background-image: url(/uploads/Project/208x160/<?=$model->image?>)"><a href="/<?=$model->name?>-project/"><img src="/images/_zero.gif" alt="" /></a></div>
             <div class="project_text_cont">
                 <div class="project_title" style="margin-bottom: 10px;"><a href="/<?=$model->name?>-project.html" class="green_link t16"><b><?=X3_Html::encode($model->title)?></b></a></div>
                 <div class="name"><a href="/user/<?=$model->user_id()->id?>/projects.html" class="grey_link"><?=$model->user_id()->fullName?></a></div>

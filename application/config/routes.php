@@ -19,9 +19,12 @@ array(
     '/^\/news\/([0-9]+)?(.*)$/' => array('/news/show/id/$1$2', true),
     //Projects
 //    '/^\/project\/add\/step(.+)$/' => array('/project/step$1', true),
+    '/^\/partner\/confirm\/(.*)$/' => array('/project/partner/code/$1', true),
     '/^\/(.+)\-project\/comments.html(.*)$/' => array('/project/comments/name/$1$2', true),
     '/^\/(.+)\-project\/events.html(.*)$/' => array('/project/events/name/$1$2', true),
     '/^\/(.+)\-project.*$/' => array('/project/show/name/$1', true),
+    '/^\/project\/city\/([0-9]+)(.*)$/' => array('/project/city/id/$1$2', true),
+    '/^\/project\/partner\/([0-9]+)(.*)$/' => array('/project/partner/id/$1$2', true),
     '/^\/projects\-([^\/]+)\/$/' => array('/project/index/category/$1', true),
     '/^\/projects\-(.+)\/(.+)$/' => array('/project/index/category/$1/sort/$2', true),
     '/^\/projects\/(.*)$/' => array('/project/index/sort/$1', true),

@@ -55,6 +55,7 @@ class UserIdentity extends X3_User{
         }
         $this->role = $user->role;
         $this->email = $user->email;
+        $this->partner = $user->ispartner;
         $user->lastbeen_at = time();
         return $user->table->save();
     }
