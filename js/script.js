@@ -88,7 +88,8 @@ $(document).ready(function(){
                         $('.change_link.active').removeClass('active');
                         $(this).addClass('active');
                         var idx = $(this).index();
-                        $('.slideshow').blinds_change(idx);
+                        $('.slideshow li:visible').fadeOut();
+                        $('.slideshow li').eq(idx).fadeIn();
                         var div = $('.slider-content').find('li').eq(idx).children('div').clone();
                         $('.slideshow .slider_text_cont').fadeOut(function(){$(this).remove();});
                         $('.slideshow').prepend(div.fadeIn());
@@ -97,7 +98,29 @@ $(document).ready(function(){
                     return false;
                 });
             });
-            $('.slideshow').blinds();
+//            $('.slideshow').easySlider();
+            $('.slideshow ul').css({'position':'relative','margin':'0'});
+            $('.slideshow li').each(function(i){$(this).css({'display':'none','position':'absolute','left':'0','top':'0','z-index':i+1});});
+            $('.slideshow li').eq(0).fadeIn();
             $('.slideshow').prepend($('.slider-content').find('li').eq(0).children('div').clone());
+        }
+        if($('.partners_cont .partner').length > 0){
+            if($('.partners_cont .partner').length > 6){
+                $('.partners_cont .left_nav').on('click',function(e){
+                    e.preventDefault();
+                    $('.partners_cont .partner').eq(0).animate({'opacity':0,'zoom':0.1},function(){
+                        $('.partners_cont .ppp').append($('.partners_cont .partner').eq(0).css({'opacity':1,'zoom':1}));
+                    });
+                    return false;
+                });
+                $('.partners_cont .right_nav').on('click',function(e){
+                    e.preventDefault();
+                        $('.partners_cont .ppp').prepend($('.partners_cont .partner').last().css({'opacity':0,'zoom':0.1}));
+                    $('.partners_cont .partner').eq(0).animate({'opacity':1,'zoom':1},function(){});
+                    return false;
+                });
+            }else {
+                $('.partners_cont .left_nav, .partners_cont .right_nav').remove();
+            }
         }
 });

@@ -137,13 +137,18 @@ class X3_MySQL_Query extends X3_MySQL_Command implements X3_Interface_Query {
             foreach ($field as $k => $v) {
                 $k = trim($k, "`");
                 if(in_array('unused', $class->_fields[$k])) continue;
-                $v = trim($v, "'");
+//                $v = trim($v, "'");
 
                 if (is_null($field[$k]))
                     $values[] = "`$k`=NULL";
                 else{
                     $v = mysql_real_escape_string($v);
-                    $values[] = "`$k`='$v'";
+                    if(strpos($class->_fields[$k][0],'integer')!==false || strpos($class->_fields[$k][0],'decimal')!==false
+                            || strpos($class->_fields[$k][0],'float')!==false || strpos($class->_fields[$k][0],'boolean')!==false 
+                            || strpos($class->_fields[$k][0],'datetime')!==false || strpos($class->_fields[$k][0],'tinyint')!==false )
+                        $values[] = "`$k`=$v";
+                    else
+                        $values[] = "`$k`='$v'";
                 }
             }
             $this->values = implode(', ', $values);

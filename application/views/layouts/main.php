@@ -23,8 +23,11 @@ Based on x3framework2.0
 working with Zuber.kz
 -->
         <?=X3_Widget::run('@layouts:header.php',array('main'=>isset($main)))?>
+<div class="wrap" style="position: relative;height: 100%;">
         <?=$content?>
-        <?=X3_Widget::run('@layouts:footer.php',array('main'=>isset($main)));?>
+    <div class="clear">&nbsp;</div>
+        <?=X3_Widget::run('@layouts:footer.php',array('main'=>isset($main)),array('cache'=>true));?>
+</div>
 <script type="text/javascript">
 String.prototype.repeat = function( num ){return new Array( num + 1 ).join( this );}    
 </script>
@@ -33,7 +36,8 @@ String.prototype.repeat = function( num ){return new Array( num + 1 ).join( this
 <link href="http://code.jquery.com/ui/1.10.0/themes/cupertino/jquery-ui.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
 <?endif;?>
-<script type="text/javascript" src="/js/jquery.blinds-0.9.js?<?=filemtime('js/jquery.blinds-0.9.js')?>"></script>
+<?/*<script type="text/javascript" src="/js/jquery.blinds-0.9.js?<?=filemtime('js/jquery.blinds-0.9.js')?>"></script>*/?>
+<script type="text/javascript" src="/js/easySlider1.7.js?<?=filemtime('js/easySlider1.7.js')?>"></script>
 <script type="text/javascript" src="/js/jquery.tipTip.js"></script>
 <script type="text/javascript" src="/js/jquery.fcselect.js"></script>
 <script type="text/javascript" src="/js/jquery.fctabs.js"></script>

@@ -8,6 +8,7 @@ class Admin extends X3_Module {
                 '/admin/list/module/Notify'=>array('Notify','Шаблоны','icon-envelope'),
                 '/admin/list/module/City'=>array('City','Города','icon-road'),
                 '/admin/list/module/Project'=>array('Project','Проекты','icon-leaf'),
+                '/admin/list/module/Category'=>array('Category','Категории','icon-tags'),
                 '/admin/list/module/SysSettings'=>array('SysSettings','Настройки','icon-cog'),
             );
     

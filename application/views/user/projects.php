@@ -10,6 +10,7 @@ else
     $labels = array(
         "Профиль",
         "Проекты",
+        "Инвестиции",
         "Вложения",
     );
 ?>
@@ -19,10 +20,8 @@ else
         <ul>
             <li><a href="/user/<?=$user->id?>/"><?=$labels[0]?></a></li>
             <li class="active"><?=$labels[1]?></li>
-            <li><a href="/user/<?=$user->id?>/investments.html"><?=$labels[2]?></a></li>
-            <?if(X3::user()->id === $user->id):?>
-            <li><a href="/user/<?=$user->id?>/donations.html"><?=$labels[3]?></a></li>
-            <?endif;?>
+            <li><a href="/user/<?=$user->id?>/invested.html"><?=$labels[2]?></a></li>
+            <li><a href="/user/<?=$user->id?>/investments.html"><?=$labels[3]?></a></li>
         </ul>
     </div>
     <div class="clearfix" style="height:30px;">&nbsp;</div>

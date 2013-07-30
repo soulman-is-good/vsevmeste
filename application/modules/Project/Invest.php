@@ -10,6 +10,16 @@
  */
 class Project_Invest extends X3_Module_Table {
 
+    //pay methods
+    const PAY_METHOD_QIWI = 0;
+    const PAY_METHOD_EPAY = 1;
+    
+    //status codes
+    const STATUS_UNAPPOVED = 0;
+    const STATUS_SUCCESS = 1;
+    const STATUS_WAIT = 2;
+    const STATUS_ERROR = 5;
+    
     public $encoding = 'UTF-8';
 
     public $tableName = 'project_invest';
@@ -20,6 +30,10 @@ class Project_Invest extends X3_Module_Table {
       'project_id'=>array('integer[10]','unsigned','index','ref'=>array('Project','id','default'=>'title')),
       'interest_id'=>array('integer[10]','unsigned','default'=>'NULL','index','ref'=>array('Project_Interest','id','default'=>'title')),
       'amount'=>array('integer[10]'),
+      'address'=>array('content','default'=>'NULL'),
+      'pay_method'=>array('integer[1]','default'=>'NULL'),
+      'pay_data'=>array('content','default'=>'NULL'),
+      'status'=>array('integer[1]','default'=>'0'),
       'created_at'=>array('datetime')
     );
     public function fieldNames() {
@@ -28,7 +42,10 @@ class Project_Invest extends X3_Module_Table {
             'user_id' => 'Пользователь',
             'interest_id' => 'Интерес',
             'amount' => 'Сумма вложения',
-            'content' => 'Текст',
+            'pay_method' => 'Способ оплаты (0-qiwi,1-kkb)',
+            'pay_data' => 'Текст',
+            'address' => 'Адрес',
+            'status' => 'Статус(0 - создан, 1-успех, 2-в ожидании, 5-ошибка)',
             'created_at' => 'Дата публикации',
         );
     }

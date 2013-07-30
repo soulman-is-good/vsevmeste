@@ -17,6 +17,7 @@ class X3_Module_Table extends X3_Module implements Iterator, ArrayAccess {
     public $relations = array();
     private $tables = array();
     private $position = 0;
+    private $_relations = array();
     /**
      * @var X3_Model
      */
@@ -453,6 +454,16 @@ return array(false);//TODO: not tested!!!
     public function __call($name, $parameters) {
         if (method_exists($this->table, $name) || method_exists(X3::db()->queryClass, $name))
             return call_user_func_array(array($this->table, $name), $parameters);
+        if(isset($this->_fields[$name], $this->_fields[$name]['ref'])){
+            $class = $this->_fields[$name]['ref'][0];
+            $attr = $this->_fields[$name]['ref'][1];
+            $val = $this->$name;
+            if(isset($this->_relations[$name]) && array_key_exists($val, $this->_relations[$name]))
+                return $this->_relations[$name][$val];
+            $model = X3_Module_Table::get(array($attr=>$val),1,$class);
+            $this->_relations[$name][$val] = $model;
+            return $model;
+        }
         if(isset($this->relations[$name]))
             return $this->relations[$name];
         return parent::__call($name, $parameters);

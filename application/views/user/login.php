@@ -33,7 +33,7 @@ $errors = $user->getTable()->getErrors();
                     <input type="checkbox" name="rememberme" id="rememberme" /> <label for="rememberme" style="font-size:12px;position: relative;top:-2px">Запомнить меня</label>
                 </td>
                 <td class="field" align="right">
-                    <a style="text-decoration: underline;font-size:12px" href="/forgot-my-password.html">Забыли пароль?</a>
+                    <a style="text-decoration: underline;font-size:12px" href="/restore/">Забыли пароль?</a>
                 </td>
             </tr>
             <tr>

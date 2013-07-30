@@ -63,7 +63,9 @@ td { vertical-align: top; }
 /* ==|== primary styles =====================================================
    Authors: Timur, Maxim
    ========================================================================== */
-
+html, body {
+    height:100%;
+}
 /*default blocks*/
 div.clear {clear:both;height:0px;font-size:0px;}
 .m-5 {margin:5px;}.m-10 {margin:10px;}.m-15 {margin:15px;}.m-20 {margin:20px;}.m-30 {margin:30px;}.m-50 {margin:50px;}.m-100 {margin:100px;}
@@ -180,6 +182,7 @@ body {
     margin: 0px;
     padding: 0px;
     background: #f1f2f0;
+    min-height: 100%;
 }
 
 .partner-mark {
@@ -404,7 +407,7 @@ p {
 
 .slider_right_fade {
     position: absolute;
-    right: 20px;
+    right: 260px;
     top: 0px;
     z-index: 3;
     width: 50px;
@@ -897,6 +900,11 @@ a:hover .menu {
 .footer_cont {
     padding: 20px 0px 40px 0px;
     background: black;
+    /*position: absolute;*/
+    width: 100%;
+    bottom:0px;
+    left:0px;
+    right:0px;
 }
 
 .footer_link_cont {

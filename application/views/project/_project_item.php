@@ -30,7 +30,7 @@ if(is_array($styles)){
                     <div class="finish" style="width: <?=$model->percentDone?>%;"></div>
                 </div>
                 <i><?=$model->timeLeft?></i><br />
-                <i><b>0</b> вложений</i>
+                <i><?=$model->investmentsCount?></i>
             </div>
         </div>
     </div>

@@ -54,7 +54,7 @@
             <li><a href="/<?=$model->name?>-project/">Проект</a></li>
             <li class="active">События</li>
             <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=Project_Comments::num_rows(array('project_id'=>$model->id));?></i></a></li>
-            <li><a href="/<?=$model->name?>-project/investments.html">Вложения <i><?=Project_Invest::num_rows(array('project_id'=>$model->id))?></i></a></li>
+            <li><a href="/<?=$model->name?>-project/investments.html">Вложения <i><?=Project_Invest::num_rows(array('project_id'=>$model->id,'status'=>'1'))?></i></a></li>
         </ul>
     </div>
     <div class="clearfix" style="height:30px;">&nbsp;</div>
@@ -72,7 +72,7 @@
                     </ul>
                 </div>
             </div>
-            <a href="#" class="invest_big">Вложить в проект</a>
+            <a href="/<?=$model->name?>-project/invest.html" class="invest_big">Вложить в проект</a>
         </div>
         <?if($interests->count()>0):?>
         <div class="invest-label">Вложить в проект:</div>
@@ -84,7 +84,7 @@
                 <div class="hr">&nbsp;</div>
                 <i style="color:#999"><?=X3_Html::encode($interest->notes)?></i>
                 <div style="color:#000;padding:5px 0">Доставка до: <?=I18n::date($interest->deliver_at)?></div>
-                <div style="color:#000;padding:0px 0px 5px 0px">Осталось: <b><?=$interest->left?></b></div>
+                <div style="color:#000;padding:0px 0px 5px 0px">Осталось: <b><?=$interest->limit - $interest->bought?>/<?=$interest->limit?></b></div>
             </div>
         </a>
         <?endforeach;?>

@@ -30,7 +30,8 @@ class User extends X3_Module_Table {
         'email' => array('email', 'unique'), //as login
         'password' => array('string[5|50]', 'password'),
         'role' => array('string[255]', 'default' => 'user'),
-        'akey' => array('string[255]', 'default' => ''),
+        'akey' => array('string[255]', 'default' => 'NULL'),
+        'address' => array('string[1024]', 'default' => 'NULL'),
         'date_of_birth' => array('integer[11]', 'default' => '0'),
         'lastbeen_at' => array('datetime', 'default' => '0'),
         'created_at' => array('datetime', 'default' => '0'),
@@ -166,6 +167,43 @@ class User extends X3_Module_Table {
         $this->template->render('index', array('user' => $user));
     }
 
+    public function actionInvested() {
+        if (isset($_GET['id']))
+            $id = (int) $_GET['id'];
+        else
+            $id = X3::user()->id;
+        $user = User::getByPk($id);
+        $q = array('@condition'=>array('user_id'=>$id,'status'=>'1'));
+//        if(X3::user()->id !== $user->id)
+//            $q['@condition']['status'] = 1;
+        $count = Project_Invest::num_rows($q);
+        $paginator = new Paginator('User/Invested',$count);
+        $q['@limit'] = $paginator->limit;
+        $q['@offset'] = $paginator->offset;
+        $projects = Project_Invest::get($q);
+        $this->template->render('invested', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
+    }
+
+    public function actionInvestments() {
+        if (isset($_GET['id']))
+            $id = (int) $_GET['id'];
+        else
+            $id = X3::user()->id;
+        $user = User::getByPk($id);
+        $q = array(
+            '@join'=>'INNER JOIN `project` `p` ON `p`.`id`=`project_invest`.`project_id`',
+            '@condition'=>array('p.user_id'=>$id,'project_invest.status'=>'1')
+        );
+//        if(X3::user()->id !== $user->id)
+//            $q['@condition']['status'] = 1;
+        $count = Project_Invest::num_rows($q);
+        $paginator = new Paginator('User/Investments',$count);
+        $q['@limit'] = $paginator->limit;
+        $q['@offset'] = $paginator->offset;
+        $projects = Project_Invest::get($q);
+        $this->template->render('investments', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
+    }
+
     public function actionProjects() {
         if (isset($_GET['id']))
             $id = (int) $_GET['id'];
@@ -225,6 +263,10 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
         if(isset($_POST['User'])){
             $data = $_POST['User'];
             $model->getTable()->acquire($data);
+            $u = new Upload($model,'image');
+            if($u->message=='' && !$u->source){
+                $u->save();
+            }
             if(trim($model->name) == '') 
                 $model->addError ('name', 'Необходимо ввести ваше имя');
             if(trim($model->surname) == '') 
@@ -405,6 +447,7 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
         if (NULL === ($user = User::get(array('akey' => $key[0],'id'=>$key[1]), 1)))
             throw new X3_404();
         $user->status = 1;
+        $user->akey = null;
         $user->save();
         $this->redirect('/activated.phtml');
     }

@@ -15,7 +15,7 @@ $count = $promo->count();
     <div class="slideshow" style="overflow:hidden;height: 400px;width:980px;margin:0 auto;">
         <ul>
             <? foreach ($promo as $project): ?>
-                <li><img src="/uploads/Project/980x400/<?= $project->image ?>" alt="<?= X3_Html::encode($project->title) ?>" /></li>
+                <li><img src="/uploads/Project/940x400/<?= $project->image ?>" alt="<?= X3_Html::encode($project->title) ?>" /></li>
             <? endforeach; ?>
         </ul>
     </div>

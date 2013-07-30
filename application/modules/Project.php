@@ -58,6 +58,12 @@ class Project extends X3_Module_Table {
         );
     }
     
+    public function beforeAction(){
+        if(X3::request()->uri[1] != 'invest')
+            X3::user()->invest = null;
+        return true;
+    }
+    
     public function filter() {
         return array(
             'allow' => array(
@@ -72,7 +78,13 @@ class Project extends X3_Module_Table {
     }    
     
     public function getPercentDone(){
-        return round($this->current_sum/$this->needed_sum*100);
+        return round(100*($this->current_sum/$this->needed_sum));
+    }
+    
+    public function getInvestmentsCount(){
+        //<b>0</b> вложений
+        $cnt = (int)Project_Invest::num_rows(array('project_id'=>$this->id,'status'=>'1'));
+        return "<b>$cnt</b> ".X3_String::create($cnt)->numeral($cnt, array("вложение","вложения","вложений"));
     }
     
     public function getTimeLeft(){
@@ -238,7 +250,7 @@ class Project extends X3_Module_Table {
                     setcookie("clicked$model->id", '1',time()+864000);
                 }
             }
-            $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            $interests = Project_Interest::get(array('@condition'=>array('bought'=>array('<'=>'`limit`'),'project_id'=>$model->id),'@order'=>'created_at DESC'));
             X3::clientScript()->registerScriptFile('//yandex.st/share/share.js',  X3_ClientScript::POS_END);
             X3::app()->og_title = X3::app()->name . " - " . $model->title;
             X3::app()->og_url = X3::app()->baseUrl . "/$model->name-project.html";
@@ -261,7 +273,7 @@ class Project extends X3_Module_Table {
                 }
                 exit;
             }
-            $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            $interests = Project_Interest::get(array('@condition'=>array('bought'=>array('<'=>'`limit`'),'project_id'=>$model->id),'@order'=>'created_at DESC'));
             X3::clientScript()->registerScriptFile('//vk.com/js/api/openapi.js?96');
             X3::clientScript()->registerScript('VkComments','VK.init({apiId: 3736088, onlyWidgets: true});',  X3_ClientScript::POS_HEAD);
             $this->template->render('comments.vk', array('model' => $model,'interests'=>$interests));
@@ -305,7 +317,7 @@ class Project extends X3_Module_Table {
                 exit;
             }
             $models = Project_Event::get($q);
-            $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            $interests = Project_Interest::get(array('@condition'=>array('bought'=>array('<'=>'`limit`'),'project_id'=>$model->id),'@order'=>'created_at DESC'));
             $this->template->render('events', array('models' => $models,'model'=>$model,'interests'=>$interests));
         }else{
             throw new X3_404();
@@ -347,8 +359,92 @@ class Project extends X3_Module_Table {
                 exit;
             }
             $models = Project_Comments::get($q);
-            $interests = Project_Interest::get(array('@condition'=>array('left'=>array('>'=>'0'),'project_id'=>$model->id),'@order'=>'`left` DESC, created_at DESC'));
+            $interests = Project_Interest::get(array('@condition'=>array('bought'=>array('<'=>'`limit`'),'project_id'=>$model->id),'@order'=>'created_at DESC'));
             $this->template->render('comments', array('models' => $models,'model'=>$model,'interests'=>$interests));
+        }else{
+            throw new X3_404();
+        }
+    }
+    
+    public function actionInvestments() {
+        if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id)),1))) {
+            $limit = 10;
+            $q = array('@condition'=>array('project_id'=>$model->id,'status'=>'1'),'@limit'=>$limit,'@order'=>'`created_at` ASC');
+            if(IS_AJAX){
+                if(isset($_GET['page'])){// && X3::user()->token === X3::request()->getRequest('token')){
+                    $page = (int)$_GET['page'];
+                    $q['@offset'] = $page * $limit;
+                    $models = Project_Event::get($q);
+                    foreach ($models as $model) {
+                        echo $this->template->renderPartial('_project_event',array('model'=>$model));
+                    }
+                }
+                exit;
+            }
+            $models = Project_Invest::get($q);
+            $interests = Project_Interest::get(array('@condition'=>array('bought'=>array('<'=>'`limit`'),'project_id'=>$model->id),'@order'=>'created_at DESC'));
+            $this->template->render('investments', array('models' => $models,'model'=>$model,'interests'=>$interests));
+        }else{
+            throw new X3_404();
+        }
+    }
+    
+    public function actionInvest() {
+        if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id)),1))) {
+            $interest = null;
+            $invest = new Project_Invest();
+            $errors = '';
+            $user = User::getByPk(X3::user()->id);
+            if(null != ($iid = (int)X3::request()->getRequest('id'))) {
+                $interest = Project_Interest::get(array('id'=>$iid,'bought'=>array('<'=>'`limit`')),1);
+            }
+            if(X3::user()->invest != null){
+                $data = json_decode(X3::user()->invest,1);
+                $this->template->render('pay_method',array('data'=>$data,'model'=>$model,'interest'=>$interest));
+            }else{
+                if(isset($_POST['Project_Invest'])){
+                    $data = $_POST['Project_Invest'];
+                    if($interest === null) {
+                        if((int)$data['amount'] <= 0) {
+                            $errors .= 'Сумма вклада должна быть больше нуля<br/>';
+                        }
+                        $invest->amount = (int)abs($data['amount']);
+                        $invest->interest_id = null;
+                    } else {
+                        $address = '';
+                        if(($name = trim(X3::request()->postRequest('name'))) == '') {
+                            $errors .= 'Необходимо заполнить имя<br/>';
+                        }
+                        if(($surname = trim(X3::request()->postRequest('surname'))) == '') {
+                            $errors .= 'Необходимо заполнить фамилию<br/>';
+                        }
+                        if(($address = trim(X3::request()->postRequest('address'))) == '') {
+                            $errors .= 'Необходимо заполнить адрес получения<br/>';
+                        }
+                        if(($city = trim(X3::request()->postRequest('city'))) == '') {
+                            $errors .= 'Укадите город пожалуйста<br/>';
+                        }
+                        $invest->interest_id = $iid;
+                        $invest->amount = (int)$interest->sum;
+                        $invest->address = "$name $surname\n$city,\n$address";
+                    }
+                    $invest->user_id = X3::user()->id;
+                    $invest->project_id = $model->id;
+                    $invest->created_at = time();
+                    $invest->status = Project_Invest::STATUS_UNAPPOVED;
+                    //clean up table
+                    $time = time() - 86400; // 24h
+                    Project_Invest::delete(array('created_at'=>array('<'=>$time),'status'=>'0'));
+                    if($errors== '' && $invest->save()){
+                        X3::user()->invest = json_encode($invest->table->getAttributes());
+                        $this->controller->refresh();
+                    }else{
+                        if($invest->hasErrors())
+                            $errors .= X3_Html::errorSummary($invest);
+                    }
+                }
+                $this->template->render('invest', array('model'=>$model,'interest'=>$interest,'invest'=>$invest,'theuser'=>$user,'errors'=>$errors));
+            }
         }else{
             throw new X3_404();
         }

@@ -2,6 +2,9 @@
 return
 array(
     //Common
+    '/^\/epay\/([0-9]+)(.*)$/' => array('/site/kkb/id/$1$2', true),
+    '/^\/restore\/(.*)$/' => array('/site/restore/key/$1', true),
+    '/^\/restore\/$/' => array('/site/restore', true),
     '/^\/enter\.html$/' => array('/user/login', true), // first element - module/action, second - if either way then redirect
     '/^\/sitemap\.xml$/' => array('/site/map/type/xml', true), // first element - module/action, second - if either way then redirect
     '/^\/sitemap.html$/' => array('/site/map/type/html'), 
@@ -16,10 +19,13 @@ array(
     //Page
     '/^\/(.+)\.phtml$/' => array('/page/show/name/$1', true),
     //Articles/News
-    '/^\/news\/([0-9]+)?(.*)$/' => array('/news/show/id/$1$2', true),
+    '/^\/news\/([0-9]+)(.*)$/' => array('/news/show/id/$1$2', true),
     //Projects
 //    '/^\/project\/add\/step(.+)$/' => array('/project/step$1', true),
     '/^\/partner\/confirm\/(.*)$/' => array('/project/partner/code/$1', true),
+    '/^\/(.+)\-project\/i([0-9]+).html$/' => array('/project/invest/name/$1/id/$2', true),
+    '/^\/(.+)\-project\/invest.html(.*)$/' => array('/project/invest/name/$1$2', true),
+    '/^\/(.+)\-project\/investments.html(.*)$/' => array('/project/investments/name/$1$2', true),
     '/^\/(.+)\-project\/comments.html(.*)$/' => array('/project/comments/name/$1$2', true),
     '/^\/(.+)\-project\/events.html(.*)$/' => array('/project/events/name/$1$2', true),
     '/^\/(.+)\-project.*$/' => array('/project/show/name/$1', true),
@@ -32,6 +38,8 @@ array(
     
     '/^\/user\/login.html$/' => array('/user/login.html', true),
     //'/^\/user\/logout.html$/' => array('/user/login.html', true),
+    '/^\/user\/([0-9]+)?\/invested(.+)$/' => array('/user/invested/id/$1$2', true),
+    '/^\/user\/([0-9]+)?\/investments(.+)$/' => array('/user/investments/id/$1$2', true),
     '/^\/user\/([0-9]+)?\/projects(.+)$/' => array('/user/projects/id/$1$2', true),
     '/^\/user\/([0-9]+)\/$/' => array('/user/index/id/$1', true),
     '/^\/admins(.*)$/' => array('/user/admins/$1', true),

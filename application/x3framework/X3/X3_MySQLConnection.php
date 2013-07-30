@@ -96,7 +96,7 @@ class X3_MySQLConnection extends X3_Component {
         $res = $this->query($sql);
         if (is_resource($res)){
             $result = mysql_fetch_row($res);
-            return $result[0];
+            return array_shift($result);
         }
         return false;
     }

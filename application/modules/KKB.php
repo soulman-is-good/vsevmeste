@@ -9,29 +9,19 @@
  *
  * @author Soul_man
  */
-class Jobs extends X3_Module_Table {
+class KKB extends X3_Module_Table {
 
     public $encoding = 'UTF-8';
     /*
      * uncomment if want new model functional
      */
-    public $tableName = 'data_jobs';
+    public $tableName = 'kkb';
 
     public $_fields = array(
         'id'=>array('integer[10]','unsigned','primary','auto_increment'),        
-        'city_id'=>array('integer[10]','unsigned','index','ref'=>array('Region','id','default'=>'title','query'=>array('@condition'=>array('parent_id'=>array('IS NOT '=>"NULL")),'@order'=>'title'))),
-        'sphere_id'=>array('integer[10]','unsigned','index','ref'=>array('Sphere','id','default'=>'title','query'=>array('@order'=>'title'))),
-        'age'=>array('integer[2]','unsigned','default'=>'0'),
-        'title'=>array('string[255]','language'),
-        'content'=>array('content','language'),
-        'text'=>array('text','language'),
-        'status'=>array('boolean','default'=>'1'),
-        'onmain'=>array('boolean','default'=>'1'),
         'created_at'=>array('datetime'),
-        'metatitle'=>array('string','default'=>'','language'),
-        'metakeywords'=>array('string','default'=>'','language'),
-        'metadescription'=>array('string', 'default'=>'','language'),        
-        
+        'amount'=>array('integer[10]','unsigned','primary','auto_increment'),        
+        'status'=>array('integer[1]','unsigned','default'=>'0'),s
     );
     public static function newInstance($class=__CLASS__) {
         return parent::newInstance($class);

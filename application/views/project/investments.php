@@ -1,60 +1,12 @@
-<style>
-    .admin-links {
-        position: absolute;
-        right:0px;
-        top:0px;
-    }
-    .admin-links a {}
-    
-    .project-event .admin-links{
-        opacity:0;
-        transition: opacity 0.5s;
-        -webkit-transition: opacity 0.5s;
-        -moz-transition: opacity 0.5s;
-    }
-    .project-event:hover .admin-links{
-        opacity:1;
-        transition: opacity 0.5s;
-        -webkit-transition: opacity 0.5s;
-        -moz-transition: opacity 0.5s;
-    }
-    .project-event {
-        position:relative;
-        min-height:100px;
-    }
-    .event-avatar {
-        float:left;
-        border-radius: 10px;
-        -moz-border-radius: 10px;
-        -webkit-border-radius: 10px;
-    }
-    .project-event-content {
-        margin-left: 115px;
-    }
-    .project-event-content a.grey_link {
-        font-size:16px;
-        font-style: italic;
-        color:#000;
-    }
-    .project-event-content i {
-        font-style: italic;
-        color:#999;
-        font-size: 13px;
-        padding-left:5px;
-    }
-    .project-event-content p {
-        margin-top:10px;
-        text-align: justify;
-    }
-</style>
+<style>.admin-links {position: absolute;right:0px;top:0px;    }    .admin-links a {}.project-event .admin-links{opacity:0;transition: opacity 0.5s;-webkit-transition: opacity 0.5s;-moz-transition: opacity 0.5s;    }    .project-event:hover .admin-links{opacity:1;transition: opacity 0.5s;-webkit-transition: opacity 0.5s;-moz-transition: opacity 0.5s;    }    .project-event {position:relative;min-height:100px;    }    .event-avatar {float:left;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius: 10px;    }    .project-event-content {margin-left: 115px;    }    .project-event-content a.grey_link {font-size:16px;font-style: italic;color:#000;}    .project-event-content i {font-style: italic;color:#999;font-size: 13px;padding-left:5px;    }.project-event-content p {margin-top:10px;text-align: justify;}</style>
 <?=$this->renderPartial('_item_head',array('model'=>$model));?>
 <div class="body" style="position: relative">
     <div class="tabs">
         <ul>
             <li><a href="/<?= $model->name ?>-project/">Проект</a></li>
             <li><a href="/<?= $model->name ?>-project/events.html">События <i><?=Project_Event::num_rows(array('project_id'=>$model->id))?></i></a></li>
-            <li class="active">Комментарии</li>
-            <li><a href="/<?=$model->name?>-project/investments.html">Вложения <i><?=Project_Invest::num_rows(array('project_id'=>$model->id,'status'=>'1'))?></i></a></li>
+            <li><a href="/<?=$model->name?>-project/comments.html">Комментарии <i><?=Project_Comments::num_rows(array('project_id'=>$model->id));?></i></a></li>
+            <li class="active">Вложения</li>
         </ul>
     </div>
     <div class="clearfix" style="height:30px;">&nbsp;</div>
@@ -96,27 +48,9 @@
                 <?php
                 if($models->count()>0):
                 foreach ($models as $event) {
-                    echo $this->renderPartial('_project_comment',array('model'=>$event));
+                    echo $this->renderPartial('_project_investments',array('model'=>$event));
                 }else:?>
-                <?=X3::translate('Нет комментариев')?>.
-                <?endif;?>
-                <?php
-                if(!X3::user()->isGuest()):
-                $form = new Form('Project_Comments');
-                echo $form->start();
-                echo X3_Html::form_tag('input', array('type'=>'hidden','name'=>'token','value'=>X3::user()->ctoken));
-                ?>
-                <div class="hr">&nbsp;</div>
-                <p>Добавьте комментарий:</p>
-                <div class="form">
-                    <div class="field">
-                        <textarea name="commenttext" id="eventtext" style="width:550px;height:96px"></textarea>
-                    </div>
-                    <div class="field">
-                        <button type="submit">Добавить</button>
-                    </div>
-                </div>
-                <?=$form->end();?>
+                <a href="/<?=$model->name?>-project/invest.html"><?=X3::translate('Вложите в проект первым')?>!</a>
                 <?endif;?>
             </div>
         </div>
