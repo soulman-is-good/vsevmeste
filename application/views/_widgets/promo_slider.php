@@ -28,7 +28,7 @@ $count = $promo->count();
                         <? if ($project->donate): ?>
                             <div class="project_category" style="margin-bottom: 10px; font-size: 21px;">Благотворительная акция</div>
                         <? endif; ?>
-                        <div style="margin-bottom: 20px; font-size: 16px; font-style: italic; color: #fff;"><b><?=  number_format($project->current_sum,0,' ',' ')?></b>&nbsp;тенге вложили<br /><?=$project->getTimeLeft();?></div>
+                        <div style="text-shadow:1px 1px 4px #ccc;margin-bottom: 20px; font-size: 16px; font-style: italic; color: #fff;"><b><?=  number_format($project->current_sum,0,' ',' ')?></b>&nbsp;тенге вложили<br /><?=$project->getTimeLeft();?></div>
                         <a href="/<?=$project->name?>-project/"><div class="button">Посмотреть проект</div></a>
                     </div>
                 </li>

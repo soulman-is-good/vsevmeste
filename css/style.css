@@ -1,4 +1,4 @@
-article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
+.article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
 audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
 audio:not([controls]) { display: none; }
 [hidden] { display: none; }
@@ -420,7 +420,7 @@ p {
     position: absolute;
     top:40px;
     left:240px;
-    z-index: 3;
+    z-index: 30;
 }
 
 .slider_title {
@@ -485,7 +485,7 @@ p {
     position: absolute;
     bottom: 40px;
     left: 240px;
-    z-index: 4;
+    z-index: 34;
 }
 
 .active .slider_page {

@@ -19,7 +19,7 @@ class Project extends X3_Module_Table {
         'user_id'=>array('integer[10]','unsigned','index','ref'=>array('User','id','default'=>"name")),
         'city_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('City','id','default'=>'title')),
         'category_id' => array('integer[10]', 'unsigned', 'index', 'ref'=>array('Category','id','default'=>'title')),
-        'image' => array('file', 'allowed' => array('jpg', 'gif', 'png', 'jpeg'), 'max_size' => 10240),
+        'image' => array('file', 'default'=>'NULL','allowed' => array('jpg', 'gif', 'png', 'jpeg'), 'max_size' => 10240),
         'video'=>array('string[128]','default'=>'NULL'),
         'links'=>array('content','default'=>'NULL'),
         'title'=>array('string[64]'),
@@ -75,8 +75,17 @@ class Project extends X3_Module_Table {
     
     public function moduleTitle() {
         return 'Проекты';
-    }    
+    }
     
+    public function getVideoId(){
+        $vid = false;
+        if(preg_match("/youtu[^\/]+\/(.+)/", $this->video,$m)>0){
+            $vid = str_replace("watch?v=","",$m[1]);
+        }
+        return $vid;
+    }
+
+
     public function getPercentDone(){
         return round(100*($this->current_sum/$this->needed_sum));
     }
@@ -475,11 +484,26 @@ class Project extends X3_Module_Table {
             if($i->message == null && !$i->source){
                 $i->save();
             }
+            if($model->image == null && $model->video != '' && !$i->source) {
+                $vid = false;
+                if(preg_match("/youtu[^\/]+\/(.+)/", $model->video,$m)>0){
+                    $vid = str_replace("watch?v=","",$m[1]);
+                    $filename = 'Project-'.time().rand(10,99).'.jpg';
+                    $data = @file_get_contents("http://img.youtube.com/vi/$vid/hqdefault.jpg");
+                    if($data) {
+                        @file_put_contents("uploads/Project/$filename", $data);
+                        $model->image = $filename;
+                    }
+                }
+            }
+            if($model->video == '' && $model->image == ''){
+                $model->addError('image', 'Нужно прикрепить изображение или указать ссылку на видео YouTube');
+            }
             $model->links = implode("\n",$model->links);
             $model->user_id = $id;
             $model->needed_sum = 1;
             $model->created_at = time();
-            if($model->validate()){
+            if(!$model->hasErrors() && $model->validate()){
                 X3::user()->new_project = $model->getTable()->getAttributes();
                 //Notify::sendMail('Project.Created',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>"/{$model->name}-project.html"));
                 $this->redirect('/project/step2.html');
@@ -514,6 +538,8 @@ class Project extends X3_Module_Table {
         $model = new Project;
         $data = X3::user()->new_project;
         $model->getTable()->acquire($data);
+        if($model->id>0)
+            $model->table->setIsNewRecord(true);
         $model->needed_sum = null;
         $user = User::getByPk($id);
         if($model->id>0)
@@ -527,11 +553,13 @@ class Project extends X3_Module_Table {
             $model->created_at = time();
             $model->status = 0;
             if($model->save()){
+                X3::user()->new_project = $model->table->getAttributes();
                 $_interests = $_POST['Project_Interest'];
                 if(!empty($_interests)){
                     Project_Interest::delete(array('project_id'=>$model->id));
                     $interests = array();
                     foreach($_interests as $idata) {
+                        if($idata['sum'] == '' || $idata['title'] == '') continue;
                         $interest = new Project_Interest;
                         $interest->getTable()->acquire($idata);
                         $interest->project_id = $model->id;
@@ -539,7 +567,7 @@ class Project extends X3_Module_Table {
                         $interest->created_at = time();
                         if($interest->id>0)
                             $interest->getTable()->setIsNewRecord(false);
-                        $hasErrors = $hasErrors || $interest->save();
+                        $hasErrors = $hasErrors || !$interest->save();
                         $interests[] = $interest;
                     }
                 }
@@ -654,6 +682,8 @@ class Project extends X3_Module_Table {
     }
 
     public function beforeValidate() {
+        if($this->video != '' && strpos($this->video,'http')!==0)
+            $this->video = "http://$this->video";
         if($this->scenario == 'update') {
             if($this->city_id == 0) $this->city_id = null;
             if($this->table->isNewRecord){
@@ -685,7 +715,11 @@ class Project extends X3_Module_Table {
     public function onDelete($tables, $condition) {
         if (strpos($tables, $this->tableName) !== false) {
             $model = $this->table->select('*')->where($condition)->asObject(true);
-            Warning_Stat::delete(array('warning_id'=>$model->id));
+            Project_Invest::delete(array('project_id'=>$model->id));
+            Project_Interest::delete(array('project_id'=>$model->id));
+            Project_Comments::delete(array('project_id'=>$model->id));
+            Project_Event::delete(array('project_id'=>$model->id));
+            Project_Partner::delete(array('project_id'=>$model->id));
         }
         parent::onDelete($tables, $condition);
     }

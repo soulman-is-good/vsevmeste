@@ -78,6 +78,13 @@ $(document).ready(function(){
                 $(self).remove();
             }).attr('src', src);
         });
+        $('#Project_video').on('change',function(){
+            if(typeof $('#blah img')[0] === 'undefined'){
+                var id = /youtu[^\/]+\/(.+)/.exec($(this).val()).pop().replace('watch?v=','');
+                var img = $('<img />').attr('src', "http://img.youtube.com/vi/"+id+"/hqdefault.jpg");
+                $('#blah').html(img.width(300)).height(200).css({'overflow':'hidden','margin-top':'20px'});
+            }
+        })
         if(typeof document.getElementById('Project_full_content') !== 'undefined' && document.getElementById('Project_full_content') !== null) {
             CKEDITOR.replace( 'Project_full_content',{toolbar : 'Custom',width:570});
         }
@@ -90,7 +97,7 @@ $(document).ready(function(){
                         var idx = $(this).index();
                         $('.slideshow li:visible').fadeOut();
                         $('.slideshow li').eq(idx).fadeIn();
-                        var div = $('.slider-content').find('li').eq(idx).children('div').clone();
+                        var div = $('.slider-content li:eq('+idx+') .slider_text_cont').clone();
                         $('.slideshow .slider_text_cont').fadeOut(function(){$(this).remove();});
                         $('.slideshow').prepend(div.fadeIn());
 

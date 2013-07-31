@@ -47,7 +47,7 @@ class Project_Interest extends X3_Module_Table {
     public function beforeValidate() {
         if($this->getTable()->getIsNewRecord()) {
             $this->created_at = time();
-            $this->left = $this->limit;
+//            $this->left = $this->limit;
         }
         if(!is_numeric($this->deliver_at))
             $this->deliver_at = (int)strtotime($this->deliver_at);

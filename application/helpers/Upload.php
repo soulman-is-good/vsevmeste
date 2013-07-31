@@ -53,18 +53,19 @@ class Upload extends X3_Component {
                 }
             }
             else {
-                if(isset($_POST[$class][$field . "_source"])){
+                if(isset($_POST[$class][$field . "_source"]) && $_POST[$class][$field . "_source"]!=''){
                     $this->model->table[$this->field] = $_POST[$class][$field . "_source"];
                     $this->source = true;
                 }elseif(!in_array('null',$this->model->_fields[$field]))
                     $this->message = "Error: empty file.";
             }
         }else{
-            $this->source = true;
             if(!isset($file)){
-                if(isset($model) && isset($_POST[$class][$field . "_source"]))
+                
+                if(isset($model) && isset($_POST[$class][$field . "_source"]) && $_POST[$class][$field . "_source"]!=''){
                         $model->table[$this->field] = $_POST[$class][$field . "_source"];
-                elseif(isset($model) && ((isset($model->_fields[$field]['default']) && $model->_fields[$field]['default']=='NULL') || in_array('null',$model->_fields[$field]))){
+                        $this->source = true;
+                }elseif(isset($model) && ((isset($model->_fields[$field]['default']) && $model->_fields[$field]['default']=='NULL') || in_array('null',$model->_fields[$field]))){
                     $model->table[$this->field] = NULL;
                 }else{
                     $this->message = "Нужно прикрепить файл ";
@@ -74,9 +75,10 @@ class Upload extends X3_Component {
             }else{
                 switch($file['error']){
                     case UPLOAD_ERR_NO_FILE:
-                        if(isset($model) && isset($_POST[$class][$field . "_source"]))
+                        if(isset($model) && isset($_POST[$class][$field . "_source"]) && $_POST[$class][$field . "_source"]!=''){
                                 $model->table[$this->field] = $_POST[$class][$field . "_source"];
-                        elseif(isset($model) && ((isset($model->_fields[$field]['default']) && $model->_fields[$field]['default']=='NULL') || in_array('null',$model->_fields[$field]))){
+                                $this->source = true;
+                        }elseif(isset($model) && ((isset($model->_fields[$field]['default']) && $model->_fields[$field]['default']=='NULL') || in_array('null',$model->_fields[$field]))){
                             $model->table[$this->field] = NULL;
                         }else
                             $this->message = X3::translate("Нужно прикрепить файл");

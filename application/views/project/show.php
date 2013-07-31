@@ -42,7 +42,16 @@
         <?endif;?>
     </div>
     <div class="item-body">
+        <?if($model->video!=''):?>
+        <object width="600" height="320">
+          <param name="movie" value="https://www.youtube.com/v/<?=$model->videoId?>?version=3"></param>
+          <param name="allowFullScreen" value="true"></param>
+          <param name="allowScriptAccess" value="always"></param>
+          <embed src="https://www.youtube.com/v/<?=$model->videoId?>?version=3" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always" width="600" height="320"></embed>
+        </object>
+        <?else:?>
         <img width="100%" src="/uploads/Project/<?=$model->image?>" alt="" />
+        <?endif;?>
         <div class="share">
             <b>Поделиться ссылкой</b> <input style="width:235px;" class="search_field" type="text" value="http://<?=$_SERVER['HTTP_HOST']?>/<?=$model->name?>-project/" />
             <div style="display:inline-block" class="yashare-auto-init" data-yashareL10n="ru"

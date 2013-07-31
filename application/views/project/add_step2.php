@@ -85,17 +85,17 @@ $form1 = new Form(new Project_Interest);
 <script type="text/html" id="interest-tmpl">
 <div class="interest-add interest-{index}">
     <div class="field">
-        <input placeholder="Сумма вложения (тенге)" type="text" name="Project_Interest[][sum]" id="Project_Interest_{index}_sum" value=""/>                    </div>
+        <input placeholder="Сумма вложения (тенге)" type="text" name="Project_Interest[{index}][sum]" id="Project_Interest_{index}_sum" value=""/>                    </div>
     <div class="field">
-        <input placeholder="Название интереса вкладчика" type="text" name="Project_Interest[][title]" id="Project_Interest_{index}_title" value=""/>                    </div>
+        <input placeholder="Название интереса вкладчика" type="text" name="Project_Interest[{index}][title]" id="Project_Interest_{index}_title" value=""/>                    </div>
     <div class="field">
-        <textarea placeholder="Описание интереса вкладчика" rows="7" cols="30" name="Project_Interest[][notes]" id="Project_Interest_{index}_notes"></textarea>                    </div>
+        <textarea placeholder="Описание интереса вкладчика" rows="7" cols="30" name="Project_Interest[{index}][notes]" id="Project_Interest_{index}_notes"></textarea>                    </div>
     <div class="field">
-        <input placeholder="Количество интересов" type="text" name="Project_Interest[][limit]" id="Project_Interest_{index}_limit" value=""/>                    </div>
+        <input placeholder="Количество интересов" type="text" name="Project_Interest[{index}][limit]" id="Project_Interest_{index}_limit" value=""/>                    </div>
     <div class="field">
         <div class="info">
             Дата доставки интереса вкладчику
-            <input style="width:257px;margin:0 7px" type="text" name="Project_Interest[][deliver_at]" value="<?=date('d.m.Y')?>" id="Project_Interest_{index}_deliver_at">
+            <input style="width:257px;margin:0 7px" type="text" name="Project_Interest[{index}][deliver_at]" value="<?=date('d.m.Y')?>" id="Project_Interest_{index}_deliver_at">
         </div>
     </div>
     <div class="field">
