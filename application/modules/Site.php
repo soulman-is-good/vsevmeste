@@ -256,7 +256,6 @@ class Site extends X3_Module {
         $model->afterSave();
         exit;
     }
-
 }
 
 ?>

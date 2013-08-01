@@ -22,7 +22,7 @@ if(is_array($styles)){
                 <div class="project_title" style="margin-bottom: 10px;"><a href="/<?=$model->name?>-project.html" class="green_link t16"><b><?=X3_Html::encode($model->title)?></b></a></div>
                 <div class="name"><a href="/user/<?=$model->user_id()->id?>/projects.html" class="grey_link"><?=$model->user_id()->fullName?></a></div>
                 <div class="city"><img src="/images/location.png" alt="" /><a href="/project/city/<?=$model->city_id()->id?>.html" class="grey_link"><?=X3_Html::encode($model->city_id()->title)?></a></div>
-                <div class="project_text"><p><?=X3_Html::encode($model->short_content)?></p></div>
+                <div class="project_text"><p><?=  X3_String::create(str_replace("&nbsp;"," ",X3_Html::encode($model->short_content)))->carefullCut(128)?></p></div>
                 <div style="float: left;"><b><?=  number_format($model->needed_sum,0,' ',' ')?></b> тенге</div>
                 <div style="float: right;"><b><?=$model->percentDone?></b> %</div>
                 <div class="clear"></div>

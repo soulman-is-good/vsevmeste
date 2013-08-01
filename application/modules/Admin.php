@@ -53,8 +53,8 @@ class Admin extends X3_Module {
         $scope = $module->getDefaultScope();
         $count = X3_Module_Table::num_rows($scope,$class);
         $paginator = new Paginator($class."-Admin", $count,null,false);
-        $scope['@limit'] = $paginator->limit;
-        $scope['@offset'] = $paginator->offset;
+//        $scope['@limit'] = $paginator->limit;
+//        $scope['@offset'] = $paginator->offset;
         $models = X3_Module_Table::get($scope,0,$class,1);
         $path = X3::app()->getPathFromAlias("@views:admin:sudo:$action.php");
         if(is_file($path)){

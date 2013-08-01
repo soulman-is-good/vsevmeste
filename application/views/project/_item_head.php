@@ -20,7 +20,7 @@
         <?if($model->partner()===null):?>
             <div class="part"><a href="/project/partner/<?=$model->id?>.html" class="green_link">Стать партнером этого проекта</a></div>
         <?elseif($model->partner()->status == 0 && $model->partner()->user_id == X3::user()->id):?>
-            <div class="part"><i style="color:blue">Вы отправили заявку на почту владельца проекта</i><?=$model->partner()->confirmation?></div>
+            <div class="part"><i style="color:blue">Вы отправили заявку на почту владельца проекта</i></div>
         <?elseif($model->partner()->status == 0):?>
             <div class="part"><a href="/project/partner/<?=$model->id?>.html" class="green_link">Стать партнером этого проекта</a></div>
         <?elseif($model->partner()->status == 1 && $model->partner()->user_id == X3::user()->id):?>

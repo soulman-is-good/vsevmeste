@@ -443,7 +443,7 @@ class Project extends X3_Module_Table {
                     $invest->status = Project_Invest::STATUS_UNAPPOVED;
                     //clean up table
                     $time = time() - 86400; // 24h
-                    Project_Invest::delete(array('created_at'=>array('<'=>$time),'status'=>'0'));
+                    X3::db()->query("DELETE FROM project_invest WHERE created_at<$time AND status=0");
                     if($errors== '' && $invest->save()){
                         X3::user()->invest = json_encode($invest->table->getAttributes());
                         $this->controller->refresh();
@@ -617,68 +617,6 @@ class Project extends X3_Module_Table {
         X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/step3.js?1',  X3_ClientScript::POS_END);
         $this->template->render('add_step3', array('model' => $model));
-    }
-    
-    public function actionDelete(){
-        if(X3::user()->isGuest())
-            throw new X3_404;
-        if(isset($_GET['id']) && (int)$_GET['id']>0)
-            Project::delete(array('id'=>$_GET['id']));
-        
-        $this->redirect('/projects/');
-    }
-
-    public function notify($model) {
-        $role = $model->type == '*'?'':"role='$model->type' AND ";
-        $id = X3::user()->id;
-        if(X3::user()->isKsk()){
-            $b = X3::db()->query("SELECT city_id, region_id, house FROM user_address WHERE user_id='$model->user_id' AND status=1");
-            $o = array();
-            while($bb = mysql_fetch_assoc($b)){
-                $o['city_id'][] = $bb['city_id'];
-                $o['region_id'][] = $bb['region_id'];
-                $o['house'][] = $bb['house'];
-            }
-            $o['city_id'] = implode(', ', $o['city_id']);
-            $o['region_id'] = implode(', ', $o['region_id']);
-            $o['house'] = implode(', ', $o['house']);
-            if($model->city_id > 0 && $model->region_id > 0 && $model->house != null && $model->flat != null){
-                $c = "a1.city_id=$model->city_id AND a1.region_id=$model->region_id AND a1.house='$model->house' AND a1.flat='$model->flat'";
-            }
-            elseif($model->city_id > 0 && $model->region_id > 0 && $model->house != null && $model->flat == null){
-                $c = "a1.city_id='$model->city_id' AND a1.region_id='$model->region_id' AND a1.house='$model->house'";
-            }
-            elseif($model->city_id > 0 && $model->region_id > 0 && $model->house == null && $model->flat == null){
-                $c = "a1.house IN ({$o['house']}) AND a1.city_id='$model->city_id' AND a1.region_id='$model->region_id'";
-            }
-            elseif($model->city_id > 0 && $model->region_id == 0 && $model->house == null && $model->flat == null){
-                $c = "a1.region_id IN ({$o['region_id']}) AND a1.house IN ({$o['house']}) AND a1.city_id='$model->city_id'";
-            }else
-                $c = "a1.city_id IN ({$o['city_id']}) AND a1.region_id IN ({$o['region_id']}) AND a1.house IN ({$o['house']})";
-        }else{
-            if($model->city_id > 0 && $model->region_id > 0 && $model->house != null && $model->flat != null){
-                $c = "a1.city_id='$model->city_id' AND a1.region_id='$model->region_id' AND a1.house='$model->house' AND a1.flat='$model->flat'";
-            }
-            elseif($model->city_id > 0 && $model->region_id > 0 && $model->house != null && $model->flat == null){
-                $c = "a1.city_id='$model->city_id' AND a1.region_id='$model->region_id' AND a1.house='$model->house'";
-            }
-            elseif($model->city_id > 0 && $model->region_id > 0 && $model->house == null && $model->flat == null){
-                $c = "a1.city_id='$model->city_id' AND a1.region_id='$model->region_id'";
-            }
-            elseif($model->city_id > 0 && $model->region_id == 0 && $model->house == null && $model->flat == null){
-                $c = "a1.city_id='$model->city_id'";
-            }else
-                $c = "1";
-        }
-        $users = X3::db()->query("SELECT u.id, CONCAT(name,' ',surname) username, email FROM data_user u INNER JOIN user_address a1 ON a1.user_id=u.id WHERE 
-            u.id<>$id AND ($role $c)
-            GROUP BY u.id
-            ");
-        while($user = mysql_fetch_assoc($users)){
-            $userset = X3::db()->fetch("SELECT * FROM user_settings us WHERE user_id='{$user['id']}'");
-            if($userset['mailVote'])
-                Notify::sendMail('newVote', array('text'=>$model->title,'name'=>$user['username'],'from'=>X3::user()->fullname), $user['email']);
-        }
     }
 
     public function beforeValidate() {
