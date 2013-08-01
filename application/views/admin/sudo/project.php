@@ -17,7 +17,9 @@ $pk = $module->getTable()->getPK();
                     <div class="inside_block">
                         <div class="right_side" style="float:right;width:250px;text-align: right">
                             <div class="wrapper">
+                                <?if($model['status']==0):?>
                                 <a href="/admin/update/module/<?=$class?>/id/<?=$model[$pk]?>.html?field=status&value=1" class="btn btn-mini btn-warning">Активироавть</a><br/>
+                                <?endif;?>
                                 <a href="/admin/edit/module/<?=$class?>/id/<?=$model[$pk]?>.html" class="btn btn-mini">Редактировать</a><br/>
                                 <a href="/admin/delete/module/<?=$class?>/id/<?=$model[$pk]?>.html" class="btn btn-mini btn-danger" onclick="return confirm('Вы уверены?');">Удалить</a>
                             </div>

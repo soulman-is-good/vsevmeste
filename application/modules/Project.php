@@ -23,7 +23,7 @@ class Project extends X3_Module_Table {
         'video'=>array('string[128]','default'=>'NULL'),
         'links'=>array('content','default'=>'NULL'),
         'title'=>array('string[64]'),
-        'name'=>array('string[32]','unique'),
+        'name'=>array('string[128]','unique'),
         'current_sum'=>array('integer[11]','default'=>'0'), 
         'needed_sum'=>array('integer[11]'),
         'short_content'=>array('text'),
@@ -43,6 +43,7 @@ class Project extends X3_Module_Table {
             'category_id'=>X3::translate('Категория проекта'),
             'gallery_id'=>X3::translate('Превью'),
             'title'=>X3::translate('Название'),
+            'name'=>X3::translate('Имя в URL'),
             'full_content'=>X3::translate('Описание проекта'),
             'short_content'=>X3::translate('Краткое описание проекта'),
             'current_sum'=>X3::translate('Вложенная сумма'),
@@ -556,7 +557,7 @@ class Project extends X3_Module_Table {
                 X3::user()->new_project = $model->table->getAttributes();
                 $_interests = $_POST['Project_Interest'];
                 if(!empty($_interests)){
-                    Project_Interest::delete(array('project_id'=>$model->id));
+                    X3::db()->query("DELETE FROM project_interest WHERE project_id=$model->id");
                     $interests = array();
                     foreach($_interests as $idata) {
                         if($idata['sum'] == '' || $idata['title'] == '') continue;

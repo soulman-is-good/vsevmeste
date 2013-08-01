@@ -25,6 +25,19 @@
             </div>
             <a href="/<?=$model->name?>-project/invest.html" class="invest_big">Вложить в проект</a>
         </div>
+        <div style="height:20px">&nbsp;</div>
+        <div class="pane">
+            <div class="pane-cont">
+                <h3>Автор проекта</h3>
+                <div class="hr">&nbsp;</div>
+                <img class="p-avatar" src="<?=$model->user_id()->getAvatar()?>" />
+                <div class="project-p-content">
+                    <strong><a href="/user/<?=$model->user_id()->id?>/projects.html" class="grey_link"><?=$model->user_id()->fullName?></a></strong><br/>
+                    <i>последний визит <?=date('d.m.Y H:i:s',$model->user_id()->lastbeen_at)?></i>
+                </div>
+                <div class="clear">&nbsp;</div>
+            </div>
+        </div>
         <?=  X3_Widget::run('@views:project:_project_interests.php',array('interests'=>$interests,'model'=>$model))?>
     </div>
     <div class="item-body">
@@ -49,6 +62,31 @@
                 <?=$model->full_content?>
             </div>
         </div>
+        <?if(trim($model->links) !=''):$links = explode("/n",$model->links);?>
+        <div class="pane">
+            <div class="pane-cont">
+                <?foreach($links as $link):if(trim($link)=='') continue;?>
+                <a href="<?=X3_Html::encode($link)?>" target="_blank">
+                    <?if(strpos($link,'youtu')):?>
+                    <img src="http://vsevmeste.kz/js/ckeditor.4/plugins/youtube/images/icon.png?t=D2LI" /> <?=  X3_Html::encode($link)?>
+                    <?endif;?>
+                    <?if(strpos($link,'facebook')):?>
+                    <span class="b-share-icon b-share-icon_facebook"></span> <?=  X3_Html::encode($link)?>
+                    <?endif;?>
+                    <?if(strpos($link,'twi')):?>
+                    <span class="b-share-icon b-share-icon_twitter"></span> <?=  X3_Html::encode($link)?>
+                    <?endif;?>
+                    <?if(strpos($link,'moi')):?>
+                    <span class="b-share-icon b-share-icon_moimir"></span> <?=  X3_Html::encode($link)?>
+                    <?endif;?>
+                    <?if(strpos($link,'vk')):?>
+                    <span class="b-share-icon b-share-icon_vkontakte"></span> <?=  X3_Html::encode($link)?>
+                    <?endif;?>
+                </a>
+                <?endforeach;?>
+            </div>
+        </div>
+        <?endif;?>
     </div>
     <div class="clear" style="height: 120px">&nbps;</div>
 </div>

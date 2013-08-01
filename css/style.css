@@ -1156,6 +1156,30 @@ a.pane:hover {
     font-size: 13px;
     font-style: italic;
 }
+    .p-avatar {
+        float:left;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+    }
+    .project-p-content {
+        margin-left: 115px;
+    }
+    .project-p-content a.grey_link {
+        font-size:16px;
+        font-style: italic;
+        color:#000;
+    }
+    .project-p-content i {
+        font-style: italic;
+        color:#999;
+        font-size: 13px;
+        padding-left:5px;
+    }
+    .project-p-content p {
+        margin-top:10px;
+        text-align: justify;
+    }
 .invest_big {
     margin: 0px;
     font-family: JunegullRegular, Arial black;
