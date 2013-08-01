@@ -31,6 +31,13 @@
     <div class="item-body">
         <div class="pane">
             <div class="pane-cont">
+                <div class="project-event">
+                    <img class="event-avatar" src="<?=$model->user_id()->getAvatar()?>" />
+                    <div class="project-event-content">
+                        <strong><a href="/user/<?=$model->user_id()->id?>/projects.html" class="grey_link"><?=$model->user_id()->fullName?></a></strong> <i>создатель проекта</i>
+                    </div>
+                </div>
+                <div class="hr">&nbsp;</div>
                 <?php
                 if($models->count()>0):
                 foreach ($models as $event) {
