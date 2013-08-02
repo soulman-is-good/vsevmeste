@@ -15,6 +15,7 @@
 <title><?=X3::app()->name?></title>
 <link href="/js/tipTip.css" type="text/css" rel="stylesheet" />
 <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+<script type="text/javascript">function getCookie(name) {var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));return matches ? decodeURIComponent(matches[1]) : false;}function setCookie(name, value, options) {options = options || {};var expires = options.expires;if (typeof expires == "number" && expires) {var d = new Date();d.setTime(d.getTime() + expires*1000);expires = options.expires = d;}if (expires && expires.toUTCString){options.expires = expires.toUTCString();}value = encodeURIComponent(value);var updatedCookie = name + "=" + value;for(var propName in options) {updatedCookie += "; " + propName;var propValue = options[propName];if (propValue !== true){updatedCookie += "=" + propValue;}}document.cookie = updatedCookie;}</script>
 </head>
 <body itemscope itemtype="http://schema.org/WebPage" class="<?=$main && X3::app()->promo?'':'noslider'?> <?=X3::app()->module->controller->id." ".X3::app()->module->controller->action?><?=X3::user()->isGuest()?' unauthorized':''?>">
 <!--
@@ -22,6 +23,12 @@ Development and Layout - Maxim Savin <http://careers.stackoverflow.com/soulman>
 Based on x3framework2.0
 working with Zuber.kz
 -->
+<?if(!isset($_COOKIE['super-strip'])):?>
+<div class="super-strip">
+    <a class="super-strip-flag" href="#" onclick="setCookie('super-strip','1');$(this).parent().slideUp();return false;"><img src="/images/delete_dis.png" /></a>
+    <?=  strip_tags(SysSettings::getValue('HeaderStrip','text[128]','Лента в шапке','Общие','Что такое vsevmeste.kz? Краудфандинговая платформа, принимающая финансирование для авторов проектов. <a href="/about-us.phtml">Подробнее</a>'),'<a>')?>
+</div>
+<?endif;?>
         <?=X3_Widget::run('@layouts:header.php',array('main'=>isset($main)))?>
 <div class="wrap" style="position: relative;height: 100%;">
         <?=$content?>

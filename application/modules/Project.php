@@ -54,6 +54,7 @@ class Project extends X3_Module_Table {
             'image'=>X3::translate('Изображение'),
             'video'=>X3::translate('Видео'),
             'links'=>X3::translate('Ссылки на проект'),
+            'donate'=>X3::translate('Благотворительная акция'),
             'company_name'=>X3::translate('Название компании'),
             'company_bin'=>X3::translate('ИИН/БИН компании'),
         );
@@ -88,7 +89,7 @@ class Project extends X3_Module_Table {
 
 
     public function getPercentDone(){
-        return round(100*($this->current_sum/$this->needed_sum));
+        return $this->current_sum<$this->needed_sum?round(100*($this->current_sum/$this->needed_sum)):100;
     }
     
     public function getInvestmentsCount(){
@@ -142,7 +143,8 @@ class Project extends X3_Module_Table {
             $sort = X3::request()->getRequest('sort');
             switch ($sort){
                 case 'popular':
-                    $q['@order']='clicks DESC';
+                    $q['@condition']['clicks'] = array('@@'=>"clicks > (SELECT SUM(clicks)/COUNT(id) FROM project WHERE status=1 AND end_at>".time().")");
+                    $q['@order'] = 'clicks DESC';
                     break;
                 case 'weekly':
                     $time = time() - 604800;
@@ -151,7 +153,7 @@ class Project extends X3_Module_Table {
                 case 'ending':
                     $time = time() + 604800;
                     $q['@order'] = 'end_at DESC';
-                    $q['@condition']['end_at']=array('<'=>"$time");
+                    $q['@condition']['end_at']=array('@@'=>"end_at<$time AND end_at>".time());
                     break;
                 case 'cheap':
                     $q['@order'] = 'needed_sum ASC';

@@ -203,7 +203,7 @@ class Site extends X3_Module {
             } else {
                 $currency_id = "398"; // tenge
                 $sign = process_request($invest->id, $currency_id, $invest->amount, $path1);
-                if (strpos($sign, "=") !== false) {
+                if (strpos(base64_decode($sign), "<") !== false) {
                     //$invest = Project_Invest::getByPk($invest->id);
                     $invest->pay_data = base64_decode($sign);
                     $invest->pay_method = Project_Invest::PAY_METHOD_EPAY;
