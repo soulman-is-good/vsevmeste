@@ -14,6 +14,9 @@
                 <?if($model->donate):?>
                 <div class="donate-action"><?=X3::translate('Благотворительная акция')?></div>
                 <?endif;?>
+        <?if(X3::user()->id == $model->user_id):?>
+            <a href="/project/edit/id/<?=$model->id?>.html" style="font-size: 16px;font-weight: bold;border-bottom: 1px solid #ADD299;display: inline-block">Редактировать проект</a>
+        <?endif;?>
             <div class="name"><a href="/user/<?=$model->user_id()->id?>/projects.html" class="grey_link"><?=$model->user_id()->fullName?></a></div>
             <div class="city"><img src="/images/location.png" alt="" /><a href="/project/city/<?=$model->city_id()->id?>.html" class="grey_link"><?=X3_Html::encode($model->city_id()->title)?></a></div>
     <?if(X3::user()->partner):?>

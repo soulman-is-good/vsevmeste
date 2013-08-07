@@ -1,5 +1,7 @@
 <?php
 $form = new Form($model);
+$links = explode("\n",$model->links);
+$links = array_merge($links, array_fill(0, 5, ''));
 ?>
 <div class="item-head">
     <div class="item-head-body">
@@ -51,11 +53,11 @@ $form = new Form($model);
                 </div>
                 <div class="field">
                     <div><strong>Ссылки на проект на других источниках</strong></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'Vkontakte'))?></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'Facebook'))?></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'Twitter'))?></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'Мой Мир'))?></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'YouTube'))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Vkontakte','value'=>$links[0]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Facebook','value'=>$links[1]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Twitter','value'=>$links[2]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Мой Мир','value'=>$links[3]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'YouTube','value'=>$links[4]))?></div>
                 </div>
                 <div class="field">
                     <button type="submit">Далее</button>

@@ -21,7 +21,7 @@ config.font_names =
     'diavlo, sans-serif;';
 config.extraPlugins = 'sfbrowser,youtube';
 config.allowedContent = true;
-config.toolbar = 'Full';
+config.toolbar = 'Custom';
 config.toolbar_Custom =[
 	['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','youtube','SFbrowser']
 	];

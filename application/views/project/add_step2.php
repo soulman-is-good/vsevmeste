@@ -45,7 +45,7 @@ $form1 = new Form(new Project_Interest);
                             <input placeholder="Сумма вложения (тенге)" class="<?=$interest->getTable()->hasError('sum')?'error':'';?>" type="text" name="Project_Interest[][sum]" id="Project_Interest_<?=$i?>_sum" value="<?=$interest->sum?>"/> 
                         </div>
                         <div class="field">
-                            <input placeholder="Название интереса вкладчика" class="<?=$interest->getTable()->hasError('title')?'error':'';?>" type="text" name="Project_Interest[][title]" id="Project_Interest_<?=$i?>_title" value="<?=$interest->sum?>"/>
+                            <input placeholder="Название интереса вкладчика" class="<?=$interest->getTable()->hasError('title')?'error':'';?>" type="text" name="Project_Interest[][title]" id="Project_Interest_<?=$i?>_title" value="<?=$interest->title?>"/>
                         </div>
                         <div class="field">
                             <textarea placeholder="Описание интереса вкладчика" class="<?=$interest->getTable()->hasError('notes')?'error':'';?>" rows="7" cols="30" name="Project_Interest[][notes]" id="Project_Interest_<?=$i?>_notes"><?=$interest->notes?></textarea>

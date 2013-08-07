@@ -62,25 +62,30 @@
                 <?=$model->full_content?>
             </div>
         </div>
-        <?if(trim($model->links) !=''):$links = explode("/n",$model->links);?>
-        <div class="pane">
+        <?if(trim($model->links) !=''):
+            if(strpos($model->links,"\n")!==false)
+                $links = explode("\n",$model->links);
+            else
+                $links = explode(" ",$model->links);
+        ?>
+        <div class="pane" style="margin-top:20px">
             <div class="pane-cont">
                 <?foreach($links as $link):if(trim($link)=='') continue;?>
                 <a href="<?=X3_Html::encode($link)?>" target="_blank">
                     <?if(strpos($link,'youtu')):?>
-                    <img src="http://vsevmeste.kz/js/ckeditor.4/plugins/youtube/images/icon.png?t=D2LI" /> <?=  X3_Html::encode($link)?>
+                    <img src="http://vsevmeste.kz/js/ckeditor.4/plugins/youtube/images/icon.png?t=D2LI" />&nbsp;<?=  X3_Html::encode($link)?><br/>
                     <?endif;?>
                     <?if(strpos($link,'facebook')):?>
-                    <span class="b-share-icon b-share-icon_facebook"></span> <?=  X3_Html::encode($link)?>
+                    <span class="b-share-icon b-share-icon_facebook"></span>&nbsp;<?=  X3_Html::encode($link)?><br/><br/>
                     <?endif;?>
                     <?if(strpos($link,'twi')):?>
-                    <span class="b-share-icon b-share-icon_twitter"></span> <?=  X3_Html::encode($link)?>
+                    <span class="b-share-icon b-share-icon_twitter"></span>&nbsp;<?=  X3_Html::encode($link)?><br/><br/>
                     <?endif;?>
                     <?if(strpos($link,'moi')):?>
-                    <span class="b-share-icon b-share-icon_moimir"></span> <?=  X3_Html::encode($link)?>
+                    <span class="b-share-icon b-share-icon_moimir"></span>&nbsp;<?=  X3_Html::encode($link)?><br/><br/>
                     <?endif;?>
                     <?if(strpos($link,'vk')):?>
-                    <span class="b-share-icon b-share-icon_vkontakte"></span> <?=  X3_Html::encode($link)?>
+                    <span class="b-share-icon b-share-icon_vkontakte"></span>&nbsp;<?=  X3_Html::encode($link)?><br/><br/>
                     <?endif;?>
                 </a>
                 <?endforeach;?>

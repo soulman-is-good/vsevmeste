@@ -264,6 +264,20 @@ class Project extends X3_Module_Table {
             }
             $interests = Project_Interest::get(array('@condition'=>array('bought'=>array('<'=>'`limit`'),'project_id'=>$model->id),'@order'=>'created_at DESC'));
             X3::clientScript()->registerScriptFile('//yandex.st/share/share.js',  X3_ClientScript::POS_END);
+            if(X3::user()->id === $model->user_id){
+                X3::clientScript()->registerScriptFile('/js/ckeditor.4/ckeditor.js?2223',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerCssFile('/js/sfbrowser/css/sfbrowser.min.css',  'screen');
+                X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/filetree.css');
+                X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/screen.min.css','screen');
+                X3::clientScript()->registerScriptFile('/js/sfbrowser/SWFObject.min.js',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerScriptFile('/js/sfbrowser/jquery.tinysort.min.js',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerScriptFile('/js/sfbrowser/jquery.sfbrowser.js',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerScriptFile('/js/sfbrowser/lang/ru.js',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/filetree/jquery.sfbrowser.filetree.min.js',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/imageresize/jquery.sfbrowser.imageresize.min.js',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerScriptFile('/js/sfbrowser/config.js?1',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
+            }
             X3::app()->og_title = X3::app()->name . " - " . $model->title;
             X3::app()->og_url = X3::app()->baseUrl . "/$model->name-project.html";
             X3::app()->og_image = X3::app()->baseUrl . "/uploads/Project/220x220xw/$model->image";
@@ -470,6 +484,14 @@ class Project extends X3_Module_Table {
         }
         $this->redirect('/project/step1.html');
     }
+    
+    public function actionEdit() {
+        if(X3::user()->isGuest() || NULL === ($id = (int)X3::request()->getRequest('id')) || NULL === ($model = Project::get(array('id'=>$id,'user_id'=>X3::user()->id))))
+            $this->redirect('/enter.html');
+        X3::user()->new_project = $model->getTable()->getAttributes();
+        $this->redirect('/project/step1.html');
+    }
+    
     public function actionStep1() {
         if(X3::user()->isGuest())
             $this->redirect('/enter.html');
@@ -479,6 +501,9 @@ class Project extends X3_Module_Table {
         $model->city_id = $user->city_id;
         if(X3::user()->new_project != null){
             $model->getTable()->acquire(X3::user()->new_project);
+        }
+        if($model->id > 0) {
+            $model->getTable()->setIsNewRecord(false);
         }
         if(isset($_POST['Project'])){
             $data = $_POST['Project'];
@@ -502,7 +527,8 @@ class Project extends X3_Module_Table {
             if($model->video == '' && $model->image == ''){
                 $model->addError('image', 'Нужно прикрепить изображение или указать ссылку на видео YouTube');
             }
-            $model->links = implode("\n",$model->links);
+            if(is_array($model->links))
+                $model->links = implode("\n",$model->links);
             $model->user_id = $id;
             $model->needed_sum = 1;
             $model->created_at = time();
@@ -541,9 +567,11 @@ class Project extends X3_Module_Table {
         $model = new Project;
         $data = X3::user()->new_project;
         $model->getTable()->acquire($data);
-        if($model->id>0)
-            $model->table->setIsNewRecord(true);
-        $model->needed_sum = null;
+        if($model->id>0){
+            $model->table->setIsNewRecord(false);
+        }else {
+            $model->needed_sum = null;
+        }
         $user = User::getByPk($id);
         if($model->id>0)
             $interests = Project_Interest::get(array('project_id'=>$model->id));
@@ -553,18 +581,24 @@ class Project extends X3_Module_Table {
         if(isset($_POST['Project'])){
             $data = $_POST['Project'];
             $model->getTable()->acquire($data);
-            $model->created_at = time();
+            if(!$model->id>0)
+                $model->created_at = time();
             $model->status = 0;
             if($model->save()){
                 X3::user()->new_project = $model->table->getAttributes();
                 $_interests = $_POST['Project_Interest'];
                 if(!empty($_interests)){
-                    X3::db()->query("DELETE FROM project_interest WHERE project_id=$model->id");
+                    //X3::db()->query("DELETE FROM project_interest WHERE project_id=$model->id");
                     $interests = array();
                     foreach($_interests as $idata) {
                         if($idata['sum'] == '' || $idata['title'] == '') continue;
-                        $interest = new Project_Interest;
+                        $interest = null;
+                        if(isset($idata['id']) && $idata['id']>0)
+                            $interest = Project_Interest::getByPk((int)$idata['id']);
+                        if($interest === null)
+                            $interest = new Project_Interest;
                         $interest->getTable()->acquire($idata);
+                        if($interest)
                         $interest->project_id = $model->id;
                         $interest->sum = abs($interest->sum);
                         $interest->created_at = time();
@@ -639,7 +673,7 @@ class Project extends X3_Module_Table {
             }elseif($this->end_at == 0)
                 $this->end_at = time() + 84600;
             $today = mktime(0,0,0,date('n'),date('j'),date('Y'));
-            if($this->end_at < $today)
+            if(!$this->id>0 && $this->end_at < $today)
                 $this->addError('end_at',X3::translate("Нельзя создать проект который уже закончился"));
             if($this->name==''){
                 $this->name = $this->title;
