@@ -87,6 +87,9 @@ class Project extends X3_Module_Table {
         return $vid;
     }
 
+    public function getPercentReal(){
+        return round(100*($this->current_sum/$this->needed_sum));
+    }
 
     public function getPercentDone(){
         return $this->current_sum<$this->needed_sum?round(100*($this->current_sum/$this->needed_sum)):100;
@@ -504,6 +507,8 @@ class Project extends X3_Module_Table {
         }
         if($model->id > 0) {
             $model->getTable()->setIsNewRecord(false);
+        }else {
+            $model->created_at = time();
         }
         if(isset($_POST['Project'])){
             $data = $_POST['Project'];
@@ -571,6 +576,7 @@ class Project extends X3_Module_Table {
             $model->table->setIsNewRecord(false);
         }else {
             $model->needed_sum = null;
+            $model->created_at = time();
         }
         $user = User::getByPk($id);
         if($model->id>0)
@@ -583,6 +589,8 @@ class Project extends X3_Module_Table {
             $model->getTable()->acquire($data);
             if(!$model->id>0)
                 $model->created_at = time();
+            $model->end_at = $model->created_at + $model->end_at * 86400;
+            die(date("d.m.Y H:i",$this->created_at) . " - " . date("d.m.Y H:i",$this->end_at));
             $model->status = 0;
             if($model->save()){
                 X3::user()->new_project = $model->table->getAttributes();

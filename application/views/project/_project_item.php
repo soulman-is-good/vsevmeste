@@ -24,7 +24,7 @@ if(is_array($styles)){
                 <div class="city"><img src="/images/location.png" alt="" /><a href="/project/city/<?=$model->city_id()->id?>.html" class="grey_link"><?=X3_Html::encode($model->city_id()->title)?></a></div>
                 <div class="project_text"><p><?=  X3_String::create(str_replace("&nbsp;"," ",X3_Html::encode($model->short_content)))->carefullCut(128)?></p></div>
                 <div style="float: left;"><b><?=  number_format($model->needed_sum,0,' ',' ')?></b> тенге</div>
-                <div style="float: right;"><b><?=$model->percentDone?></b> %</div>
+                <div style="float: right;"><b><?=$model->percentReal?></b> %</div>
                 <div class="clear"></div>
                 <div class="finish_cont">
                     <div class="finish" style="width: <?=$model->percentDone?>%;"></div>

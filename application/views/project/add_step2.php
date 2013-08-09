@@ -1,6 +1,11 @@
 <?php
 $form = new Form($model);
 $form1 = new Form(new Project_Interest);
+$days = "";
+echo $model->end_at;
+if($model->end_at > 0) {
+    $days = ceil(($model->end_at - $model->created_at)/86400);
+}
 ?>
 <div class="item-head">
     <div class="item-head-body">
@@ -29,10 +34,7 @@ $form1 = new Form(new Project_Interest);
                     </div>
                 </div>
                 <div class="field">
-                    <?=$form->input('end_at',array('value'=>date('d.m.Y',$model->end_at)))?>
-                    <div class="info">
-                        Укажите за какое время вы хотите получить вложения в проект
-                    </div>
+                    <?=$form->input('end_at',array('placeholder'=>'Укажите за сколько дней вы хотите получить вложения в проект','value'=>$days))?>
                 </div>
                 <h3>Чем вы наградите ваших вкладчиков при вложении...</h3>
                 <div id="interests">

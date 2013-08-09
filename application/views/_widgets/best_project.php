@@ -12,7 +12,7 @@ if($models->count() > 0):
 ?>
 <div class="title_cont"><img src="/images/good.png" alt="" />Успешный проект</div>
 <div class="good_project">
-        <div class="good_project_pic"><img src="/images/good_project_pic.jpg" alt="" /></div>
+        <div class="good_project_pic"><img src="/uploads/Project/400x300/<?=$model->image?>" alt="" /></div>
         <div class="good_project_text">
                 <h2><?=$model->title?></h2>
                 <?if($model->donate):?>
