@@ -27,7 +27,7 @@ else
     <div class="clearfix" style="height:30px;">&nbsp;</div>
     <div class="main_projects_cont" style="width:715px">
         <?foreach($models as $model):?>
-        <?=$this->renderPartial('@views:project:_project_item.php',array('model'=>$model));?>
+        <?=$this->renderPartial('@views:project:_project_item.php',array('model'=>$model,'lk'=>true));?>
         <?endforeach;?>
     </div>
     <?=$paginator?>

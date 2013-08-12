@@ -12,7 +12,10 @@ $pk = $module->getTable()->getPK();
     </div>
     <div class="content">
         <div class="admin-list">
-            <?foreach($models as $model):?>
+            <?foreach($models as $model):
+                $M = new Project_Invest;
+                $M->getTable()->acquire($model);
+                ?>
                 <div class="message_block">
                     <div class="inside_block">
                         <div class="right_side" style="float:right;width:250px;text-align: right">
@@ -22,8 +25,15 @@ $pk = $module->getTable()->getPK();
                             </div>
                         </div>
                         <div class="middle_side" style="width:auto"> 
-                                <a href="/admin/view/module/<?=$class?>/id/<?=$model[$pk]?>.html"><?=isset($model['title'])?$model['title']:(isset($model['name']) && !empty($model['name'])?$model['name']:$model[$pk])?></a>
-                                <br/><?=$model['amount']?>
+                                <a href="/admin/view/module/<?=$class?>/id/<?=$model[$pk]?>.html">
+                                    #<?=$model[$pk]?>
+                                </a>
+                                <a href="/admin/view/module/User/id/<?=$M->user_id?>.html"><?=$M->user_id()->fullName?></a> вложил в <b><?=$M->project_id()->title?></b>
+                                <br/><?=$model['amount']?> тенге
+                                <br/><?=I18n::date($M->created_at)?> в <?=date("H:i:s",$M->created_at)?> 
+                                    <?if($M->status==0):?><span class="label label-important">отменен пользователем</span><?endif;?>
+                                    <?if($M->status==2):?><span class="label label-important">в ожидании или отменен</span><?endif;?>
+                                    <?if($M->status==5):?><span class="label label-important">ошибка обработки</span><?endif;?>
                         </div>
                         <div class="clear">&nbsp;</div>
                     </div>

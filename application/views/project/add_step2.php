@@ -25,6 +25,15 @@ if($model->end_at > 0) {
     <div class="pane" style="margin:30px 0;width:615px">
         <div class="pane-cont">
             <div class="form">
+                <?if(!empty($errors)):?>
+                <div class="errors">
+                <?  foreach ($errors as $errs):?>
+                    <?foreach($errs as $ers):?>
+                    <div><?=$ers[0]?></div>
+                    <?endforeach;?>
+                <?endforeach;?>
+                </div>
+                <?endif;?>
                 <?=$form->start();?>
                 <h3>Необходимая сумма и сроки</h3>
                 <div class="field">

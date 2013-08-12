@@ -9,6 +9,13 @@ if(is_array($styles)){
 ?>
 <div class="project_cont" style="<?=$styles?>">
     <div class="green_bg" style="position: relative">
+            <?if(isset($lk) && $model->user_id==X3::user()->id):?>
+                <?if($model->status==0):?>
+                    <span style="position: absolute;right:0;top:0;padding: 2px;background: #990000;color:#FFF;font-size: 12px; font-weight: bold;">на модерации</span>
+                <?elseif($model->status==1):?>
+                    <span style="position: absolute;right:0;top:0;padding: 2px;background: #009900;color:#FFF;font-size: 12px; font-weight: bold;">прошел модерацию</span>
+                <?endif;?>
+            <?endif;?>
             <?if($model->partner()!==null && $model->partner()->status == 1):?>
             <span class="partner-mark"><i>&nbsp;</i><b>&nbsp;</b>
                 <a title="<?=$model->partner()->user_id()->fullName?>" href="/user/<?=$model->partner()->user_id?>/">

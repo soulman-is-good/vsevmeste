@@ -35,7 +35,12 @@ $(function(){
                 }).focus();
                 return false;
             });
+            var a = $('<a />').html('E');
             $(self).css({'position':'relative'}).append(a);
         }
-    })
-})
+    });
+    if(typeof document.getElementById('cr_f') !== 'undefined') {
+        $('#cr_f').datepicker({changeMonth:true,changeYear:true,onClose: function( selectedDate ) {console.log(new Date(selectedDate))}});
+        $('#cr_t').datepicker({changeMonth:true,changeYear:true});
+    }
+});

@@ -1,6 +1,6 @@
 $(function(){
-    $('#Project_end_at').css({'position': 'relative', 'z-index': '100000','width':'520px','margin-right':'10px'})
-            .datepicker({showOn:'button', buttonImage: "/images/calendar.png", buttonImageOnly:true});
+//    $('#Project_end_at').css({'position': 'relative', 'z-index': '100000','width':'520px','margin-right':'10px'})
+//            .datepicker({showOn:'button', buttonImage: "/images/calendar.png", buttonImageOnly:true});
     function add_interest(){
         var interest = $('#interest-tmpl').html();
         interest = interest.replace(/\{index\}/g,interest_index);

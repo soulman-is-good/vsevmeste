@@ -871,6 +871,7 @@ a:hover .menu {
     clear: both;
     margin: auto;
     padding: 0px 1px 3px 1px;
+    margin-bottom: 40px;
 }
 
 .partner {
@@ -886,7 +887,6 @@ a:hover .menu {
 }
 
 .main_bottom_info {
-    margin-top: 40px;
     padding: 40px 0px;
     background: url(../images/main_bottom_info.jpg);
 }

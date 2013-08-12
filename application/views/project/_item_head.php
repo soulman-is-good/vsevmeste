@@ -9,7 +9,7 @@
         <?endif;?>
         <img class="logo" src="/uploads/Project/220x220xw/<?=$model->image?>" alt="" />
         <div class="item-desc">
-            <h1><?=X3_Html::encode($model->title)?></h1>
+            <h1><?=X3_Html::encode($model->title)?> <?if($model->status==0 && $model->user_id==X3::user()->id):?><span style="padding: 2px;background: #990000;color:#FFF;font-size: 12px; font-weight: bold;">на модерации</span><?endif;?></h1>
             <p><?=X3_Html::encode($model->short_content)?></p>
                 <?if($model->donate):?>
                 <div class="donate-action"><?=X3::translate('Благотворительная акция')?></div>

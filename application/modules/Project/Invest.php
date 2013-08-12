@@ -50,6 +50,20 @@ class Project_Invest extends X3_Module_Table {
         );
     }
     
+    public function moduleTitle() {
+        return 'Вложения';
+    }
+    
+    public function getDefaultScope() {
+        $q = array(
+            '@order'=>'created_at DESC'
+        );
+        if(isset($_GET['filter'])){
+            parse_str(base64_decode($_GET['filter']),$data);
+            $q['@condition'] = $data;
+        }
+        return $q;
+    }    
     public static function newInstance($class = __CLASS__) {
         return parent::newInstance($class);
     }

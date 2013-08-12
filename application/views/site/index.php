@@ -9,7 +9,7 @@
 <!-- Партнеры -->
 		<?=  X3_Widget::run('@views:_widgets:partners.php');?>
 	</div>
-<!-- Нижний текстовы блок -->
+<?/*<!-- Нижний текстовы блок -->
 	<div class="main_bottom_info">
 		<div class="main_bottom_info_text">
 			<h2 style="color: #fff;">Where projects come from</h2>
@@ -17,3 +17,4 @@
 			<a href="#">Узнать больше</a>
 		</div>
 	</div>
+*/?>

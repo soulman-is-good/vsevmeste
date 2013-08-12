@@ -574,9 +574,10 @@ class Project extends X3_Module_Table {
         $model->getTable()->acquire($data);
         if($model->id>0){
             $model->table->setIsNewRecord(false);
+            $model->end_at = ceil(($model->end_at - $model->created_at)/86400);
         }else {
             $model->needed_sum = null;
-            $model->created_at = time();
+            $model->end_at = '';
         }
         $user = User::getByPk($id);
         if($model->id>0)
@@ -584,15 +585,19 @@ class Project extends X3_Module_Table {
         else
             $interests = array();
         $hasErrors = false;
+        $errors = array();
         if(isset($_POST['Project'])){
             $data = $_POST['Project'];
             $model->getTable()->acquire($data);
             if(!$model->id>0)
                 $model->created_at = time();
-            $model->end_at = $model->created_at + $model->end_at * 86400;
-            die(date("d.m.Y H:i",$this->created_at) . " - " . date("d.m.Y H:i",$this->end_at));
+            if($data['end_at']>0)
+                $model->end_at = $model->created_at + $model->end_at * 86400;
+            else
+                $model->addError ('end_at', 'Укажите корректное число дней');
             $model->status = 0;
-            if($model->save()){
+            if($model->validate() && !$model->hasErrors()){
+                $model->save();
                 X3::user()->new_project = $model->table->getAttributes();
                 $_interests = $_POST['Project_Interest'];
                 if(!empty($_interests)){
@@ -614,6 +619,7 @@ class Project extends X3_Module_Table {
                             $interest->getTable()->setIsNewRecord(false);
                         $hasErrors = $hasErrors || !$interest->save();
                         $interests[] = $interest;
+                        $errors[] = $interest->table->getErrors();
                     }
                 }
                 if(!$hasErrors){
@@ -626,12 +632,14 @@ class Project extends X3_Module_Table {
                         $this->redirect("/project/step3.html");
                     }
                 }
+            }else {
+                $errors[] = $model->table->getErrors();
             }
         }
         X3::app()->datapicker = true;
         X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/step2.js',  X3_ClientScript::POS_END);
-        $this->template->render('add_step2', array('model' => $model,'interests'=>$interests,'user'=>$user));
+        $this->template->render('add_step2', array('model' => $model,'interests'=>$interests,'user'=>$user,'errors'=>$errors));
     }
     
     public function actionStep3(){
@@ -695,14 +703,26 @@ class Project extends X3_Module_Table {
         }
     }
     
+    public function getDefaultScope() {
+        $q = array(
+            '@order'=>'(end_at - created_at) ASC,(needed_sum - current_sum) ASC'
+        );
+        if(isset($_GET['filter'])){
+            parse_str($_GET['filter'],$data);
+            var_dump($data);exit;
+            $q['@condition'] = $data;
+        }
+        return $q;
+    }
+    
     public function onDelete($tables, $condition) {
         if (strpos($tables, $this->tableName) !== false) {
             $model = $this->table->select('*')->where($condition)->asObject(true);
-            Project_Invest::delete(array('project_id'=>$model->id));
-            Project_Interest::delete(array('project_id'=>$model->id));
-            Project_Comments::delete(array('project_id'=>$model->id));
-            Project_Event::delete(array('project_id'=>$model->id));
-            Project_Partner::delete(array('project_id'=>$model->id));
+            X3::db()->query("DELETE FROM project_invest WHERE project_id=$model->id");
+            X3::db()->query("DELETE FROM project_interest WHERE project_id=$model->id");
+            X3::db()->query("DELETE FROM project_comments WHERE project_id=$model->id");
+            X3::db()->query("DELETE FROM project_event WHERE project_id=$model->id");
+            X3::db()->query("DELETE FROM project_partner WHERE project_id=$model->id");
         }
         parent::onDelete($tables, $condition);
     }
