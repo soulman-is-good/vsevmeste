@@ -65,7 +65,7 @@ abstract class AbstractSFB {
 			$sErr .= $this->sterf("path not within base");
 		}
 		// log
-		if (SFB_DEBUG || 1) {
+		if (SFB_DEBUG) {
 			$sP = "POST: [";
 			$sG = "GET:  [";
 			$sF = "FILE: [";

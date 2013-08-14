@@ -23,7 +23,7 @@ config.extraPlugins = 'sfbrowser,youtube';
 config.allowedContent = true;
 config.toolbar = 'Custom';
 config.toolbar_Custom =[
-	['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','youtube','SFbrowser']
+	['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','FontSize','-','youtube','SFbrowser']
 	];
 config.toolbar_Full =
 [

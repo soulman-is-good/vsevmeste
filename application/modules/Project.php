@@ -279,7 +279,7 @@ class Project extends X3_Module_Table {
                 X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/filetree/jquery.sfbrowser.filetree.min.js',  X3_ClientScript::POS_END);
                 X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/imageresize/jquery.sfbrowser.imageresize.min.js',  X3_ClientScript::POS_END);
                 X3::clientScript()->registerScriptFile('/js/sfbrowser/config.js?1',  X3_ClientScript::POS_END);
-                X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
+                X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.swfupload = false;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
             }
             X3::app()->og_title = X3::app()->name . " - " . $model->title;
             X3::app()->og_url = X3::app()->baseUrl . "/$model->name-project.html";
@@ -315,13 +315,14 @@ class Project extends X3_Module_Table {
         if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
             if(isset($_POST['eventtext'],$_POST['token'])){
                 $this->nostress();
-                require 'application/extensions/wikitexttohtml.php';
+//                require 'application/extensions/wikitexttohtml.php';
                 $text = $_POST['eventtext'];
-                $text = stripslashes($text);
+                $text = strip_tags($text, '<p><b><i><div><img><iframe><ul><ol><li><a><span>');
+//                $text = stripslashes($text);
                 if($text!='' && X3::user()->etoken === $_POST['token']){
-                    $wiki =  WikiTextToHTML::convertWikiTextToHTML(explode("\n",$text));
+//                    $wiki =  WikiTextToHTML::convertWikiTextToHTML(explode("\n",$text));
                     $event = new Project_Event();
-                    $event->content = implode("\n",$wiki);
+                    $event->content = $text;
                     $event->project_id = $model->id;
                     $event->user_id = X3::user()->id;
                     $event->created_at = time();
@@ -347,6 +348,7 @@ class Project extends X3_Module_Table {
             }
             $models = Project_Event::get($q);
             $interests = Project_Interest::get(array('@condition'=>array('bought'=>array('<'=>'`limit`'),'project_id'=>$model->id),'@order'=>'created_at DESC'));
+            $this->defineCKEditor(X3::user()->id);
             $this->template->render('events', array('models' => $models,'model'=>$model,'interests'=>$interests));
         }else{
             throw new X3_404();
@@ -543,21 +545,7 @@ class Project extends X3_Module_Table {
                 $this->redirect('/project/step2.html');
             }
         }
-        if(!file_exists("uploads/User/Files{$id}"))
-            @mkdir("uploads/User/Files{$id}",0777,true);
-        
-        X3::clientScript()->registerScriptFile('/js/ckeditor.4/ckeditor.js?2223',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerCssFile('/js/sfbrowser/css/sfbrowser.min.css',  'screen');
-        X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/filetree.css');
-        X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/screen.min.css','screen');
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/SWFObject.min.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/jquery.tinysort.min.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/jquery.sfbrowser.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/lang/ru.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/filetree/jquery.sfbrowser.filetree.min.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/imageresize/jquery.sfbrowser.imageresize.min.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/config.js?1',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
+        $this->defineCkEditor($id);
         
         $this->template->render('add_step1', array('model' => $model, 'user'=>$user));
     }
@@ -732,6 +720,24 @@ class Project extends X3_Module_Table {
             $this->partners[$this->id] = Project_Partner::get(array('@condition'=>array('project_id'=>$this->id),'@order'=>'created_at','@with'=>'user_id'),1);
         }
         return $this->partners[$this->id];
+    }
+    
+    private function defineCKEditor($id){
+        if(!file_exists("uploads/User/Files{$id}"))
+            @mkdir("uploads/User/Files{$id}",0777,true);
+        
+        X3::clientScript()->registerScriptFile('/js/ckeditor.4/ckeditor.js?2223',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerCssFile('/js/sfbrowser/css/sfbrowser.min.css',  'screen');
+        X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/filetree.css');
+        X3::clientScript()->registerCssFile('/js/sfbrowser/plugins/filetree/css/screen.min.css','screen');
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/SWFObject.min.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/jquery.tinysort.min.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/jquery.sfbrowser.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/lang/ru.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/filetree/jquery.sfbrowser.filetree.min.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/imageresize/jquery.sfbrowser.imageresize.min.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/config.js?5',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.swfupload = false;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
     }
 }
 ?>

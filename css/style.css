@@ -418,7 +418,7 @@ p {
     position: absolute;
     left: 192px;
     top: 0px;
-    z-index: 3;
+    z-index: 10;
     width: 450px;
     height: 400px;
     background: url(../images/slider_left_fade.png) no-repeat;
@@ -428,7 +428,7 @@ p {
     position: absolute;
     right: 260px;
     top: 0px;
-    z-index: 3;
+    z-index: 10;
     width: 50px;
     height: 400px;
     background: url(../images/slider_right_fade.png) no-repeat;

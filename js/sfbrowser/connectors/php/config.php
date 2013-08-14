@@ -4,7 +4,7 @@ define("SFB_BASE",			"../../uploads/");		// upload folder (relative to sfbpath)
 
 define("SFB_LANG",			"ru");				// the language ISO code
 define("PREVIEW_BYTES",		600);				// ASCII preview ammount
-define("SFB_DENY",			"php,php3,phtml");	// forbidden file extensions
+define("SFB_DENY",			"php,php3,phtml,html,htm,js,json,java,exe,cgi,bat,sh");	// forbidden file extensions
 
 define("FILETIME",			"j-n-Y H:i");		// file time display
 

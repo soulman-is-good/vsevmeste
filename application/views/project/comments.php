@@ -100,7 +100,7 @@
                 <?=X3::translate('Нет комментариев')?>.
                 <?endif;?>
                 <?php
-                if(!X3::user()->isGuest()):
+                if(!X3::user()->isGuest() && ($c = Project_Invest::num_rows(array('user_id'=>X3::user()->id,'project_id'=>$model->id,'status'=>  Project_Invest::STATUS_SUCCESS)))>0):
                 $form = new Form('Project_Comments');
                 echo $form->start();
                 echo X3_Html::form_tag('input', array('type'=>'hidden','name'=>'token','value'=>X3::user()->ctoken));
@@ -116,6 +116,8 @@
                     </div>
                 </div>
                 <?=$form->end();?>
+                <?else:?>
+                <p style="margin-top:20px"><i>Комментарии могут оставлять только зарегистрированные пользователи вложившие в проект.</i></p>
                 <?endif;?>
             </div>
         </div>

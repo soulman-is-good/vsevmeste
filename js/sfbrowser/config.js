@@ -7,3 +7,4 @@ jQuery.sfbrowser.defaults.browser = '<body><div id="sfbrowser"><div id="fbbg"></
 jQuery.sfbrowser.defaults.debug = false;
 jQuery.sfbrowser.defaults.maxsize = 2 * 1024 * 1024;
 jQuery.sfbrowser.defaults.plugins = ['filetree'];
+jQuery.sfbrowser.defaults.swfupload = false;

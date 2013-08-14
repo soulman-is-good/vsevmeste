@@ -88,6 +88,9 @@ $(document).ready(function(){
         if(typeof document.getElementById('Project_full_content') !== 'undefined' && document.getElementById('Project_full_content') !== null) {
             CKEDITOR.replace( 'Project_full_content',{toolbar : 'Custom',width:570});
         }
+        if(typeof document.getElementById('eventtext') !== 'undefined' && document.getElementById('eventtext') !== null) {
+            CKEDITOR.replace( 'eventtext',{toolbar : 'Custom',width:560});
+        }
         if(typeof $('.slideshow')[0] !== 'undefined'){
             $('.change_link').each(function(i){
                 $(this).on('click',function(e){

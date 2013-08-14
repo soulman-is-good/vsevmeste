@@ -110,7 +110,7 @@
 											id : 'txtWidth',
 											width : '60px',
 											label : editor.lang.youtube.txtWidth,
-											'default' : '560',
+											'default' : '100%',
 											validate : function ()
 											{
 												if ( this.getValue() )

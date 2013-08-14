@@ -118,7 +118,7 @@ class SFBrowser extends AbstractSFB {
 							$sFileTo = $sPath.$sFile;
 						}
 						$sFileTo = $this->sConnBse.$sFileTo;
-
+                                                
 						if(!move_uploaded_file( $oFile["tmp_name"], $sFileTo )){
                                                     $this->aReturn['msg'] .= 'uploadErr';
                                                     break;
