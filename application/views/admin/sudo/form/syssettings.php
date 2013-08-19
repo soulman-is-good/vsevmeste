@@ -6,6 +6,7 @@ foreach (X3::app()->languages as $lang) {
     $model->_fields[$attr][0] = $type;
 }
 $fields = array(
+            'title'=>'Заголовок',
             'value'=>'Значение',
         );
 if($model->getTable()->getIsNewRecord()){

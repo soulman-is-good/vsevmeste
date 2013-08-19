@@ -50,6 +50,23 @@ class SysSettings extends X3_Module_Table {
     public static function getByPk($pk,$class=__CLASS__) {
         return parent::getByPk($pk,$class);
     }
+    public static function getModel($name,$type='string[255]',$title=null,$group=null,$default=null) {
+        if(isset(self::$_settings[$name]))
+            return self::$_settings[$name];
+        $self = new self();
+        $s = $self->table->select('*')->where("name='$name'")->asObject(true);
+        if($s==null){
+            $self->name = $name;
+            $self->type = $type;
+            $self->title = $title!=null?$title:$name;
+            $self->value = $default!=null?$default:'Не задано значение - '.$title;
+            $self->group = $group!=null?$group:'Прочие';
+            $self->save();
+        }else
+            $self = $s;
+        self::$_settings[$name] = $s->value;
+        return $self;
+    }
     public static function getValue($name,$type='string[255]',$title=null,$group=null,$default=null) {
         if(isset(self::$_settings[$name]))
             return self::$_settings[$name];

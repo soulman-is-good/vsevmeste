@@ -500,6 +500,17 @@ class Project extends X3_Module_Table {
     public function actionStep1() {
         if(X3::user()->isGuest())
             $this->redirect('/enter.html');
+        if(isset($_POST['agree'])) {
+            $this->redirect('/project/step2.html');
+        }
+        $id = X3::user()->id;
+        $user = User::getByPk($id);
+        $this->template->render('add_step1', array('user'=>$user));
+    }
+    
+    public function actionStep2() {
+        if(X3::user()->isGuest())
+            $this->redirect('/enter.html');
         $id = X3::user()->id;
         $model = new Project();
         $user = User::getByPk($id);
@@ -542,15 +553,15 @@ class Project extends X3_Module_Table {
             if(!$model->hasErrors() && $model->validate()){
                 X3::user()->new_project = $model->getTable()->getAttributes();
                 //Notify::sendMail('Project.Created',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>"/{$model->name}-project.html"));
-                $this->redirect('/project/step2.html');
+                $this->redirect('/project/step3.html');
             }
         }
         $this->defineCkEditor($id);
         
-        $this->template->render('add_step1', array('model' => $model, 'user'=>$user));
+        $this->template->render('add_step2', array('model' => $model, 'user'=>$user));
     }
     
-    public function actionStep2(){
+    public function actionStep3(){
         if(X3::user()->isGuest())
             $this->redirect('/enter.html');
         if(X3::user()->new_project == null){
@@ -617,7 +628,7 @@ class Project extends X3_Module_Table {
                         $t = X3::user()->new_project;
                         $t['name'] = $model->name;
                         X3::user()->new_project = $t;
-                        $this->redirect("/project/step3.html");
+                        $this->redirect("/project/step4.html");
                     }
                 }
             }else {
@@ -627,10 +638,10 @@ class Project extends X3_Module_Table {
         X3::app()->datapicker = true;
         X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/step2.js',  X3_ClientScript::POS_END);
-        $this->template->render('add_step2', array('model' => $model,'interests'=>$interests,'user'=>$user,'errors'=>$errors));
+        $this->template->render('add_step3', array('model' => $model,'interests'=>$interests,'user'=>$user,'errors'=>$errors));
     }
     
-    public function actionStep3(){
+    public function actionStep4(){
         if(X3::user()->isGuest())
             $this->redirect('/enter.html');
         if(X3::user()->new_project == null){
@@ -657,7 +668,7 @@ class Project extends X3_Module_Table {
         X3::app()->datapicker = true;
         X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/step3.js?1',  X3_ClientScript::POS_END);
-        $this->template->render('add_step3', array('model' => $model));
+        $this->template->render('add_step4', array('model' => $model));
     }
 
     public function beforeValidate() {
@@ -736,7 +747,7 @@ class Project extends X3_Module_Table {
         X3::clientScript()->registerScriptFile('/js/sfbrowser/lang/ru.js',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/filetree/jquery.sfbrowser.filetree.min.js',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/imageresize/jquery.sfbrowser.imageresize.min.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/config.js?5',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/config.cli.js?5',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.swfupload = false;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
     }
 }

@@ -1,11 +1,7 @@
 <?php
 $form = new Form($model);
-$form1 = new Form(new Project_Interest);
-$days = "";
-echo $model->end_at;
-if($model->end_at > 0) {
-    $days = ceil(($model->end_at - $model->created_at)/86400);
-}
+$links = explode("\n",$model->links);
+$links = array_merge($links, array_fill(0, 5, ''));
 ?>
 <div class="item-head">
     <div class="item-head-body">
@@ -13,109 +9,74 @@ if($model->end_at > 0) {
     </div>
 </div>
 <div class="body project-add" style="position: relative">
+    <?php $smini = SysSettings::getModel('ProjectAddRulesMini', 'text', 'Требования');?>
+    <div class="right-bar item-show-bar" style="width:280px">
+        <div class="pane">
+            <div class="pane-cont">
+                <h3><?=$smini->title?></h3>
+                <div class="hr">&nbsp;</div>
+                <div>
+                    <?=$smini->value?>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="tabs" style="top:-79px">
         <ul>
-            <li><a href="/project/step1.html"><em>1</em> - Проект</a></li>
-            <li class="active"><em>2</em> - Необходимая сумма</li>
+            <li><a href="/project/step1.html"><em>1</em> - Правила</a></li>
+            <li class="active"><em>2</em> - Проект</li>
+            <li><a href="#" onclick="return false;"><em>3</em> - Необходимая сумма</a></li>
             <?if(!$user->filled):?>
-            <li><a href="#" onclick="return false;"><em>3</em> - Личная информация</a></li>
+            <li><a href="#" onclick="return false;"><em>4</em> - Личная информация</a></li>
             <?endif;?>
         </ul>
     </div>
     <div class="pane" style="margin:30px 0;width:615px">
         <div class="pane-cont">
             <div class="form">
-                <?if(!empty($errors)):?>
-                <div class="errors">
-                <?  foreach ($errors as $errs):?>
-                    <?foreach($errs as $ers):?>
-                    <div><?=$ers[0]?></div>
-                    <?endforeach;?>
-                <?endforeach;?>
-                </div>
-                <?endif;?>
+                <?if($model->getTable()->getErrors()):?>
+                <?=  X3_Html::errorSummary($model);?>
+               <?endif;?> 
                 <?=$form->start();?>
-                <h3>Необходимая сумма и сроки</h3>
+                <h3>Опишите Ваш проект</h3>
                 <div class="field">
-                    <?=$form->input('needed_sum',array('placeholder'=>'Укажите необходимую сумму для вашей цели'))?>
-                    <div class="info">
-                        После завершения времени сбора денег на ваш проект, мы берем 9% с собранной суммы, поэтому учитывайте данную коммисию заранее
-                    </div>
+                    <?=$form->select('city_id')?>
+                    <div class="info">Выберите город проекта</div>
                 </div>
                 <div class="field">
-                    <?=$form->input('end_at',array('placeholder'=>'Укажите за сколько дней вы хотите получить вложения в проект','value'=>$days))?>
+                    <?=$form->input('title',array('placeholder'=>'Название проекта'))?>
                 </div>
-                <h3>Чем вы наградите ваших вкладчиков при вложении...</h3>
-                <div id="interests">
-                    <?foreach($interests as $i=>$interest):$ierrors = $interest->getTable()->getErrors();?>
-                    <div class="interest-add interest-<?=$i?>">
-                        <div class="field">
-                            <?if(!$interest->getTable()->getIsNewRecord()):?>
-                            <input type="hidden" name="Project_Interest[][id]" id="Project_Interest_<?=$i?>_id" value="<?=$interest->id?>"/>
-                            <?endif;?>
-                            <input placeholder="Сумма вложения (тенге)" class="<?=$interest->getTable()->hasError('sum')?'error':'';?>" type="text" name="Project_Interest[][sum]" id="Project_Interest_<?=$i?>_sum" value="<?=$interest->sum?>"/> 
-                        </div>
-                        <div class="field">
-                            <input placeholder="Название интереса вкладчика" class="<?=$interest->getTable()->hasError('title')?'error':'';?>" type="text" name="Project_Interest[][title]" id="Project_Interest_<?=$i?>_title" value="<?=$interest->title?>"/>
-                        </div>
-                        <div class="field">
-                            <textarea placeholder="Описание интереса вкладчика" class="<?=$interest->getTable()->hasError('notes')?'error':'';?>" rows="7" cols="30" name="Project_Interest[][notes]" id="Project_Interest_<?=$i?>_notes"><?=$interest->notes?></textarea>
-                        </div>
-                        <div class="field">
-                            <input placeholder="Количество интересов" type="text" name="Project_Interest[][limit]" class="<?=$interest->getTable()->hasError('limit')?'error':'';?>" id="Project_Interest_<?=$i?>_limit" value="<?=$interest->limit?>"/>
-                        </div>
-                        <div class="field">
-                            <div class="info">
-                                Дата доставки интереса вкладчику
-                                <input style="width:257px;margin:0 7px" type="text" name="Project_Interest[][deliver_at]" class="<?=$interest->getTable()->hasError('deliver_at')?'error':'';?>" value="<?=date('d.m.Y',$interest->deliver_at)?>" id="Project_Interest_<?=$i?>_deliver_at">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <button type="button" class="add-interest">Добавить еще интерес</button>
-                            <?if($i>0):?>
-                            <button type="button" class="red remove-interest">Удалить</button>
-                            <?endif?>
-                        </div>
-                    </div>
-                    <?endforeach;?>
+                <div class="field">
+                    <?=$form->textarea('short_content',array('placeholder'=>'Краткое описание'))?>
                 </div>
-                <?if(!$user->filled):?>
-                <div class="field" style="margin-top:20px">
-                    <button name="next" type="submit">Далее</button>
+                <div class="field">
+                    <?=$form->textarea('full_content')?>
+                    <div class="info">Введите полное описание проекта</div>
                 </div>
-                <?else:?>
-                <div class="field" style="margin-top:20px">
-                    <?/*<button name="draft" type="submit">Сохранить в черновик</button>&nbsp;*/?><button name="send" type="submit">Опубликовать проект</button>
+                <div class="field">
+                    <div><strong>Изображение проекта 600x400</strong> <button id="upl" type="button">Загрузить</button> <i id="str"></i> </div>
+                    <div id="blah"></div>
+                    <?=$form->file('image',array('style'=>'position:absolute;left:-9999px;','id'=>'p-file'))?>
                 </div>
-                <?endif;?>
+                <div class="field">
+                    <?=$form->input('video',array('placeholder'=>'Видео проекта (вставте ссылку с YouTube)'))?>
+                </div>
+                <div class="field">
+                    <?=$form->select('category_id')?>
+                </div>
+                <div class="field">
+                    <div><strong>Ссылки на проект на других источниках</strong></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Vkontakte','value'=>$links[0]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Facebook','value'=>$links[1]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Twitter','value'=>$links[2]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Мой Мир','value'=>$links[3]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'YouTube','value'=>$links[4]))?></div>
+                </div>
+                <div class="field">
+                    <button type="submit">Далее</button>
+                </div>
                 <?=$form->end();?>
             </div>
         </div>
     </div>
 </div>
-<script type="text/html" id="interest-tmpl">
-<div class="interest-add interest-{index}">
-    <div class="field">
-        <input placeholder="Сумма вложения (тенге)" type="text" name="Project_Interest[{index}][sum]" id="Project_Interest_{index}_sum" value=""/>                    </div>
-    <div class="field">
-        <input placeholder="Название интереса вкладчика" type="text" name="Project_Interest[{index}][title]" id="Project_Interest_{index}_title" value=""/>                    </div>
-    <div class="field">
-        <textarea placeholder="Описание интереса вкладчика" rows="7" cols="30" name="Project_Interest[{index}][notes]" id="Project_Interest_{index}_notes"></textarea>                    </div>
-    <div class="field">
-        <input placeholder="Количество интересов" type="text" name="Project_Interest[{index}][limit]" id="Project_Interest_{index}_limit" value=""/>                    </div>
-    <div class="field">
-        <div class="info">
-            Дата доставки интереса вкладчику
-            <input style="width:257px;margin:0 7px" type="text" name="Project_Interest[{index}][deliver_at]" value="<?=date('d.m.Y')?>" id="Project_Interest_{index}_deliver_at">
-        </div>
-    </div>
-    <div class="field">
-        <button type="button" class="add-interest">Добавить еще интерес</button>
-        <button type="button" class="red remove-interest">Удалить</button>
-    </div>
-</div>
-</script>
-<script>
-    var interest_index = <?=count($interests)?>;
-    var interest_count = <?=count($interests)?>;
-</script>
