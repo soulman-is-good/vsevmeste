@@ -8,18 +8,7 @@ $s = SysSettings::getModel('ProjectAddRules', 'text', 'Правила при р�
     </div>
 </div>
 <div class="body project-add" style="position: relative">
-    <?php $smini = SysSettings::getModel('ProjectAddRulesMini', 'text', 'Требования');?>
-    <div class="right-bar item-show-bar" style="width:280px">
-        <div class="pane">
-            <div class="pane-cont">
-                <h3><?=$smini->title?></h3>
-                <div class="hr">&nbsp;</div>
-                <div>
-                    <?=$smini->value?>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?=X3_Widget::run('@views:_widgets:rules_mini.php', array(), array('cache'=>!X3_DEBUG))?>
     <div class="tabs" style="top:-79px">
         <ul>
             <li class="active"><em>1</em> - Правила</li>
@@ -45,3 +34,4 @@ $s = SysSettings::getModel('ProjectAddRules', 'text', 'Правила при р�
         </div>
     </div>
 </div>
+<?=X3_Widget::run('@views:_widgets:about_quick.php', array(), array('cache'=>!X3_DEBUG))?>

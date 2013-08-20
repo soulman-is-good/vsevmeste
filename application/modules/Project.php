@@ -356,8 +356,9 @@ class Project extends X3_Module_Table {
     }
     
     public function actionComments() {
+        $uid = X3::user()->id;
         if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition'=>array('project.name'=>$id),'@with'=>array('user_id','city_id')),1))) {
-            if(isset($_POST['commenttext'],$_POST['token'])){
+            if(isset($_POST['commenttext'],$_POST['token']) && X3::db()->fetchScalar("SELECT COUNT(0) FROM project_invest WHERE user_id=$uid AND project_id=$id AND status=1")>0){
                 $this->nostress();
                 $text = X3_Html::encode($_POST['commenttext']);
                 if($text!='' && X3::user()->ctoken === $_POST['token']){

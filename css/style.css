@@ -398,7 +398,35 @@ p {
     right: 0px;
     padding: 10px;
 }
-
+.quick_look {
+    padding: 10px 0;
+    background: #FFF;
+}
+.quick_look-link {
+    display: block;
+    width: 920px;
+    margin: 0 auto;
+    font: 21px JunegullRegular, Arial black;
+}
+.quick_look-link:before {
+    content:"▸ ";
+}
+.quick_look.active .quick_look-link:before {
+    content:"▾ ";
+}
+.quick_look-content {
+    display: none;
+    height:0px;
+    width:920px;
+    margin: 0 auto;
+    padding-top:10px;
+}
+.quick_look.active .quick_look-content {
+    display: block;
+    height:100%;
+    transition: height 1s;
+    -webkit-transition: height 1s;
+}
 .slider_cont {
     position: relative;
     z-index: -3;

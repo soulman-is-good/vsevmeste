@@ -2,7 +2,7 @@
 /* @var $model Project_Event */
 ?>
 <div class="project-event">
-    <?if($model->user_id == X3::user()->id):?>
+    <?if($model->user_id == X3::user()->id || X3::user()->isAdmin()):?>
     <div class="admin-links">
         <a href="/project_Comment/delete/id/<?=$model->id?>" title="Удалить"><img src="/images/delete_dis.png" alt="X" /></a>
     </div>

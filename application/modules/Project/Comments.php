@@ -33,7 +33,7 @@ class Project_Comments extends X3_Module_Table {
     public function actionDelete(){
         if(IS_AJAX && FALSE !== ($id = X3::request()->getRequest('id'))){
             $model = self::get(array('id'=>$id),1);
-            if($model!== NULL && $model->user_id == X3::user()->id){
+            if($model!== NULL && ($model->user_id == X3::user()->id || X3::user()->isAdmin())){
                 self::deleteByPk($id);
             }
         }

@@ -133,4 +133,11 @@ $(document).ready(function(){
                 $('.partners_cont .left_nav, .partners_cont .right_nav').remove();
             }
         }
+        $('.quick_look-link').each(function(){
+            $(this).on('click',function(e){
+                e.preventDefault();
+                $(this).parent().toggleClass('active');
+                return false;
+            });
+        });
 });
