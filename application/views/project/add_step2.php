@@ -36,6 +36,13 @@ $links = array_merge($links, array_fill(0, 5, ''));
                     <?=$form->input('title',array('placeholder'=>'Название проекта'))?>
                 </div>
                 <div class="field">
+                    <ul id="tags">
+                        <?foreach($tags as $tag):?>
+                        <li><?=$tag->tag?></li>
+                        <?endforeach;?>
+                    </ul>
+                </div>
+                <div class="field">
                     <?=$form->textarea('short_content',array('placeholder'=>'Краткое описание'))?>
                 </div>
                 <div class="field">

@@ -519,7 +519,9 @@ class Project extends X3_Module_Table {
         if(X3::user()->new_project != null){
             $model->getTable()->acquire(X3::user()->new_project);
         }
+        $tags = array();
         if($model->id > 0) {
+            $tags = Project_Tags::get(array('project_id'=>$model->id));
             $model->getTable()->setIsNewRecord(false);
         }else {
             $model->created_at = time();
@@ -558,8 +560,11 @@ class Project extends X3_Module_Table {
             }
         }
         $this->defineCkEditor($id);
-        
-        $this->template->render('add_step2', array('model' => $model, 'user'=>$user));
+        X3::clientScript()->registerCssFile('/css/jquery.tagit.css',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerCssFile('/css/tagit.ui-zendesk.css',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/tag-it.js',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/step1.js',  X3_ClientScript::POS_END);
+        $this->template->render('add_step2', array('model' => $model, 'user'=>$user,'tags'=>$tags));
     }
     
     public function actionStep3(){

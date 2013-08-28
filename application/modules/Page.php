@@ -76,7 +76,7 @@ class Page extends X3_Module_Table {
     }
 
     public function actionShow(){
-        $name = mysql_real_escape_string($_GET['name']);
+        $name = mysql_real_escape_string(urldecode($_GET['name']));
         $model = $this->table->select('*')->where("`name`='$name'")->asObject(true);
         if($model==null) throw new X3_404();
         $this->template->render('show',array('model'=>$model));
@@ -124,7 +124,8 @@ class Page extends X3_Module_Table {
             $this->created_at = time();
         if($this->name == ''){
             $name = new X3_String($this->title);
-            $name = preg_replace("/['\"\.\/\-;:\+\)\(\*\&\^%\$#@!`]/", '', $name->translit());
+            $name = preg_replace("/[\s]+/", '-', $name->translit());
+            $name = preg_replace("/[^a-zа-яЁ_\-]/i", '', $name);
             $this->name = strtolower($name);
         }
 //        if($this->parent_id=="" || $this->parent_id=="0") $this->parent_id = NULL;
