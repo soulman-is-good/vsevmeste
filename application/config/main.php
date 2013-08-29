@@ -20,9 +20,9 @@ return array(
         ),
         'db'=>array(
             'host'=>'localhost',
-            'user'=>'c_448_vsevmeste',
-            'password'=>'RVjKxnNXtlHg',
-            'database'=>'c_448_vsevmeste'
+            'user'=>'root',//'c_448_vsevmeste',
+            'password'=>'NjkmrjDgthtl',//'RVjKxnNXtlHg',
+            'database'=>'vsevmeste'//'c_448_vsevmeste'
         ),
         'mongo'=>array(
             'class'=>'X3_MongoConnection',

@@ -1,6 +1,8 @@
 $(function(){
     $('#tags').tagit({
-        availableTags: sampleTags,
-        allowSpaces: true
+        availableTags: [],
+        allowSpaces: true,
+        fieldName: 'tags[]',
+        placeholderText:'Введите теги проекта через строчку'
     })
 })

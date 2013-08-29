@@ -555,11 +555,13 @@ class Project extends X3_Module_Table {
             $model->created_at = time();
             if(!$model->hasErrors() && $model->validate()){
                 X3::user()->new_project = $model->getTable()->getAttributes();
+                X3::user()->new_project_tags = $_POST['tags'];
                 //Notify::sendMail('Project.Created',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>"/{$model->name}-project.html"));
                 $this->redirect('/project/step3.html');
             }
         }
         $this->defineCkEditor($id);
+        X3::app()->datapicker = true;
         X3::clientScript()->registerCssFile('/css/jquery.tagit.css',  X3_ClientScript::POS_END);
         X3::clientScript()->registerCssFile('/css/tagit.ui-zendesk.css',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/tag-it.js',  X3_ClientScript::POS_END);
@@ -596,13 +598,20 @@ class Project extends X3_Module_Table {
             $model->getTable()->acquire($data);
             if(!$model->id>0)
                 $model->created_at = time();
-            if($data['end_at']>0)
+            if($data['end_at']>0) {
                 $model->end_at = $model->created_at + $model->end_at * 86400;
-            else
+            } else {
                 $model->addError ('end_at', 'Укажите корректное число дней');
+            }
             $model->status = 0;
             if($model->validate() && !$model->hasErrors()){
                 $model->save();
+                if(!empty(X3::user()->new_project_tags)) {
+                    foreach(X3::user()->new_project_tags as $tag) {
+                        $T = Tags::upsert($tag);
+                        Project_Tags::assign($model->id, $T->id);
+                    }
+                }
                 X3::user()->new_project = $model->table->getAttributes();
                 $_interests = $_POST['Project_Interest'];
                 if(!empty($_interests)){
@@ -714,7 +723,6 @@ class Project extends X3_Module_Table {
         );
         if(isset($_GET['filter'])){
             parse_str($_GET['filter'],$data);
-            var_dump($data);exit;
             $q['@condition'] = $data;
         }
         return $q;
@@ -753,7 +761,8 @@ class Project extends X3_Module_Table {
         X3::clientScript()->registerScriptFile('/js/sfbrowser/lang/ru.js',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/filetree/jquery.sfbrowser.filetree.min.js',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScriptFile('/js/sfbrowser/plugins/imageresize/jquery.sfbrowser.imageresize.min.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/sfbrowser/config.cli.js?5',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/sfbrowser/config.js?5',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/ckeditor.4/config.cli.js?5',  X3_ClientScript::POS_END);
         X3::clientScript()->registerScript('save1','jQuery.noConflict=true;jQuery.sfbrowser.defaults.swfupload = false;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files'.$id.'";',  X3_ClientScript::POS_END);
     }
 }

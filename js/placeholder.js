@@ -2,12 +2,9 @@
  * Fixes HTML5 placeholder attribute
  * 
  */
-$(document).ready(function() {
-
-    $('[placeholder]:not([type="password"])').each(function() { //passwords shoul be handeled specialy
-        $(this).attr('origval', $(this).attr('placeholder')).removeAttr('placeholder');
-    });
-    $("[origval]").focus(function() {
+$.fn.placeholder = function(){
+    $(this).attr('origval', $(this).attr('placeholder')).removeAttr('placeholder');
+    $(this).focus(function() {
         var input = $(this);
         if (input.val() == input.attr("origval")) {
             input.val("");
@@ -26,5 +23,11 @@ $(document).ready(function() {
                 input.val("");
             }
         })
+    });
+};
+$(document).ready(function() {
+
+    $('[placeholder]:not([type="password"])').each(function() { //passwords shoul be handeled specialy
+        $(this).placeholder();
     });
 });

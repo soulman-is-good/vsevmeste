@@ -297,10 +297,14 @@
                     that.tagInput.data('autocomplete-open', false)
                 });
             }
+            this.tagInput.placeholder();
         },
 
         _cleanedInput: function() {
             // Returns the contents of the tag input, cleaned and ready to be passed to createTag
+            if(this.tagInput.attr('origval') === this.tagInput.val()){
+                this.tagInput.val('');
+            }
             return $.trim(this.tagInput.val().replace(/^"(.*)"$/, '$1'));
         },
 

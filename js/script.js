@@ -112,7 +112,7 @@ $(document).ready(function(){
             $('.slideshow ul').css({'position':'relative','margin':'0'});
             $('.slideshow li').each(function(i){$(this).css({'display':'none','position':'absolute','left':'0','top':'0','z-index':i+1});});
             $('.slideshow li').eq(0).fadeIn();
-            $('.slideshow').prepend($('.slider-content').find('li').eq(0).children('div').clone());
+            $('.slideshow').prepend($('.slider-content .slider_text_cont:nth-child(1)').clone());
         }
         if($('.partners_cont .partner').length > 0){
             if($('.partners_cont .partner').length > 6){

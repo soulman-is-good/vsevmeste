@@ -1,11 +1,10 @@
 <?php
 $form = new Form($model);
 $form1 = new Form(new Project_Interest);
-$days = "";
-echo $model->end_at;
-if($model->end_at > 0) {
-    $days = ceil(($model->end_at - $model->created_at)/86400);
-}
+$days = $model->end_at;
+//if($model->end_at > 0) {
+//    $days = ceil(($model->end_at - $model->created_at)/86400);
+//}
 ?>
 <div class="item-head">
     <div class="item-head-body">

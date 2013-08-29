@@ -38,7 +38,7 @@ $links = array_merge($links, array_fill(0, 5, ''));
                 <div class="field">
                     <ul id="tags">
                         <?foreach($tags as $tag):?>
-                        <li><?=$tag->tag?></li>
+                        <li><?=$tag->tag_id()->tag?></li>
                         <?endforeach;?>
                     </ul>
                 </div>

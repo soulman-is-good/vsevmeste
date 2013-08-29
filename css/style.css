@@ -1276,6 +1276,27 @@ a.pane:hover {
     padding: 20px;
 }
 
+.tagit.ui-widget-content {
+    border:none;
+    background: none;
+    list-style: none;
+    margin:0;
+    padding:0;
+}
+.tagit.ui-widget-content li {
+    margin:0px 5px 5px 0px;
+    display:inline-block;
+    padding:5px;
+}
+.tagit.ui-widget-content li.tagit-new {
+    padding:0px;
+}
+.tagit.ui-widget-content li .ui-icon.ui-icon-close{
+    display:none;
+}
+.tagit input.ui-widget-content.ui-autocomplete-input:placeholder {
+    color:#ccc;
+}
 /* ==|== non-semantic helper classes ============;============================ */
 .ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; }
 .ir br { display: none; }

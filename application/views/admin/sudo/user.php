@@ -53,6 +53,10 @@ $pk = $module->getTable()->getPK();
                                 </a>
                                 <a href="/admin/view/module/<?=$class?>/id/<?=$model->id?>.html">
                                     <?=$model->fullName;?><?if($model->status==0):?>&nbsp;<span class="label label-inverse">Не активирован</span><?endif;?><?if($model->ispartner):?>&nbsp;<span class="label label-info">Партнер</span><?endif;?>
+                                    <?if($model->role === 'admin'):?>
+                                    <br/>
+                                    <span class="label label-important">Администратор</span>
+                                    <?endif?>
                                 </a>
                                 <div class="clear">&nbsp;</div>
                         </div>
