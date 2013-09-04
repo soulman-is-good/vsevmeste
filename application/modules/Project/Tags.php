@@ -28,11 +28,14 @@ class Project_Tags extends X3_Module_Table {
     }
     
     public static function assign($project_id, $tag_id) {
-        if(NULL === ($model = self::get(array('tag_id'=>$tag_id,'project_id'=>$project_id)))) {
+        if(NULL === ($model = self::get(array('tag_id'=>$tag_id,'project_id'=>$project_id),1))) {
             $model = new self;
             $model->project_id = $project_id;
             $model->tag_id = $tag_id;
-            $model->save();
+            if(!$model->save()){
+                echo X3_Html::errorSummary($model);
+                exit;
+            }
         }
         return $model;
     }
@@ -53,17 +56,6 @@ class Project_Tags extends X3_Module_Table {
 
     public static function getInstance($class = __CLASS__) {
         return parent::getInstance($class);
-    }
-    public function beforeValidate() {
-        if($this->getTable()->getIsNewRecord()) {
-            $this->created_at = time();
-        }
-        $this->tag = mb_strtolower($this->tag,X3::app()->encoding);
-        $name = new X3_String($this->tag);
-        $name = preg_replace("/[\s]+/", '-', $name->translit());
-        $name = preg_replace("/[^a-zа-яЁ_\-]/i", '', $name);
-        $this->name = mb_strtolower($name,X3::app()->encoding);
-        return parent::beforeValidate();
     }
 }
 

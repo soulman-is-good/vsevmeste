@@ -43,6 +43,7 @@ $pk = $module->getTable()->getPK();
                                         <?else:?>
                                         <li><a href="/admin/update/module/<?=$class?>/id/<?=$model->id?>.html?field=role&value=admin" >Сделать админом</a></li>
                                         <?endif;?>
+                                        <li><a href="/admin/list/module/User_Message/toid/<?=$model->id?>.html" >Сообщения</a></li>
                                     </ul>
                                 </div>
                             </div>

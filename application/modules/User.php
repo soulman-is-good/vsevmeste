@@ -184,6 +184,19 @@ class User extends X3_Module_Table {
         $this->template->render('invested', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
     }
 
+    public function actionMessages() {
+        $id = X3::user()->id;
+        $user = User::getByPk($id);
+        $q = array('@condition'=>array('to_user_id'=>$id),'@order'=>'created_at DESC');
+        $count = User_Message::num_rows($q);
+        $paginator = new Paginator('User/Messages',$count);
+        $q['@limit'] = $paginator->limit;
+        $q['@offset'] = $paginator->offset;
+        $projects = User_Message::get($q);
+        X3::clientScript()->registerScriptFile('/js/user.messages.js',  X3_ClientScript::POS_END);
+        $this->template->render('messages', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
+    }
+
     public function actionInvestments() {
         if (isset($_GET['id']))
             $id = (int) $_GET['id'];

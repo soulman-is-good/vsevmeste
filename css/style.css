@@ -171,7 +171,13 @@ div.clear {clear:both;height:0px;font-size:0px;}
 .form .placeholder, .form ::placeholder {
     color:#CCC;
 }
-
+.project-tag {
+    display: inline-block;
+    padding:3px 5px;
+    border-radius: 5px;
+    background: #ccffcc;
+    color:#006666;
+}
 body {
     position: relative;
     z-index: -50;
@@ -246,6 +252,24 @@ body {
 .super-strip a {
     color: #ffff33;
     font-weight: bold;
+}
+.new_message {
+    position: absolute;
+    right: -11px;
+    top: -10px;
+    padding: 1px 4px;
+    background: #cc0000;
+    border-radius: 6px;
+    color: #fff;
+}
+.user-message {
+    background-color:#f1f2f0;
+    transition: background-color 1s;
+    -webkit-transition: background-color 1s;
+    -moz-transition: background-color 1s;
+}
+.user-message.unread {
+    background-color:#F1F1C8;
 }
 h1 {
     margin: 0px;

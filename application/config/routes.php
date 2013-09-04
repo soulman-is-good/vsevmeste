@@ -41,6 +41,7 @@ array(
     '/^\/user\/([0-9]+)?\/invested(.+)$/' => array('/user/invested/id/$1$2', true),
     '/^\/user\/([0-9]+)?\/investments(.+)$/' => array('/user/investments/id/$1$2', true),
     '/^\/user\/([0-9]+)?\/projects(.+)$/' => array('/user/projects/id/$1$2', true),
+    '/^\/user\/([0-9]+)?\/messages(.+)$/' => array('/user/messages/id/$1$2', true),
     '/^\/user\/([0-9]+)\/$/' => array('/user/index/id/$1', true),
     '/^\/admins(.*)$/' => array('/user/admins/$1', true),
 )

@@ -96,9 +96,6 @@ class Admin extends X3_Module {
             }
             if($model->save())
                 $this->redirect("/admin/list/module/$class.html");
-            else {
-                exit;
-            }
         }
         if(is_file($path)){
             $this->template->render("sudo/form/$action",array('model'=>$model,'class'=>$class));
@@ -114,13 +111,18 @@ class Admin extends X3_Module {
         if(isset($_POST[$class])){
             $data = $_POST[$class];
             $model->getTable()->acquire($data);
+            foreach ($model->_fields as $n=>$f){
+                if(strpos($f[0],"boolean")!==false && !isset($data[$n])) {
+                    $model->$n = 0;
+                }
+            }
             if($model->save())
                 $this->redirect("/admin/list/module/$class.html");
         }
         if(is_file($path)){
             $this->template->render("sudo/form/$action",array('model'=>$model,'class'=>$class));
-        }
-        $this->template->render('sudo/form',array('model'=>$model,'class'=>$class));
+        }else
+            $this->template->render('sudo/form',array('model'=>$model,'class'=>$class));
     }
     
     public function actionDelete() {

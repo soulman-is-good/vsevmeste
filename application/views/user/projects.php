@@ -5,6 +5,7 @@ if(X3::user()->id === $user->id)
         "Мои проекты",
         "Мои вложения",
         "Мне вложили",
+        "Сообщения мне",
     );
 else
     $labels = array(
@@ -22,6 +23,9 @@ else
             <li class="active"><?=$labels[1]?></li>
             <li><a href="/user/<?=$user->id?>/invested.html"><?=$labels[2]?></a></li>
             <li><a href="/user/<?=$user->id?>/investments.html"><?=$labels[3]?></a></li>
+            <?if(X3::user()->id == $user->id):?>
+            <li><a href="/user/<?=$user->id?>/messages.html"><?=$labels[4]?></a></li>
+            <?endif;?>
         </ul>
     </div>
     <div class="clearfix" style="height:30px;">&nbsp;</div>

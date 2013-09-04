@@ -2,6 +2,9 @@
 $form = new Form($model);
 $links = explode("\n",$model->links);
 $links = array_merge($links, array_fill(0, 5, ''));
+$Ts = X3::db()->query("SELECT tag FROM tags WHERE status='1'");
+$ttags = array();
+while (null!=($t = mysql_fetch_assoc($Ts)) && $ttags[] = array_shift($t)){}
 ?>
 <div class="item-head">
     <div class="item-head-body">
@@ -35,7 +38,7 @@ $links = array_merge($links, array_fill(0, 5, ''));
                 <div class="field">
                     <?=$form->input('title',array('placeholder'=>'Название проекта'))?>
                 </div>
-                <div class="field">
+                <div class="field" style="position: relative;z-index:10">
                     <ul id="tags">
                         <?foreach($tags as $tag):?>
                         <li><?=$tag->tag_id()->tag?></li>
@@ -77,3 +80,6 @@ $links = array_merge($links, array_fill(0, 5, ''));
     </div>
 </div>
 <?=X3_Widget::run('@views:_widgets:about_quick.php', array(), array('cache'=>!X3_DEBUG))?>
+<script>
+    var availableTags = <?=json_encode($ttags)?>;
+</script>

@@ -1,3 +1,6 @@
+<?php
+$tags = $model->tags();
+?>
 <?=$this->renderPartial('_item_head',array('model'=>$model));?>
 <div class="body" style="position: relative">
     <div class="tabs">
@@ -58,6 +61,13 @@
             ></div> 
         </div>
         <div class="pane">
+            <div class="pane-cont">
+                <?foreach($tags as $tag):?>
+                <a href="/projects/tag/<?=$tag->tag_id()->tag?>" class="project-tag"><?=$tag->tag_id()->tag?></a>
+                <?endforeach;?>
+            </div>
+        </div>
+        <div class="pane" style="margin-top:20px">
             <div class="pane-cont">
                 <?=$model->full_content?>
             </div>

@@ -5,7 +5,7 @@ if(X3::user()->id === $user->id)
         "Мои проекты",
         "Мои вложения",
         "Мне вложили",
-        "Сообщения мне",
+        "Cообщения мне",
     );
 else
     $labels = array(
@@ -23,16 +23,22 @@ else
             <li><a href="/user/<?=$user->id?>/"><?=$labels[0]?></a></li>
             <li><a href="/user/<?=$user->id?>/projects.html"><?=$labels[1]?></a></li>
             <li><a href="/user/<?=$user->id?>/invested.html"><?=$labels[2]?></a></li>
-            <li class="active"><?=$labels[3]?></li>
-            <?if(X3::user()->id == $user->id):?>
-            <li><a href="/user/<?=$user->id?>/messages.html"><?=$labels[4]?></a></li>
-            <?endif;?>
+            <li><a href="/user/<?=$user->id?>/investments.html"><?=$labels[3]?></a></li>
+            <li class="active"><?=$labels[4]?></li>
         </ul>
     </div>
     <div class="clearfix" style="height:30px;">&nbsp;</div>
     <div class="main_projects_cont" style="width:715px">
         <?foreach($models as $model):?>
-        <?=$this->renderPartial('@views:project:_project_investments.php',array('model'=>$model,'show'=>true));?>
+        <div class="project-event <?=$model->status?> user-message<?=$model->status==0?' unread':''?>" data-mid="<?=$model->id?>">
+            <img class="event-avatar" src="<?=$model->from_user_id()->getAvatar()?>" />
+            <div class="project-event-content">
+                <strong><a href="/user/<?=$model->from_user_id?>.html" class="grey_link"><?=$model->from_user_id()->fullName?></a></strong> <i>добавлено <?=date('d.m.Y H:i:s',$model->created_at)?></i>
+                <p style="margin:5px 0;padding:0;"><strong style="border-bottom: 1px solid #ccc;"><?=X3_Html::encode($model->title)?></strong></p>
+                <p style="padding:0;margin: 0 5px"><?=nl2br(X3_Html::encode($model->text))?></p>
+            </div>
+        </div>
+        <div class="hr">&nbsp;</div>
         <?endforeach;?>
     </div>
     <?=$paginator?>
