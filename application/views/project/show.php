@@ -1,6 +1,11 @@
 <?php
 $tags = $model->tags();
 ?>
+<style>
+    .b-share-icon_youtube {
+    background: url(/js/ckeditor.4/plugins/youtube/images/icon.png) 0 0 no-repeat;
+    }
+</style>
 <?=$this->renderPartial('_item_head',array('model'=>$model));?>
 <div class="body" style="position: relative">
     <div class="tabs">
@@ -63,7 +68,7 @@ $tags = $model->tags();
         <div class="pane">
             <div class="pane-cont">
                 <?foreach($tags as $tag):?>
-                <a href="/projects/tag/<?=$tag->tag_id()->tag?>" class="project-tag"><?=$tag->tag_id()->tag?></a>
+                <a href="/projects/tag/<?=urlencode($tag->tag_id()->tag)?>" class="project-tag"><?=$tag->tag_id()->tag?></a>
                 <?endforeach;?>
             </div>
         </div>
@@ -83,7 +88,7 @@ $tags = $model->tags();
                 <?foreach($links as $link):if(trim($link)=='') continue;?>
                 <a href="<?=X3_Html::encode($link)?>" target="_blank">
                     <?if(strpos($link,'youtu')):?>
-                    <img src="http://vsevmeste.kz/js/ckeditor.4/plugins/youtube/images/icon.png?t=D2LI" />&nbsp;<?=  X3_Html::encode($link)?><br/>
+                    <span class="b-share-icon b-share-icon_youtube"></span>&nbsp;<?=  X3_Html::encode($link)?><br/><br/>
                     <?endif;?>
                     <?if(strpos($link,'facebook')):?>
                     <span class="b-share-icon b-share-icon_facebook"></span>&nbsp;<?=  X3_Html::encode($link)?><br/><br/>

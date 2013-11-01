@@ -101,7 +101,7 @@ class Notify extends X3_Module_Table{
         if(is_null($to) && !empty($mail->to)){
             $rcps = explode(',',$mail->to);
         }elseif(is_null($to))
-            $rcps = array('info@vsevmeste.kz');
+            $rcps = array('support@vsevmeste.kz');
         else 
             $rcps = explode(',',$to);
         $errs = '';

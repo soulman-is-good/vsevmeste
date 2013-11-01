@@ -50,6 +50,15 @@ $sorts = array(
             <?endif;?>
             <?/*<li><a href="/projects<?=isset($category)?$category:''?>/curator/"><?=X3::translate('Куратор Страницы');?></a></li>*/?>
         </ul>
+        <?if(mysql_num_rows($tags)>0):?>
+        <div style="font-size:0px;line-height:0;height:20px">&nbsp;</div>
+        <h2 class="title_subcont">Популярные теги</h2>
+        <ul class="cats">
+            <?while($row = mysql_fetch_array($tags)):?>
+            <li><a href="/projects<?=$category!==null?'-'.$category->name:''?>/<?=$sort==null?"":"$sort/"?>tag/<?=urlencode($row['tag'])?>"><?=$row['tag']?></a> <span style="font-size:10px">(<?=$row['cnt']?>)</span></li>
+            <?endwhile;?>
+        </ul>
+        <?endif;?>
     </div>
     <h1 class="title_cont" style="float: none;margin-left: 0;">
         <?if($category!==null):?>

@@ -112,7 +112,7 @@ $(document).ready(function(){
             $('.slideshow ul').css({'position':'relative','margin':'0'});
             $('.slideshow li').each(function(i){$(this).css({'display':'none','position':'absolute','left':'0','top':'0','z-index':i+1});});
             $('.slideshow li').eq(0).fadeIn();
-            $('.slideshow').prepend($('.slider-content .slider_text_cont:nth-child(1)').clone());
+            $('.slideshow').prepend($('.slider-content .slider_text_cont:eq(0)').clone());
         }
         if($('.partners_cont .partner').length > 0){
             if($('.partners_cont .partner').length > 6){
@@ -140,4 +140,17 @@ $(document).ready(function(){
                 return false;
             });
         });
+        
+        $('.limit').each(function(){
+            var self = $(this);
+            var span = $(this).find('span');
+            var p = $(this).parent();
+            var inp = p.find('input')[0] || p.find('textarea')[0];
+            if(typeof inp !== 'undefined') {
+                $(inp).on('keyup',function(){
+                    var val = $(this).val();
+                    span.html(val.length);
+                })
+            }
+        })
 });

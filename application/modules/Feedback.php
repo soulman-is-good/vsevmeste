@@ -42,7 +42,8 @@ class Feedback extends X3_Module_Table {
             }
             if($model->validate() && !$model->hasErrors()){
                 $model->save();
-                Notify::sendMail('Feedback',array('name'=>$model->name,'email'=>$model->email,'ip'=>$_SERVER['REMOTE_ADDR'],'text'=>nl2br($model->text),'date'=>date('d.m.Y H:i',$model->created_at)),'soulman.is.good@gmail.com',$model->email);
+                $admin_email = strip_tags(SysSettings::getValue('AdminEmail','string','Emailы Администраторов, через запятую','Общие','support@vsevmeste.kz'));
+                Notify::sendMail('Feedback',array('name'=>$model->name,'email'=>$model->email,'ip'=>$_SERVER['REMOTE_ADDR'],'text'=>nl2br($model->text),'date'=>date('d.m.Y H:i',$model->created_at)),$admin_email,$model->email);
                 $this->controller->redirect('/feedback.phtml');
             }
         }

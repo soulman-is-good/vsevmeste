@@ -28,10 +28,15 @@ class User extends X3_Module_Table {
         'company_name'=>array('string[32]','default'=>'NULL'),
         'company_bin'=>array('string[32]','default'=>'NULL'),
         'email' => array('email', 'unique'), //as login
+        'contact_email' => array('email', 'default'=>'NULL'),
+        'contact_phone' => array('string[32]', 'default'=>'NULL'),
         'password' => array('string[5|50]', 'password'),
         'role' => array('string[255]', 'default' => 'user'),
         'akey' => array('string[255]', 'default' => 'NULL'),
+        'bankname' => array('string[64]', 'default' => 'NULL'),
         'address' => array('string[1024]', 'default' => 'NULL'),
+        'about' => array('string[1024]', 'default' => 'NULL'),
+        'links' => array('string[2048]', 'default' => 'NULL'),
         'date_of_birth' => array('integer[11]', 'default' => '0'),
         'lastbeen_at' => array('datetime', 'default' => '0'),
         'created_at' => array('datetime', 'default' => '0'),
@@ -54,8 +59,17 @@ class User extends X3_Module_Table {
         if (isset($this->_fields[$attr]) && in_array('xss', $this->_fields[$attr]) && trim($this->$name) != '') {
             
         }
+        if ($attr == 'debitcard' && trim($this->$attr) != '') {
+            if($this->bankname == '') {
+                $this->addError('bankname', X3::translate('Укажите название банка.'));
+            }
+        }
+        if ($attr == 'contact_phone' && trim($this->$attr) != '') {
+            if(preg_match("/[0-9\-\s]+/", "", trim($this->$attr))==0) {
+                $this->addError($attr, X3::translate('Не корректно указан номер телефона.'));
+            }
+        }
         if ($attr == 'phone' && trim($this->$attr) != '') {
-            //TODO: phone validation
             $id = $this->id;
             $phone = preg_replace("/^\+7/", "", trim($this->$attr));
             $phone = trim(preg_replace("/[\(\) ]/", "", trim($phone)));
@@ -81,6 +95,11 @@ class User extends X3_Module_Table {
             'surname' => X3::translate('Фамилия'),
             'duty' => X3::translate('Должность'),
             'email' => 'E-mail',
+            'contact_email' => 'Контактный E-mail',
+            'contact_phone' => 'Контактный телефон',
+            'links' => 'Ссылки в соц.сетях',
+            'about' => 'Биография',
+            'bankname' => 'Банк',
             'password' => X3::translate('Пароль'),
             'password_old' => X3::translate('Старый пароль'),
             'password_new' => X3::translate('Новый пароль'),
@@ -110,6 +129,10 @@ class User extends X3_Module_Table {
 
     public function getFilled() {
         return !empty($this->name) && !empty($this->surname) && !empty($this->debitcard) && !empty($this->city_id);
+    }
+    
+    public function beforeAction() {
+        return true;
     }
     
     /**
@@ -276,6 +299,9 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
         if(isset($_POST['User'])){
             $data = $_POST['User'];
             $model->getTable()->acquire($data);
+            if(is_array($model->links)) {
+                $model->links = implode("\n", $model->links);
+            }
             $u = new Upload($model,'image');
             if($u->message=='' && !$u->source){
                 $u->save();

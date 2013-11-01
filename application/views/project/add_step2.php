@@ -1,7 +1,7 @@
 <?php
 $form = new Form($model);
 $links = explode("\n",$model->links);
-$links = array_merge($links, array_fill(0, 5, ''));
+$links = array_merge($links, array_fill(0, 6, ''));
 $Ts = X3::db()->query("SELECT tag FROM tags WHERE status='1'");
 $ttags = array();
 while (null!=($t = mysql_fetch_assoc($Ts)) && $ttags[] = array_shift($t)){}
@@ -36,8 +36,10 @@ while (null!=($t = mysql_fetch_assoc($Ts)) && $ttags[] = array_shift($t)){}
                     <div class="info">Выберите город проекта</div>
                 </div>
                 <div class="field">
-                    <?=$form->input('title',array('placeholder'=>'Название проекта'))?>
+                    <?=$form->input('title',array('placeholder'=>'Название проекта','maxlength'=>'60'))?>
+                    <i class="limit"><span><?=mb_strlen($model->title,'UTF-8')?></span>/60</i>
                 </div>
+                    <div class="info">Название проекта должно быть простым и запоминающимся. Оно должно отражать суть.</div>
                 <div class="field" style="position: relative;z-index:10">
                     <ul id="tags">
                         <?foreach($tags as $tag):?>
@@ -46,7 +48,8 @@ while (null!=($t = mysql_fetch_assoc($Ts)) && $ttags[] = array_shift($t)){}
                     </ul>
                 </div>
                 <div class="field">
-                    <?=$form->textarea('short_content',array('placeholder'=>'Краткое описание'))?>
+                    <?=$form->textarea('short_content',array('placeholder'=>'Краткое описание','maxlength'=>'255'))?>
+                    <i class="limit"><span><?=mb_strlen($model->short_content,'UTF-8')?></span>/255</i>
                 </div>
                 <div class="field">
                     <?=$form->textarea('full_content')?>
@@ -65,11 +68,12 @@ while (null!=($t = mysql_fetch_assoc($Ts)) && $ttags[] = array_shift($t)){}
                 </div>
                 <div class="field">
                     <div><strong>Ссылки на проект на других источниках</strong></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'Vkontakte','value'=>$links[0]))?></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'Facebook','value'=>$links[1]))?></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'Twitter','value'=>$links[2]))?></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'Мой Мир','value'=>$links[3]))?></div>
-                    <div><?=$form->input('links[]',array('placeholder'=>'YouTube','value'=>$links[4]))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Vkontakte','value'=>X3_Html::encode($links[0])))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Facebook','value'=>X3_Html::encode($links[1])))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Twitter','value'=>X3_Html::encode($links[2])))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Мой Мир','value'=>X3_Html::encode($links[3])))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'YouTube','value'=>X3_Html::encode($links[4])))?></div>
+                    <div><?=$form->input('links[]',array('placeholder'=>'Google+','value'=>X3_Html::encode($links[5])))?></div>
                 </div>
                 <div class="field">
                     <button type="submit">Далее</button>

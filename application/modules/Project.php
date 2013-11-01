@@ -23,11 +23,11 @@ class Project extends X3_Module_Table {
         'image' => array('file', 'default' => 'NULL', 'allowed' => array('jpg', 'gif', 'png', 'jpeg'), 'max_size' => 10240),
         'video' => array('string[128]', 'default' => 'NULL'),
         'links' => array('content', 'default' => 'NULL'),
-        'title' => array('string[64]'),
+        'title' => array('string[60]'),
         'name' => array('string[128]', 'unique'),
         'current_sum' => array('integer[11]', 'default' => '0'),
         'needed_sum' => array('integer[11]'),
-        'short_content' => array('text'),
+        'short_content' => array('text[255]'),
         'full_content' => array('text'),
         'status' => array('boolean', 'default' => '0'),
         'donate' => array('boolean', 'default' => '0'),
@@ -178,13 +178,22 @@ class Project extends X3_Module_Table {
                     $this->redirect('/projects/');
             }
         }
+        if (X3::request()->getRequest('tag') !== null) {
+            //I prefer one select and one join instead of two joins
+            $tag = Tags::get(array('tag'=>urldecode(X3::request()->getRequest('tag'))),1);
+            $q['@join'] = "INNER JOIN project_tags pt ON pt.project_id=project.id AND pt.tag_id=$tag->id";
+        }
         $count = self::num_rows($q);
         $paginator = new Paginator(__CLASS__, $count);
         $q['@limit'] = $paginator->limit;
         $q['@offset'] = $paginator->offset;
         $models = self::get($q);
         $cats = Category::get();
-        $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator, 'cats' => $cats, 'category' => $category, 'sort' => $sort));
+        $tags = X3::db()->query("SELECT t.id, t.tag, COUNT(p.id) cnt FROM tags t INNER JOIN project_tags pt ON pt.tag_id=t.id INNER JOIN project p ON p.id=pt.project_id WHERE p.status=1 GROUP BY t.id ORDER BY cnt DESC, tag LIMIT 7");
+        if($tags === false) {
+            die(X3::db()->getErrors());
+        }
+        $this->template->render('index', array('models' => $models, 'count' => $count, 'paginator' => $paginator, 'cats' => $cats, 'category' => $category, 'sort' => $sort, 'tags' => $tags));
     }
 
     public function actionPartner() {
@@ -248,6 +257,7 @@ class Project extends X3_Module_Table {
         $q = array(
             '@condition' => array('project.status' => '1'),
             '@with' => array('user_id', 'city_id'),
+            '@join' => "LEFT JOIN project_tags pt ON pt.project_id=project.id LEFT JOIN tags tt ON tt.id=pt.tag_id",
             '@order' => 'created_at DESC'
         );
         if (isset($_GET['q'])) {
@@ -257,7 +267,8 @@ class Project extends X3_Module_Table {
         if (X3::user()->psearch != '') {
             $w = X3::user()->psearch;
             $w = X3::db()->validateSQL($w);
-            $q['@condition'][] = array(array('project.title' => array('LIKE' => "'%$w%'")), array('project.full_content' => array('LIKE' => "'%$w%'")));
+            $q['@condition'][] = array(array('project.title' => array('LIKE' => "'%$w%'")), array('project.full_content' => array('LIKE' => "'%$w%'")), 
+                array('tt.tag' => array('LIKE' => "'%$w%'")));
         }
         $count = self::num_rows($q);
         $paginator = new Paginator(__CLASS__, $count);

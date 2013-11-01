@@ -106,6 +106,8 @@ div.clear {clear:both;height:0px;font-size:0px;}
 }
 .form .info {
     font-size:13px;
+    color:#333;
+    margin-top:-5px;
 }
 .form select {
     width:269px;
@@ -131,6 +133,16 @@ div.clear {clear:both;height:0px;font-size:0px;}
 }
 .form .field {
     padding:5px 0;
+    position: relative;
+}
+.field .info {
+    margin-top: 0px;
+}
+.field .limit {
+    color:#999;
+    position: absolute;
+    bottom:15px;
+    right:10px;
 }
 .form button {
     padding: 10px 20px;
@@ -976,6 +988,10 @@ a:hover .menu {
     bottom:0px;
     left:0px;
     right:0px;
+}
+
+.site.index .footer_cont {
+    position: absolute;
 }
 
 .footer_link_cont {
