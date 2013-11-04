@@ -424,7 +424,7 @@ class Project extends X3_Module_Table {
     public function actionInvestments() {
         if (($id = X3::request()->getRequest('name')) !== NULL && NULL !== ($model = self::get(array('@condition' => array('project.name' => $id)), 1))) {
             $limit = 10;
-            $q = array('@condition' => array('project_id' => $model->id, 'status' => '1'), '@limit' => $limit, '@order' => '`created_at` ASC');
+            $q = array('@condition' => array('project_id' => $model->id, 'status' => '1'), '@limit' => $limit, '@order' => '`created_at` DESC');
             if (IS_AJAX) {
                 if (isset($_GET['page'])) {// && X3::user()->token === X3::request()->getRequest('token')){
                     $page = (int) $_GET['page'];

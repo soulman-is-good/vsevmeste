@@ -44,6 +44,7 @@ $pk = $module->getTable()->getPK();
                                         <li><a href="/admin/update/module/<?=$class?>/id/<?=$model->id?>.html?field=role&value=admin" >Сделать админом</a></li>
                                         <?endif;?>
                                         <li><a href="/admin/list/module/User_Message/toid/<?=$model->id?>.html" >Сообщения</a></li>
+                                        <li><a style="color: #009900" href="#" class="money-popup" data-userid="<?=$model->id?>" >Пополнить счет</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -55,10 +56,11 @@ $pk = $module->getTable()->getPK();
                                 <a href="/admin/view/module/<?=$class?>/id/<?=$model->id?>.html">
                                     <?=$model->fullName;?><?if($model->status==0):?>&nbsp;<span class="label label-inverse">Не активирован</span><?endif;?><?if($model->ispartner):?>&nbsp;<span class="label label-info">Партнер</span><?endif;?>
                                     <?if($model->role === 'admin'):?>
-                                    <br/>
                                     <span class="label label-important">Администратор</span>
                                     <?endif?>
                                 </a>
+                                <br/>
+                                Счет на сайте: <strong><?=number_format($model->money,2,',',' ')?> тенге</strong>
                                 <div class="clear">&nbsp;</div>
                         </div>
                         <div class="clear">&nbsp;</div>

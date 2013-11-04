@@ -41,6 +41,7 @@ class User extends X3_Module_Table {
         'lastbeen_at' => array('datetime', 'default' => '0'),
         'created_at' => array('datetime', 'default' => '0'),
         'ispartner' => array('boolean', 'unsigned', 'default' => '0'),
+        'money' => array('decimal[10,3]', 'default' => '0.000'),
         'status' => array('integer[1]', 'unsigned', 'default' => '0'),
         //unused
         'password_old' => array('string[6|50]', 'password', 'default' => '', 'unused'),
@@ -65,9 +66,9 @@ class User extends X3_Module_Table {
             }
         }
         if ($attr == 'contact_phone' && trim($this->$attr) != '') {
-            if(preg_match("/[0-9\-\s]+/", "", trim($this->$attr))==0) {
-                $this->addError($attr, X3::translate('Не корректно указан номер телефона.'));
-            }
+            //if(preg_match("/[0-9]+/", "", trim($this->$attr))==0) {
+            //    $this->addError($attr, X3::translate('Не корректно указан номер телефона.'));
+            //}
         }
         if ($attr == 'phone' && trim($this->$attr) != '') {
             $id = $this->id;

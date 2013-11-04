@@ -43,4 +43,20 @@ $(function(){
         $('#cr_f').datepicker({changeMonth:true,changeYear:true,onClose: function( selectedDate ) {console.log(new Date(selectedDate))}});
         $('#cr_t').datepicker({changeMonth:true,changeYear:true});
     }
+    
+    $('.money-popup').on('click',function(){
+        var val = prompt("Введите сумму пополнения (можно отрицательную для снятия)");
+        val = parseFloat(val.replace(',', '.'));
+        var uid = $(this).data('userid');
+        if(val && !isNaN(val)) {
+            $.post('/admin/refund',{value:val,uid:uid},function(m){
+                if(m === 'OK') {
+                    location.reload();
+                } else {
+                    alert(m);
+                }
+            });
+        }
+        return false;
+    });
 });

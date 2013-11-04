@@ -3,6 +3,8 @@ return
 array(
     //Common
     '/^\/epay\/([0-9]+)(.*)$/' => array('/site/kkb/id/$1$2', true),
+    '/^\/wallet\/([0-9]+)(.*)$/' => array('/site/wallet/id/$1$2', true),
+    '/^\/qiwi\/([0-9]+)(.*)$/' => array('/site/qiwi/id/$1$2', true),
     '/^\/restore\/(.*)$/' => array('/site/restore/key/$1', true),
     '/^\/restore\/$/' => array('/site/restore', true),
     '/^\/enter\.html$/' => array('/user/login', true), // first element - module/action, second - if either way then redirect

@@ -32,7 +32,7 @@ class Admin extends X3_Module {
     public function filter() {
         return array(
             'allow'=>array(
-                'admin'=>array('index','send','links','list','edit','update','delete','view','create')
+                'admin'=>array('index','send','links','list','edit','update','delete','view','create','refund')
             ),
             'deny'=>array(
                 '*'=>array('*')
@@ -41,13 +41,29 @@ class Admin extends X3_Module {
         );
     }
     
+    public function actionRefund() {
+        if(NULL !== ($val = X3::request()->postRequest('value')) && ($uid = X3::request()->postRequest('uid'))>0 && NULL !== ($user = User::getByPk($uid))){
+            $user->money += $val;
+            if($user->save()) {
+                echo 'OK';
+            } else {
+                echo X3_Html::errorSummary($user);
+            }
+        } else {
+            if(IS_AJAX) {
+                echo 'Wrong parameters!';
+            } else {
+                throw new X3_404();
+            }
+        }
+        exit;
+    }
+    
     public function actionIndex() {
         $this->template->render('index');
     }
     
     public function actionList() {
-        if(!X3_DEBUG && !X3::user()->superAdmin)
-            throw new X3_404();
         $action = strtolower($_GET['module']);
         $class = ucfirst($_GET['module']);
         $module = X3_Module::getInstance($class);

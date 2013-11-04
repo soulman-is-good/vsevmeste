@@ -1,3 +1,7 @@
+<?php
+$sum = $interest !== null?$interest->sum:$data['amount'];
+$user = User::getByPk(X3::user()->id);
+?>
 <style>
     .pay img {
         border: 4px solid #ccc;
@@ -87,11 +91,16 @@
             <?endif;?>
                 <h3>Выберите систему оплаты</h3><br/>
                 <a href="#qiwi" class="pay" onclick="return false;" title="Оплата через Qiwi">
-                    <img src="/images/qiwi.png" alt="QIWI" />
+                    <img style="opacity:0.5" src="/images/qiwi.png" alt="QIWI" />
                 </a>
                 <a href="/epay/<?=$data['id']?>" class="pay" title="Оплата через epay">
                     <img src="/images/epay.png" alt="EPAY" />
                 </a>
+                <?if($user->money>=$sum):?>
+                <a href="/wallet/<?=$data['id']?>" class="pay" title="На вашем счету <?=(int)$user->money?> тенге">
+                    <img width="150" src="/images/wallet-icon.png" alt="Личный счет" />
+                </a>
+                <?endif;?>
                 <div class="hr">&nbsp;</div>
                 <a class="grey_link" href="/<?=$model->name?>-project/">Отменить</a>
             </div>

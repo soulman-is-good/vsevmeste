@@ -13,6 +13,7 @@ class Project_Invest extends X3_Module_Table {
     //pay methods
     const PAY_METHOD_QIWI = 0;
     const PAY_METHOD_EPAY = 1;
+    const PAY_METHOD_WALLET = 2;
     
     //status codes
     const STATUS_UNAPPOVED = 0;

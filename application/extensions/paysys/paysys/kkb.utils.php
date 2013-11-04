@@ -1,5 +1,5 @@
 <?php
-define('DOCROOT', '/var/www/c-448/data/www/vsevmeste.kz');
+define('DOCROOT', realpath(dirname(dirname(dirname(dirname(dirname(__FILE__)))))));//'/var/www/c-448/data/www/vsevmeste.kz');
 /*
 -----===++[Additional procedures by Pavel Nedelin (soius@soius.kz;tecc@mail.kz)		]++===-----
 -----===++[05.10.2006									]++===-----

@@ -1,6 +1,6 @@
 <?php
 $form = new Form();
-$per = (float)strip_tags(SysSettings::getValue('EpayComittion','text','Комиссия Epay','Общие','3.5%'));
+$per = (float)strip_tags(SysSettings::getValue('QiwiComittion','string','Комиссия Qiwi','Общие','1%'));
 ?>
 <div class="body" style="position: relative">
 <h1 style="font-size: 30px;margin:25px 0">Вложение денежных средств в проект "<?=$invest->project_id()->title?>"</h1>
@@ -22,13 +22,8 @@ $per = (float)strip_tags(SysSettings::getValue('EpayComittion','text','Коми�
         <p>Всего к оплате: <?=number_format($invest->amount + $invest->amount * $per/100,2,',',' ')?>тг.</p>
         <div class="hr">&nbsp;</div>
         <?endif;?>
-        <?=$form->start(array('action'=>'https://3dsecure.kkb.kz/jsp/process/logon.jsp','name'=>'SendOrder','id'=>'epay','enctype'=>null))?>
-		<input type="hidden" name="Signed_Order_B64" value="<?= $sign ?>">
-		<input type="hidden" name="Language" value="rus" />
-                <input type="hidden" name="BackLink" value="<?=X3::request()->getBaseUrl()?>/<?=$invest->project_id()->name?>-project/investments.html" />
-                <input type="hidden" name="PostLink" value="<?=X3::request()->getBaseUrl()?>/epay/<?=$invest->id?>" />
-		<input type="hidden" name="email" value="<?=$invest->user_id()->email?>" />
-		<button type="submit" id="pay">Подтверждаю</button>
+        <?=$form->start(array('id'=>'wallet'))?>
+		<button type="submit" id="pay" name="wallet">Подтверждаю</button>
         <?=$form->end()?>
     </div>
 </div>

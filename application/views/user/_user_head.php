@@ -76,7 +76,7 @@
             </p>
             <?endif;?>
             <?if(X3::user()->id == $user->id):?>
-            <p style="margin-bottom: 15px">Счет на сайте: <strong>0 тенге</strong></p>
+            <p style="margin-bottom: 15px">Счет на сайте: <strong><?=number_format($user->money,2,',',' ')?> тенге</strong></p>
             <?/*<a href="#" style="font-size: 16px;font-weight: bold;border-bottom: 1px solid #ADD299">Пополнить</a>*/?>
             <?endif;?>
         </div>
