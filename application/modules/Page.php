@@ -127,8 +127,29 @@ class Page extends X3_Module_Table {
             $name = preg_replace("/[\s]+/", '-', $name->translit());
             $name = preg_replace("/[^a-zа-яЁ_\-]/i", '', $name);
             $this->name = strtolower($name);
+        } elseif(FALSE !== ($j = strpos($this->name, 'http'))) {
+            $name = explode('/', $this->name);
+            $name = str_replace(".phtml","",array_pop($name));
+            $this->name = str_replace(".html","",$name);
         }
 //        if($this->parent_id=="" || $this->parent_id=="0") $this->parent_id = NULL;
+    }
+    
+    public function modText() {
+        $t = $this->text;
+        if(X3::user()->isGuest()) {
+            $uid = '<a href="/enter.html">'.X3::translate("войти").'</a>';
+        } else {
+            $uid = "00".X3::user()->id;
+        }
+        $t = str_replace("{{USER_ACCOUNT}}",$uid,$t);
+        $t = str_replace("{{PROJECT_ACCOUNT}}","".X3::user()->project_id,$t);
+        $t = str_replace("{{DATETIME}}",date("d.m.Y H:i:s"),$t);
+        $t = str_replace("{{DATE}}",date("d.m.Y"),$t);
+        $t = str_replace("{{IP}}",$_SERVER['REMOTE_ADDR'],$t);
+        $t = str_replace("{{USER_AGENT}}",$_SERVER['HTTP_USER_AGENT'],$t);
+        $t = str_replace("{{HOST}}",$_SERVER['HTTP_HOST'],$t);
+        return $t;
     }
 
 }

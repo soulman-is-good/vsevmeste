@@ -9,6 +9,11 @@ return array(
     ),
     'locale'=>'ru',
 //    'languages'=>array('en','kz'),
+    
+    //params
+    'kkb_host'=>VV_DEBUG?"https://3dsecure.kkb.kz":"https://epay.kkb.kz",
+    'qiwi_ip'=>VV_DEBUG?'212.154.215.82':'92.46.53.228',
+    
     'components'=>array(
         'starter'=>array(
             'class'=>'Starter'

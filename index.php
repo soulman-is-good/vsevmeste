@@ -14,6 +14,7 @@ $x3=dirname(__FILE__).'/application/x3framework/X3.php';
 $config=dirname(__FILE__).'/application/config/main.php';
 // remove the following lines when in production mode
 define('X3_DEBUG',true);
+define('VV_DEBUG',true);
 // specify how many levels of call stack should be shown in each log message
 ini_set('display_errors', true);
 error_reporting(E_ALL);

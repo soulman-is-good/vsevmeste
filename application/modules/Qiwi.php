@@ -1,24 +1,10 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of Default
+ * Qiwi module
  *
  * @author Soul_man
  */
-class Site extends X3_Module {
-
-    public static function newInstance($class = null) {
-        return parent::newInstance(__CLASS__);
-    }
-
-    public static function getInstance($class = null) {
-        return parent::getInstance(__CLASS__);
-    }
+class Qiwi extends X3_Module {
 
     public function filter() {
         return array(
@@ -46,18 +32,35 @@ class Site extends X3_Module {
         );
     }
 
-    public function route() { //Using X3_Request $url propery to parse
-        return array(
-            '/^sitemap\.xml$/' => 'actionMap',
-            '/^download\/(.+?).html/' => array(
-                'class' => 'Download',
-                'argument' => '$1'
-            )
-        );
-    }
-
     public function actionIndex() {
-        $this->template->render('index', array('main' => true));
+        if(1 || $_SERVER['REMOTE_ADDR'] === X3::app()->qiwi_ip && isset($_GET['command'],$_GET['txn_id'],$_GET['account'],$_GET['sum'])) {
+            list($comm,$txnid,$uid,$sum) = array($_GET['command'],$_GET['txn_id'],$_GET['account'],$_GET['sum']);
+            $comment = '';
+            $result = 0;
+            if(NULL === ($user = User::findByPk($uid))) {
+                $result = 5;
+            } elseif($user->status == 0) {
+                $result = 79;
+                //$comment = 'Пользователь не прошел активацию';
+            }
+            switch ($comm) {
+                case "check":
+                    header("Content-type: text/xml; charset:utf-8");
+                    $this->template->layout = null;
+                    $this->template->render('check', array('txnid' => $txnid,'result'=>$result,'comment'=>$comment));
+                    break;
+                case "pay":
+                    header("Content-type: text/xml; charset:utf-8");
+                    $this->template->layout = null;
+                    $this->template->render('pay', array('txnid' => $txnid,'result'=>$result,'comment'=>$comment));
+                    break;
+                default:
+                    throw new X3_404();
+                    break;
+            }
+        } else {
+            throw new X3_404();
+        }
     }
 
     public function actionLimit() {
@@ -162,8 +165,7 @@ class Site extends X3_Module {
             return true;
         }
         $req = process_check($result['PAYMENT_REFERENCE'], $result['PAYMENT_APPROVAL_CODE'], $result['ORDER_ORDER_ID'], 398, $result['ORDER_AMOUNT'], $path1);
-        $host = X3::app()->kkb_host;
-        $xml = simplexml_load_string(file_get_contents("https://$host/jsp/remote/checkOrdern.jsp?" . urlencode($req)));
+        $xml = simplexml_load_string(file_get_contents('https://3dsecure.kkb.kz/jsp/remote/checkOrdern.jsp?' . urlencode($req)));
         $response = $xml->bank->response->attributes();
         if ($response->payment == 'true')
             return true;

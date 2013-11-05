@@ -14,7 +14,7 @@ $pages = Page::get(array('status'=>'1'));
     </div>
     <div class="pane" style="margin-bottom:40px;width:600px;float:right;">
         <div class="pane-cont">
-            <?=$model->text?>
+            <?=$model->modText()?>
         </div>
     </div>
 </div>
