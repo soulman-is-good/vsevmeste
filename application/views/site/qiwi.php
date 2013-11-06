@@ -18,12 +18,12 @@ $per = (float)strip_tags(SysSettings::getValue('QiwiComittion','string','Ком�
         <h3>Подтвердите, что хотите вложить <?=$invest->amount?> тенге в этот проект</h3>
         <div class="hr">&nbsp;</div>
         <?if($per>0):?>
-        <p>Комиссия по банковской карте: <?=$per?>%</p>
+        <p>Комиссия Qiwi: <?=$per?>%</p>
         <p>Всего к оплате: <?=number_format($invest->amount + $invest->amount * $per/100,2,',',' ')?>тг.</p>
         <div class="hr">&nbsp;</div>
         <?endif;?>
         <?=$form->start(array('id'=>'wallet'))?>
-		<button type="submit" id="pay" name="wallet">Подтверждаю</button>
+		<button type="submit" id="pay" name="qiwi">Подтверждаю</button>
         <?=$form->end()?>
     </div>
 </div>

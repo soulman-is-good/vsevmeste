@@ -195,6 +195,16 @@ class Site extends X3_Module {
                         $res->status = Project_Invest::STATUS_SUCCESS;
                         $res->pay_data = json_encode($result);
                         $res->save();
+                        $per = (float)strip_tags(SysSettings::getValue('EpayComittion','string','Комиссия Epay','Общие','3.5%'));
+                        $sum = $invest->amount + $invest->amount * $per / 100;
+                        $t = new Transaction();
+                        $t->user_id = X3::user()->id;
+                        $t->project_id = $invest->project_id;
+                        $t->title = "KazKom";
+                        $t->created_at = time();
+                        $t->sum = $sum;
+                        $t->comment = '';
+                        $t->save();
                         if ($res->interest_id > 0)
                             Project_Interest::update(array('bought' => '`bought` + 1'), array('id' => $res->interest_id));
                         Project::update(array('current_sum' => '`current_sum` + ' . $res->amount), array('id' => $res->project_id));

@@ -21,7 +21,7 @@ class KKB extends X3_Module_Table {
         'id'=>array('integer[10]','unsigned','primary','auto_increment'),        
         'created_at'=>array('datetime'),
         'amount'=>array('integer[10]','unsigned','primary','auto_increment'),        
-        'status'=>array('integer[1]','unsigned','default'=>'0'),s
+        'status'=>array('integer[1]','unsigned','default'=>'0'),
     );
     public static function newInstance($class=__CLASS__) {
         return parent::newInstance($class);
@@ -36,7 +36,7 @@ class KKB extends X3_Module_Table {
         return parent::getByPk($pk,$class);
     }
     public function moduleTitle() {
-        return 'Вакансии';
+        return 'Проводки';
     }
     public function fieldNames() {
         return array(
