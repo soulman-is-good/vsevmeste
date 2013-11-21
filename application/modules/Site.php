@@ -250,23 +250,7 @@ class Site extends X3_Module {
     public function actionQiwi() {
         if (NULL !== ($id = X3::request()->getRequest('id')) && NULL !== ($invest = Project_Invest::get(array('id' => $id, 'user_id' => X3::user()->id))) && (Project_Invest::STATUS_UNAPPOVED == $invest->status || Project_Invest::STATUS_WAIT == $invest->status)) {
             if(isset($_POST['qiwi'])) {
-                $invest->pay_method = Project_Invest::PAY_METHOD_WALLET;
-                $invest->status = Project_Invest::STATUS_SUCCESS;
-                $invest->pay_data = json_encode(array('user_id' => X3::user()->id, 'ip' => $_SERVER['REMOTE_ADDR']));
-                if (!$invest->save()) {
-                    $html = X3_Html::errorSummary($invest);
-                    $html.=X3::db()->getErrors();
-                    $html.=X3::db()->lastQuery();
-                    X3::log($html);
-                    throw new X3_Exception('Error updating order', 500);
-                } else {
-                    if ($invest->interest_id > 0) {
-                        Project_Interest::update(array('bought' => '`bought` + 1'), array('id' => $invest->interest_id));
-                    }
-                    $per = (float)strip_tags(SysSettings::getValue('QiwiComittion','string','Комиссия с Qiwi','Общие','1%'));
-                    Project::update(array('current_sum' => '`current_sum` + ' . $invest->amount), array('id' => $invest->project_id));
-                    $this->redirect(X3::request()->getBaseUrl() . "/" . $invest->project_id()->name . "-project/investments.html");
-                }
+
             } else {
                 $this->template->render('qiwi', array('invest' => $invest));
             }
