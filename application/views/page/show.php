@@ -3,6 +3,7 @@ $pages = Page::get(array('status'=>'1'));
 ?>
 <div class="body" style="position: relative">
     <h1 style="font-size: 30px;margin:25px 0"><?=$model->title?></h1>
+    <?if($model->status):?>
     <div class="right-bar item-show-bar" style="float:left">
         <div class="pane">
             <div class="pane-cont">
@@ -17,4 +18,11 @@ $pages = Page::get(array('status'=>'1'));
             <?=$model->modText()?>
         </div>
     </div>
+    <?else:?>
+    <div class="pane" style="margin-bottom:40px;">
+        <div class="pane-cont">
+            <?=$model->modText()?>
+        </div>
+    </div>
+    <?endif;?>
 </div>

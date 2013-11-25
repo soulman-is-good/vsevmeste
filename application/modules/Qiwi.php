@@ -68,9 +68,17 @@ class Qiwi extends X3_Module {
                             if ($model->interest_id > 0) {
                                 Project_Interest::update(array('bought' => '`bought` + 1'), array('id' => $model->interest_id));
                             }
+                            $url = X3::request()->getBaseUrl() . "/" . $model->project_id()->name . "-project.html";
+                            $admin_email = strip_tags(SysSettings::getValue('AdminEmail','string','Emailы Администраторов, через запятую','Общие','support@vsevmeste.kz'));
+                            Notify::sendMail('User.Payed.4user', array('name' => $model->user_id()->fullName, 'type'=>'Qiwi', 'title' => $model->project_id()->title, 'url'=>$url, 'amount'=>$model->amount), $model->user_id()->email);
+                            Notify::sendMail('User.Payed.4admin', array('name' => $model->user_id()->fullName, 'type'=>'Qiwi', 'title' => $model->project_id()->title, 'url'=>$url, 'amount'=>$model->amount), $admin_email);
                             $per = (float)strip_tags(SysSettings::getValue('QiwiComittion','string','Комиссия с Qiwi','Общие','1%'));
                             Project::update(array('current_sum' => '`current_sum` + ' . $model->amount), array('id' => $model->project_id));
                         }
+                    } else {
+                        $url = X3::request()->getBaseUrl() . "/user/$model->id/";
+                        Notify::sendMail('User.Funds.4user', array('name' => $model->fullName, 'amount'=>$sum,'url'=>$url), $model->email);
+                        Notify::sendMail('User.Funds.4admin', array('name' => $model->fullName, 'amount'=>$sum,'url'=>$url), $admin_email);
                     }
                     
                     $t = new Transaction();

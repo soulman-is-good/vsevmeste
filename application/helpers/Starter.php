@@ -48,8 +48,8 @@ class Starter extends X3_Component {
             ),
         ))>0;
         X3::app()->og_title = X3::app()->name;
-        X3::app()->og_url = X3::app()->baseUrl;
-        X3::app()->og_image = X3::app()->baseUrl . "/images/logo.png";
+        X3::app()->og_url = X3::request()->getBaseUrl() ;
+        X3::app()->og_image = X3::request()->getBaseUrl() . "/images/logo.png";
         if(!IS_AJAX)
             X3::user()->token = time() . rand(10,100);
         return array($controller,$action);

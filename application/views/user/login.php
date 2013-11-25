@@ -45,7 +45,7 @@ $errors = $user->getTable()->getErrors();
         <?=$form->end()?>
     </div>
 </div>
-<div class="reg form">
+<div class="reg form" style="margin-left: 310px">
     <h3><?=X3::translate('Регистрация');?></h3>
     <div class="content"  style="padding-top: 15px">
         <?if(!empty($errors)):?>

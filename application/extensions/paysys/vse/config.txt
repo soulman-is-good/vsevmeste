@@ -1,0 +1,8 @@
+MERCHANT_CERTIFICATE_ID = "00c183cd6f"	 	; �������� ����� ����������� Cert Serial Number
+MERCHANT_NAME = "TOO VseVmeste"			; �������� �������� (��������) Shop/merchant Name
+PRIVATE_KEY_FN = "/application/extensions/paysys/vse/vmeste.prv"	        ; ���� � ��������� ����� Private cert path
+PRIVATE_KEY_PASS = "1q2w3e4r"			; ������ � ��������� ����� Private cert password
+XML_TEMPLATE_FN = "/application/extensions/paysys/paysys/template.xml"	; ���� � XML ������� XML template path
+XML_COMMAND_TEMPLATE_FN = "/application/extensions/paysys/paysys/command_template.xml"	; ���� � XML ������� ��� ������ (�������/�������������)
+PUBLIC_KEY_FN = "/application/extensions/paysys/vse/kkbca.pem"		; ���� � ��������� ����� Public cert path
+MERCHANT_ID="98131081"				; �������� �� � ���������� ������

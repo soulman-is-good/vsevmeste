@@ -1,6 +1,8 @@
 <?php
 $form = new Form();
 $per = (float)strip_tags(SysSettings::getValue('EpayComittion','text','Комиссия Epay','Общие','3.5%'));
+$kkb_text = SysSettings::getValue('KKBText','text','Текст для оплаты через EPay','Общие','<p>Подтвердите, что хотите вложить %AMOUNT% тенге в этот проект</p>');
+$kkb_text = str_replace("%AMOUNT%",$invest->amount,$kkb_text);
 ?>
 <div class="body" style="position: relative">
 <h1 style="font-size: 30px;margin:25px 0">Вложение денежных средств в проект "<?=$invest->project_id()->title?>"</h1>
@@ -15,7 +17,7 @@ $per = (float)strip_tags(SysSettings::getValue('EpayComittion','text','Коми�
             </ul>
         </div>
         <?endif;?>
-        <h3>Подтвердите, что хотите вложить <?=$invest->amount?> тенге в этот проект</h3>
+        <?=$kkb_text?>
         <div class="hr">&nbsp;</div>
         <?if($per>0):?>
         <p>Комиссия по банковской карте: <?=$per?>%</p>

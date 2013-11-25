@@ -28,7 +28,7 @@ class User extends X3_Module_Table {
         'company_name'=>array('string[32]','default'=>'NULL'),
         'company_bin'=>array('string[32]','default'=>'NULL'),
         'email' => array('email', 'unique'), //as login
-        'contact_email' => array('email', 'default'=>'NULL'),
+        'contact_email' => array('string', 'default'=>'NULL'),
         'contact_phone' => array('string[32]', 'default'=>'NULL'),
         'password' => array('string[5|50]', 'password'),
         'role' => array('string[255]', 'default' => 'user'),
@@ -396,7 +396,6 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
         $error = false;
         $u = array('email' => '', 'password' => '');
         $user = new User;
-        $address = new User_Address;
         if (isset($_POST['captcha'])) {
             $pass = true;
             if (md5(strtolower($_POST['captcha'])) != X3::user()->captcha['text']) {
@@ -405,6 +404,7 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
             }
             $user->getTable()->acquire($_POST['User']);
             $user->role = 'user';
+            $user->contact_email = NULL;
             $user->status = 0;
             if ($user->password != $user->password_repeat) {
                 $user->addError('password_repeat', X3::translate('Пароли не совпадают'));
@@ -414,6 +414,9 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
                 $link = "http://vsevmeste.kz/user/add/key/".base64_encode($user->akey . "|" . $user->id);
                 Notify::sendMail('User.Registered', array('link' => $link), $user->email);
                 $this->redirect('/registration-succeeded.phtml');
+            } else {
+                $user->password = '';
+                $user->password_repeat = '';
             }
         }
         if (!isset($_POST['captcha']) && isset($_POST['User'])) {
@@ -428,46 +431,13 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
                 $this->refresh();
             }
         }
-        $this->template->render('login', array('error' => $error, 'user' => $user, 'address' => $address));
+        $this->template->render('login', array('error' => $error, 'user' => $user));
     }
 
     public function actionLogout() {
         if (X3::app()->user->logout()) {
             $this->controller->redirect('/');
         }
-    }
-
-    /**
-     * Add user logic
-     * @throws X3_404
-     */
-    public function actionSend() {
-        if (IS_AJAX && isset($_POST['email'])) {
-            $email = $_POST['email'];
-            $type = isset($_POST['type']) && $_POST['type'] == 'ksk' ? 'ksk' : 'user';
-            $user = new User();
-            $user->password = $email . "password";
-            $user->role = $type;
-            $user->email = $email;
-            $user->status = 0;
-            $type = ucfirst($type);
-            if (!$user->save()) {
-                $errs = $user->getTable()->getErrors();
-                if (isset($errs['email']))
-                    echo json_encode(array('status' => 'error', 'message' => $errs['email'][0]));
-                else
-                    echo json_encode(array('status' => 'error', 'message' => 'Возникла неизвестная ошибка. Обратитесь к Администратору'));
-                exit;
-            }
-
-            $link = base64_encode($user->akey . "|" . X3::user()->id);
-            if (TRUE === ($msg = Notify::sendMail('welcome' . $type, array('link' => $link), $email)))
-                echo json_encode(array('status' => 'ok', 'message' => X3::translate('Письмо успешно отправлено')));
-            else
-                echo json_encode(array('status' => 'error', 'message' => $msg));
-            exit;
-        }
-        throw new X3_404();
     }
 
     public function actionDeny() {

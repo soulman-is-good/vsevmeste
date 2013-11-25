@@ -174,7 +174,11 @@ class Site extends X3_Module {
 
     public function actionKkb() {
         if (NULL !== ($id = X3::request()->getRequest('id')) && NULL !== ($invest = Project_Invest::get(array('id' => $id, 'user_id' => X3::user()->id))) && (Project_Invest::STATUS_UNAPPOVED == $invest->status || Project_Invest::STATUS_WAIT == $invest->status)) {
-            $addr = X3::app()->basePath . '/application/extensions/paysys/paysys/';
+            $dir = "vse";
+            if(VV_DEBUG) {
+                $dir = "paysys";
+            }
+            $addr = X3::app()->basePath . "/application/extensions/paysys/$dir/";
             require_once($addr . "kkb.utils.php");
             $path1 = $addr . 'config.txt';
             if (isset($_POST['response'])) {
@@ -208,6 +212,11 @@ class Site extends X3_Module {
                         if ($res->interest_id > 0)
                             Project_Interest::update(array('bought' => '`bought` + 1'), array('id' => $res->interest_id));
                         Project::update(array('current_sum' => '`current_sum` + ' . $res->amount), array('id' => $res->project_id));
+                        
+                        $url = X3::request()->getBaseUrl() . "/" . $invest->project_id()->name . "-project.html";
+                        $admin_email = strip_tags(SysSettings::getValue('AdminEmail','string','Emailы Администраторов, через запятую','Общие','support@vsevmeste.kz'));
+                        Notify::sendMail('User.Payed.4user', array('name' => $invest->user_id()->fullName, 'type'=>'EPay', 'title' => $invest->project_id()->title, 'url'=>$url, 'amount'=>$invest->amount), $invest->user_id()->email);
+                        Notify::sendMail('User.Payed.4admin', array('name' => $invest->user_id()->fullName, 'type'=>'EPay', 'title' => $invest->project_id()->title, 'url'=>$url, 'amount'=>$invest->amount), $admin_email);
                     }
                     echo 1;
                     exit;
@@ -250,8 +259,11 @@ class Site extends X3_Module {
     public function actionQiwi() {
         if (NULL !== ($id = X3::request()->getRequest('id')) && NULL !== ($invest = Project_Invest::get(array('id' => $id, 'user_id' => X3::user()->id))) && (Project_Invest::STATUS_UNAPPOVED == $invest->status || Project_Invest::STATUS_WAIT == $invest->status)) {
             if(isset($_POST['qiwi'])) {
-
+                $url = "/" . $invest->project_id()->name . "-project.html";
+                $this->controller->redirect($url);
             } else {
+                $invest->pay_method = Project_Invest::PAY_METHOD_QIWI;
+                $invest->save();
                 $this->template->render('qiwi', array('invest' => $invest));
             }
         } else {
@@ -261,25 +273,43 @@ class Site extends X3_Module {
 
     public function actionWallet() {
         if (NULL !== ($id = X3::request()->getRequest('id')) && NULL !== ($invest = Project_Invest::get(array('id' => $id, 'user_id' => X3::user()->id))) && (Project_Invest::STATUS_UNAPPOVED == $invest->status || Project_Invest::STATUS_WAIT == $invest->status)) {
+            $per = (float)strip_tags(SysSettings::getValue('WalletComittion','string','Комиссия с личного кошелька','Общие','0%'));
+            $sum = $invest->amount + $invest->amount * $per / 100;
             if(isset($_POST['wallet'])) {
+                $user = User::getByPk(X3::user()->id);
                 $invest->pay_method = Project_Invest::PAY_METHOD_WALLET;
-                $invest->status = Project_Invest::STATUS_SUCCESS;
                 $invest->pay_data = json_encode(array('user_id' => X3::user()->id, 'ip' => $_SERVER['REMOTE_ADDR']));
-                if (!$invest->save()) {
-                    $html = X3_Html::errorSummary($invest);
-                    $html.=X3::db()->getErrors();
-                    $html.=X3::db()->lastQuery();
-                    X3::log($html);
-                    throw new X3_Exception('Error updating order', 500);
-                } else {
-                    if ($invest->interest_id > 0) {
-                        Project_Interest::update(array('bought' => '`bought` + 1'), array('id' => $invest->interest_id));
+                if($user->money >= $sum) {
+                    $invest->status = Project_Invest::STATUS_SUCCESS;
+                    if (!$invest->save()) {
+                        $html = X3_Html::errorSummary($invest);
+                        $html.=X3::db()->getErrors();
+                        $html.=X3::db()->lastQuery();
+                        X3::log($html);
+                        throw new X3_Exception('Error updating order', 500);
+                    } else {
+                        if ($invest->interest_id > 0) {
+                            Project_Interest::update(array('bought' => '`bought` + 1'), array('id' => $invest->interest_id));
+                        }
+                        User::update(array('money' => '`money` - ' . $sum), array('id' => X3::user()->id));
+                        Project::update(array('current_sum' => '`current_sum` + ' . $invest->amount), array('id' => $invest->project_id));
+                        $url = X3::request()->getBaseUrl() . "/" . $invest->project_id()->name . "-project.html";
+                        $admin_email = strip_tags(SysSettings::getValue('AdminEmail','string','Emailы Администраторов, через запятую','Общие','support@vsevmeste.kz'));
+                        Notify::sendMail('User.Payed.4user', array('name' => $invest->user_id()->fullName, 'type'=>'личный счет', 'title' => $invest->project_id()->title, 'url'=>$url, 'amount'=>$invest->amount), $invest->user_id()->email);
+                        Notify::sendMail('User.Payed.4admin', array('name' => $invest->user_id()->fullName, 'type'=>'личный счет', 'title' => $invest->project_id()->title, 'url'=>$url, 'amount'=>$invest->amount), $admin_email);
+                        $this->redirect(X3::request()->getBaseUrl() . "/" . $invest->project_id()->name . "-project/investments.html");
                     }
-                    $per = (float)strip_tags(SysSettings::getValue('WalletComittion','string','Комиссия с личного кошелька','Общие','0%'));
-                    $sum = $invest->amount + $invest->amount * $per / 100;
-                    User::update(array('money' => '`money` - ' . $sum), array('id' => X3::user()->id));
-                    Project::update(array('current_sum' => '`current_sum` + ' . $invest->amount), array('id' => $invest->project_id));
-                    $this->redirect(X3::request()->getBaseUrl() . "/" . $invest->project_id()->name . "-project/investments.html");
+                } else {
+                    $invest->status = Project_Invest::STATUS_ERROR;
+                    if (!$invest->save()) {
+                        $html = X3_Html::errorSummary($invest);
+                        $html.=X3::db()->getErrors();
+                        $html.=X3::db()->lastQuery();
+                        X3::log($html);
+                        throw new X3_Exception('Error updating order', 500);
+                    } else {
+                        $this->redirect(X3::request()->getBaseUrl() . "/" . $invest->project_id()->name . "-project.html");
+                    }
                 }
             } else {
                 $this->template->render('wallet', array('invest' => $invest));

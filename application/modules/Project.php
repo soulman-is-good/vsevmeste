@@ -305,8 +305,8 @@ class Project extends X3_Module_Table {
                 X3::clientScript()->registerScript('save1', 'jQuery.noConflict=true;jQuery.sfbrowser.defaults.swfupload = false;jQuery.sfbrowser.defaults.base = "../../uploads/User/Files' . $id . '";', X3_ClientScript::POS_END);
             }
             X3::app()->og_title = X3::app()->name . " - " . $model->title;
-            X3::app()->og_url = X3::app()->baseUrl . "/$model->name-project.html";
-            X3::app()->og_image = X3::app()->baseUrl . "/uploads/Project/220x220xw/$model->image";
+            X3::app()->og_url = X3::request()->getBaseUrl() . "/$model->name-project.html";
+            X3::app()->og_image = X3::request()->getBaseUrl() . "/uploads/Project/220x220xw/$model->image";
             $this->template->render('show', array('model' => $model, 'interests' => $interests));
         } else {
             throw new X3_404();
@@ -580,7 +580,9 @@ class Project extends X3_Module_Table {
             if (!$model->hasErrors() && $model->validate()) {
                 X3::user()->new_project = $model->getTable()->getAttributes();
                 X3::user()->new_project_tags = $_POST['tags'];
-                //Notify::sendMail('Project.Created',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>"/{$model->name}-project.html"));
+                $admin_email = strip_tags(SysSettings::getValue('AdminEmail','string','Emailы Администраторов, через запятую','Общие','support@vsevmeste.kz'));
+                Notify::sendMail('Project.Created.4user',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>X3::request()->getBaseUrl() . "/{$model->name}-project.html"),$model->user_id()->email);
+                Notify::sendMail('Project.Created.4admin',array('title'=>$model->title,'name'=>X3::user()->fullname,'url'=>X3::request()->getBaseUrl() . "/{$model->name}-project.html"),$admin_email);
                 $this->redirect('/project/step3.html');
             }
         }

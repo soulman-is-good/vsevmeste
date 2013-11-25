@@ -178,7 +178,7 @@ class Notify extends X3_Module_Table{
         if(empty($data)) return $this->text;
         $ms = array();
         $data = array_extend($data, array(
-            'host'=>X3::app()->baseUrl,
+            'host'=>X3::request()->getBaseUrl(),
             'date'=>I18n::date()
         ));
         foreach($data as $k=>$val){
@@ -212,13 +212,13 @@ class Notify extends X3_Module_Table{
                     $cid = $mailer->addFile($src);
                     $img->src = "cid:$cid";
                 }else
-                    $img->src = X3::app()->baseUrl . $img->src;
+                    $img->src = X3::request()->getBaseUrl() . $img->src;
             }
         }
         $as = $html->find('a');
         foreach($as as &$a){
             if(substr($a->href,0,1)=='/'){
-                $a->href = X3::app()->baseUrl . $a->href;
+                $a->href = X3::request()->getBaseUrl() . $a->href;
             }
         }
         return (string)$html;

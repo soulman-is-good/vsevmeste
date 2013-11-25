@@ -90,8 +90,8 @@ $user = User::getByPk(X3::user()->id);
                 <div class="hr">&nbsp;</div>
             <?endif;?>
                 <h3>Выберите систему оплаты</h3><br/>
-                <a href="#qiwi" class="pay" onclick="return false;" title="Оплата через Qiwi">
-                    <img style="opacity:0.5" src="/images/qiwi.png" alt="QIWI" />
+                <a href="/payqiwi/<?=$data['id']?>" class="pay" title="Оплата через Qiwi">
+                    <img src="/images/qiwi.png" alt="QIWI" />
                 </a>
                 <a href="/epay/<?=$data['id']?>" class="pay" title="Оплата через epay">
                     <img src="/images/epay.png" alt="EPAY" />
