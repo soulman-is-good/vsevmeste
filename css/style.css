@@ -721,6 +721,7 @@ a:hover .menu {
     margin: auto;
     width: 920px;
     padding: 0 30px;
+    padding-bottom:240px;
 }
 
 .main_projects_cont {
@@ -848,6 +849,10 @@ a:hover .menu {
     background-color:#ccc;
     background-position: 50% 50%;
     background-repeat: no-repeat;
+}
+.wrap {
+    min-height: 100%;
+    position: relative;
 }
 .project_pic img {
     width: 208px;
@@ -990,7 +995,7 @@ a:hover .menu {
     right:0px;
 }
 
-.site.index .footer_cont {
+.site.index .footer_cont, .page.show .footer_cont {
     position: absolute;
 }
 

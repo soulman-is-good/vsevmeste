@@ -29,8 +29,13 @@ working with Zuber.kz
     <?=  strip_tags(SysSettings::getValue('HeaderStrip','text[128]','Лента в шапке','Общие','Что такое vsevmeste.kz? Краудфандинговая платформа, принимающая финансирование для авторов проектов. <a href="/about-us.phtml">Подробнее</a>'),'<a>')?>
 </div>
 <?endif;?>
+<?if(isset($main)):?>
         <?=X3_Widget::run('@layouts:header.php',array('main'=>isset($main)))?>
-<div class="wrap" style="position: relative;height: 100%;">
+<?endif;?>
+<div class="wrap" >
+<?if(!isset($main)):?>
+        <?=X3_Widget::run('@layouts:header.php',array('main'=>isset($main)))?>
+<?endif;?>
         <?=$content?>
     <div class="clear">&nbsp;</div>
         <?=X3_Widget::run('@layouts:footer.php',array('main'=>isset($main)),array('cache'=>false));?>

@@ -18,6 +18,7 @@ $pages = Page::get(array('status'=>'1'));
             <?=$model->modText()?>
         </div>
     </div>
+    <div class="clear">&nbsp;</div>
     <?else:?>
     <div class="pane" style="margin-bottom:40px;">
         <div class="pane-cont">
