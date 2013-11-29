@@ -73,7 +73,7 @@ $user = User::getByPk(X3::user()->id);
         <div class="pane">
             <div class="pane-cont">
                 <h3>Условия</h3>
-                <p><?=SysSettings::getValue('Conditions','text','Условия','Общие','Условия вложения')?></p>
+                <p><?=SysSettings::getValue('Conditions','text','Условия вложения в проект','Общие','Условия вложения')?></p>
             </div>
         </div>
     </div>

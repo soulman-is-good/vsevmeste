@@ -40,6 +40,7 @@ array(
     
     '/^\/user\/login.html$/' => array('/user/login.html', true),
     //'/^\/user\/logout.html$/' => array('/user/login.html', true),
+    '/^\/user\/([0-9]+)?\/funds(.*)$/' => array('/user/funds/id/$1$2', true),
     '/^\/user\/([0-9]+)?\/invested(.+)$/' => array('/user/invested/id/$1$2', true),
     '/^\/user\/([0-9]+)?\/investments(.+)$/' => array('/user/investments/id/$1$2', true),
     '/^\/user\/([0-9]+)?\/projects(.+)$/' => array('/user/projects/id/$1$2', true),

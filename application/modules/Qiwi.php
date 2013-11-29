@@ -49,6 +49,10 @@ class Qiwi extends X3_Module {
             }
             switch ($comm) {
                 case "check":
+                    if($model !== NULL && $model instanceof Invest && $sum < $model->amount) {
+                        $result = 241;
+                        $comment = "Нужно внести хотябы $model->amount тенге";
+                    }
                     $this->template->layout = null;
                     header("Content-type: text/xml; charset:utf-8");
                     $this->template->render('check', array('txnid' => $txnid,'result'=>$result,'comment'=>$comment));
@@ -73,10 +77,15 @@ class Qiwi extends X3_Module {
                             Notify::sendMail('User.Payed.4user', array('name' => $model->user_id()->fullName, 'type'=>'Qiwi', 'title' => $model->project_id()->title, 'url'=>$url, 'amount'=>$model->amount), $model->user_id()->email);
                             Notify::sendMail('User.Payed.4admin', array('name' => $model->user_id()->fullName, 'type'=>'Qiwi', 'title' => $model->project_id()->title, 'url'=>$url, 'amount'=>$model->amount), $admin_email);
                             $per = (float)strip_tags(SysSettings::getValue('QiwiComittion','string','Комиссия с Qiwi','Общие','1%'));
+                            $delta = $sum - $model->amount;
+                            if($delta > 0) {
+                                User::update(array('money' => '`money` + ' . $delta), array('id' => X3::user()->id));
+                            }
                             Project::update(array('current_sum' => '`current_sum` + ' . $model->amount), array('id' => $model->project_id));
                         }
                     } else {
                         $url = X3::request()->getBaseUrl() . "/user/$model->id/";
+                        User::update(array('money' => '`money` + ' . $sum), array('id' => $model->id));
                         Notify::sendMail('User.Funds.4user', array('name' => $model->fullName, 'amount'=>$sum,'url'=>$url), $model->email);
                         Notify::sendMail('User.Funds.4admin', array('name' => $model->fullName, 'amount'=>$sum,'url'=>$url), $admin_email);
                     }

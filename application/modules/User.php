@@ -21,15 +21,17 @@ class User extends X3_Module_Table {
     public $_fields = array(
         'id' => array('integer[10]', 'unsigned', 'primary', 'auto_increment'),
         'image' => array('file', 'default' => 'NULL', 'allowed' => array('jpg', 'gif', 'png', 'jpeg'), 'max_size' => 10240),
-        'city_id' => array('integer[10]', 'unsigned', 'default'=>'NULL', 'index', 'ref'=>array('City','id','default'=>'title')),
+        'city_id' => array('integer[10]', 'unsigned', 'default' => 'NULL', 'index', 'ref' => array('City', 'id', 'default' => 'title')),
         'name' => array('string[255]', 'default' => ''),
         'surname' => array('string[255]', 'default' => ''),
         'debitcard' => array('string[20]', 'default' => 'NULL'),
-        'company_name'=>array('string[32]','default'=>'NULL'),
-        'company_bin'=>array('string[32]','default'=>'NULL'),
+        'company_name' => array('string[32]', 'default' => 'NULL'),
+        'company_bin' => array('string[32]', 'default' => 'NULL'),
+        'company_account' => array('string[128]', 'default' => 'NULL'),
+        'user_account' => array('string[128]', 'default' => 'NULL'),
         'email' => array('email', 'unique'), //as login
-        'contact_email' => array('string', 'default'=>'NULL'),
-        'contact_phone' => array('string[32]', 'default'=>'NULL'),
+        'contact_email' => array('string', 'default' => 'NULL'),
+        'contact_phone' => array('string[32]', 'default' => 'NULL'),
         'password' => array('string[5|50]', 'password'),
         'role' => array('string[255]', 'default' => 'user'),
         'akey' => array('string[255]', 'default' => 'NULL'),
@@ -54,16 +56,20 @@ class User extends X3_Module_Table {
     public function moduleTitle() {
         return 'Пользователи';
     }
-    
+
     public function onValidate($attr, $pass) {
         $pass = false;
         if (isset($this->_fields[$attr]) && in_array('xss', $this->_fields[$attr]) && trim($this->$name) != '') {
             
         }
-        if ($attr == 'debitcard' && trim($this->$attr) != '') {
-            if($this->bankname == '') {
+        if (($attr == 'bankname' && trim($this->$attr) != '') && (($this->debitcard == '') && ($this->user_account == ''))) {
+                $this->addError('debitcard', X3::translate('Укажите номер карточки или расчетного счета в Вашем банке.'));
+        }
+        if (($attr == 'bankname' && trim($this->$attr) == '') && (($this->debitcard != '') || ($this->user_account != ''))) {
                 $this->addError('bankname', X3::translate('Укажите название банка.'));
-            }
+        }
+        if($attr == 'debitcard' && trim($this->$attr) != '' && preg_match("/^[0-9\s]{16,19}$/",$this->$attr) == 0){
+                $this->addError($attr, X3::translate('Укажите корректный номер вашей карточки, только цифры и пробелы'));
         }
         if ($attr == 'contact_phone' && trim($this->$attr) != '') {
             //if(preg_match("/[0-9]+/", "", trim($this->$attr))==0) {
@@ -101,6 +107,9 @@ class User extends X3_Module_Table {
             'links' => 'Ссылки в соц.сетях',
             'about' => 'Биография',
             'bankname' => 'Банк',
+            'debitcard' => 'Банковская карта',
+            'company_account' => 'Расчетный счет компании',
+            'company_account' => 'Расчетный счет пользователя',
             'password' => X3::translate('Пароль'),
             'password_old' => X3::translate('Старый пароль'),
             'password_new' => X3::translate('Новый пароль'),
@@ -131,11 +140,11 @@ class User extends X3_Module_Table {
     public function getFilled() {
         return !empty($this->name) && !empty($this->surname) && !empty($this->debitcard) && !empty($this->city_id);
     }
-    
+
     public function beforeAction() {
         return true;
     }
-    
+
     /**
      * Get either a Gravatar URL or complete image tag for a specified email address.
      *
@@ -197,28 +206,28 @@ class User extends X3_Module_Table {
         else
             $id = X3::user()->id;
         $user = User::getByPk($id);
-        $q = array('@condition'=>array('user_id'=>$id,'status'=>'1'));
+        $q = array('@condition' => array('user_id' => $id, 'status' => '1'));
 //        if(X3::user()->id !== $user->id)
 //            $q['@condition']['status'] = 1;
         $count = Project_Invest::num_rows($q);
-        $paginator = new Paginator('User/Invested',$count);
+        $paginator = new Paginator('User/Invested', $count);
         $q['@limit'] = $paginator->limit;
         $q['@offset'] = $paginator->offset;
         $projects = Project_Invest::get($q);
-        $this->template->render('invested', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
+        $this->template->render('invested', array('user' => $user, 'models' => $projects, 'paginator' => $paginator));
     }
 
     public function actionMessages() {
         $id = X3::user()->id;
         $user = User::getByPk($id);
-        $q = array('@condition'=>array('to_user_id'=>$id),'@order'=>'created_at DESC');
+        $q = array('@condition' => array('to_user_id' => $id), '@order' => 'created_at DESC');
         $count = User_Message::num_rows($q);
-        $paginator = new Paginator('User/Messages',$count);
+        $paginator = new Paginator('User/Messages', $count);
         $q['@limit'] = $paginator->limit;
         $q['@offset'] = $paginator->offset;
         $projects = User_Message::get($q);
-        X3::clientScript()->registerScriptFile('/js/user.messages.js',  X3_ClientScript::POS_END);
-        $this->template->render('messages', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
+        X3::clientScript()->registerScriptFile('/js/user.messages.js', X3_ClientScript::POS_END);
+        $this->template->render('messages', array('user' => $user, 'models' => $projects, 'paginator' => $paginator));
     }
 
     public function actionInvestments() {
@@ -228,17 +237,17 @@ class User extends X3_Module_Table {
             $id = X3::user()->id;
         $user = User::getByPk($id);
         $q = array(
-            '@join'=>'INNER JOIN `project` `p` ON `p`.`id`=`project_invest`.`project_id`',
-            '@condition'=>array('p.user_id'=>$id,'project_invest.status'=>'1')
+            '@join' => 'INNER JOIN `project` `p` ON `p`.`id`=`project_invest`.`project_id`',
+            '@condition' => array('p.user_id' => $id, 'project_invest.status' => '1')
         );
 //        if(X3::user()->id !== $user->id)
 //            $q['@condition']['status'] = 1;
         $count = Project_Invest::num_rows($q);
-        $paginator = new Paginator('User/Investments',$count);
+        $paginator = new Paginator('User/Investments', $count);
         $q['@limit'] = $paginator->limit;
         $q['@offset'] = $paginator->offset;
         $projects = Project_Invest::get($q);
-        $this->template->render('investments', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
+        $this->template->render('investments', array('user' => $user, 'models' => $projects, 'paginator' => $paginator));
     }
 
     public function actionProjects() {
@@ -247,16 +256,16 @@ class User extends X3_Module_Table {
         else
             $id = X3::user()->id;
         $user = User::getByPk($id);
-        $q = array('@condition'=>array('user_id'=>$id));
-        if(X3::user()->id !== $user->id)
+        $q = array('@condition' => array('user_id' => $id));
+        if (X3::user()->id !== $user->id)
             $q['@condition']['status'] = 1;
         $count = Project::num_rows($q);
-        $paginator = new Paginator('User/Projects',$count);
+        $paginator = new Paginator('User/Projects', $count);
         $q['@limit'] = $paginator->limit;
         $q['@offset'] = $paginator->offset;
-        $q['@with'] = array('user_id','city_id');
+        $q['@with'] = array('user_id', 'city_id');
         $projects = Project::get($q);
-        $this->template->render('projects', array('user' => $user,'models'=>$projects,'paginator'=>$paginator));
+        $this->template->render('projects', array('user' => $user, 'models' => $projects, 'paginator' => $paginator));
     }
 
     /**
@@ -297,24 +306,24 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
     public function actionEdit() {
         $id = X3::user()->id;
         $model = User::getByPk($id);
-        if(isset($_POST['User'])){
+        if (isset($_POST['User'])) {
             $data = $_POST['User'];
             $model->getTable()->acquire($data);
-            if(is_array($model->links)) {
+            if (is_array($model->links)) {
                 $model->links = implode("\n", $model->links);
             }
-            $u = new Upload($model,'image');
-            if($u->message=='' && !$u->source){
+            $u = new Upload($model, 'image');
+            if ($u->message == '' && !$u->source) {
                 $u->save();
             }
-            if(trim($model->name) == '') 
-                $model->addError ('name', 'Необходимо ввести ваше имя');
-            if(trim($model->surname) == '') 
-                $model->addError ('surname', 'Необходимо ввести вашу фамилию');
-            if(trim($model->debitcard) == '') 
-                $model->addError ('debitcard', 'Необходимо ввести номер вашей банковской карты');
-            if(NULL === City::findByPk($model->city_id)) 
-                $model->addError ('city_id', 'Выберите город из списка');
+            if (trim($model->name) == '')
+                $model->addError('name', 'Необходимо ввести ваше имя');
+            if (trim($model->surname) == '')
+                $model->addError('surname', 'Необходимо ввести вашу фамилию');
+            if (trim($model->debitcard) == '')
+                $model->addError('debitcard', 'Необходимо ввести номер вашей банковской карты');
+            if (NULL === City::findByPk($model->city_id))
+                $model->addError('city_id', 'Выберите город из списка');
             if (isset($_POST['Change'])) {
                 $data = $_POST['Change'];
                 if ($data['password_old'] != '' && $data['password_new'] != '' && $data['password_repeat'] != '') {
@@ -334,15 +343,158 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
                         $model->addError('password_repeat', X3::translate('Поле `{attribute}` не должно быть пустым', array('{attribute}' => $model->fieldName('password_repeat'))));
                 }
             }
-            if($model->save()){
+            if ($model->save()) {
                 $this->redirect("/user/$model->id/");
             }
         }
         X3::app()->datapicker = true;
-        X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js',  X3_ClientScript::POS_END);
-        X3::clientScript()->registerScriptFile('/js/step3.js?1',  X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/jqueryui.ru.js', X3_ClientScript::POS_END);
+        X3::clientScript()->registerScriptFile('/js/step3.js?1', X3_ClientScript::POS_END);
 
-        $this->template->render('edit', array('model'=>$model));
+        $this->template->render('edit', array('model' => $model));
+    }
+
+    public function checkKkbOrder($result, $path1, $kkb) { // Проверка существования заказа
+        $logger = new Logger(X3::app()->basePath . '/application/log/kkb.log');
+        if ($kkb->status == 1) {
+            return true;
+        }
+        $req = process_check($result['PAYMENT_REFERENCE'], $result['PAYMENT_APPROVAL_CODE'], $result['ORDER_ORDER_ID'], 398, $result['ORDER_AMOUNT'], $path1);
+        $host = X3::app()->kkb_host;
+        try {
+            $xml = null;
+            $logger->log("$host/jsp/remote/checkOrdern.jsp?" . urlencode($req));
+            $text = file_get_contents("$host/jsp/remote/checkOrdern.jsp?" . urlencode($req));
+            if($text !== FALSE) {
+                $xml = simplexml_load_string($text);
+            } else {
+                $logger->log("Error getting response");
+                return false;
+            }
+            if($xml === false) {
+                $logger->log("Error reading xml string!");
+                $o = libxml_get_errors();
+                foreach($o as $err) {
+                    $logger->log($err->message);
+                }
+                return false;
+            } else {
+                $response = $xml->bank->response->attributes();
+                if ($response->payment == 'true') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }catch(Exception $e) {
+            $logger->log($e->getMessage());
+            return false;
+        }
+    }
+
+    public function actionFunds() {
+        $user = User::getByPk(X3::user()->id);
+        $errors = '';
+        if ($user !== NULL || isset($_POST['response'])) {
+            $type = X3::request()->getRequest("type");
+            if ($type !== null) {
+                switch ($type) {
+                    case "visa":
+                        $sign = X3::user()->VisaSign;
+                        $amount = null;
+                        $dir = "vse";
+                        if (VV_DEBUG) {
+                            $dir = "paysys";
+                        }
+                        $addr = X3::app()->basePath . "/application/extensions/paysys/$dir/";
+                        require_once($addr . "kkb.utils.php");
+                        $path1 = $addr . 'config.txt';
+                        //Try to get sign with data
+                        if (isset($_POST['Visa'])) {
+                            $amount = $_POST['Visa']['amount'];
+
+                            $transaction = new Transaction();
+                            $transaction->title = "User";
+                            $transaction->comment = "Пополнение ЛС#$user->id";
+                            $transaction->user_id = $user->id;
+                            $transaction->status = 0;
+                            $transaction->project_id = NULL;
+                            $transaction->created_at = time();
+                            $transaction->sum = $amount;
+                            $transaction->hash = rand(0, 9) . substr(time() . "", 5);
+                            if ($transaction->save()) {
+                                $currency_id = "398"; // tenge
+                                $per = (float) strip_tags(SysSettings::getValue('EpayComittion', 'string', 'Комиссия Epay', 'Общие', '3.5%'));
+                                $sum = $amount + $amount * $per / 100;
+                                $sign = process_request($transaction->hash, $currency_id, $sum, $path1);
+                                if (strpos(base64_decode($sign), "<") !== false) {
+                                    X3::user()->VisaSign = $sign;
+                                    X3::user()->VisaHash = $transaction->hash;
+                                    $this->controller->refresh();
+                                }
+                            } else {
+                                $errors = X3_Html::errorSummary($transaction);
+                            }
+                        }
+                        if (isset($_POST['response'])) {
+                            $logger = new Logger(X3::app()->basePath . '/application/log/kkb.log');
+                            $logger->log($_POST['response'], "User account update ");
+                            $result = 0;
+                            $result = process_response(stripslashes($_POST["response"]), $path1);
+                            $res = Transaction::get(array('hash' => $result['ORDER_ORDER_ID']), 1);
+                            if ($res != null) {
+                                $res->status=0;
+                                $user = User::getByPk($res->user_id);
+                                $done = false;
+                                $j = 0;
+                                while (FALSE === ($done = $this->checkKkbOrder($result, $path1, $res)) && $j < 3) {
+                                    $j++;
+                                    usleep(300);
+                                }
+                                $logger->log($done);
+                                if (!$done) {
+                                    $logger->log('Failed to proceed order');
+                                    echo -1;
+                                    exit;
+                                } else {
+                                    $res->status = 1;
+                                    $res->save();
+                                    $per = (float) strip_tags(SysSettings::getValue('EpayComittion', 'string', 'Комиссия Epay', 'Общие', '3.5%'));
+                                    $sum = $res->sum + $res->sum * $per / 100;
+
+                                    $url = X3::request()->getBaseUrl() . "/user/" . $res->user_id . "/";
+                                    $admin_email = strip_tags(SysSettings::getValue('AdminEmail', 'string', 'Emailы Администраторов, через запятую', 'Общие', 'support@vsevmeste.kz'));
+                                    User::update(array('money' => '`money` + ' . $res->sum), array('id' => $res->user_id));
+                                    Notify::sendMail('User.Funds.4user', array('name' => $user->fullName, 'amount' => $res->sum, 'url' => $url), $user->email);
+                                    Notify::sendMail('User.Funds.4admin', array('name' => $user->fullName, 'amount' => $res->sum, 'url' => $url), $admin_email);
+                                    echo 1;
+                                    exit;
+                                }
+                            } else {
+                                throw new X3_404;
+                            }
+                        } else {
+                            if ($sign === null) {
+                                $this->template->render('visa_step1', array('user' => $user, 'errors' => $errors));
+                            } else {
+                                $hash = X3::user()->VisaHash;
+                                $transaction = Transaction::get(array('hash' => $hash), 1);
+                                $this->template->render('visa_step2', array('user' => $user, 'sign' => $sign, 'amount' => $transaction->sum));
+                            }
+                        }
+                        break;
+                    case "qiwi":
+                        $this->controller->redirect('/update-account.phtml');
+                        break;
+                }
+            } else {
+                X3::user()->VisaHash = null;
+                X3::user()->VisaSign = null;
+                $this->template->render('funds', array('user' => $user));
+            }
+        } else {
+            throw new X3_404();
+        }
     }
 
     public function actionBlock() {
@@ -411,7 +563,7 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
             }
             $user->password = md5($user->password);
             if ($user->save()) {
-                $link = "http://vsevmeste.kz/user/add/key/".base64_encode($user->akey . "|" . $user->id);
+                $link = "http://vsevmeste.kz/user/add/key/" . base64_encode($user->akey . "|" . $user->id);
                 Notify::sendMail('User.Registered', array('link' => $link), $user->email);
                 $this->redirect('/registration-succeeded.phtml');
             } else {
@@ -454,7 +606,7 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
             throw new X3_404();
         $key = base64_decode($_GET['key']);
         $key = explode('|', $key);
-        if (NULL === ($user = User::get(array('akey' => $key[0],'id'=>$key[1]), 1)))
+        if (NULL === ($user = User::get(array('akey' => $key[0], 'id' => $key[1]), 1)))
             throw new X3_404();
         $user->status = 1;
         $user->akey = null;
@@ -467,11 +619,12 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
             $this->created_at = time();
             $this->akey = md5(time() . rand(10, 99)) . rand(10, 99);
         }
-        if(!is_numeric($this->date_of_birth))
-            $this->date_of_birth = strtotime ($this->date_of_birth);
+        if (!is_numeric($this->date_of_birth))
+            $this->date_of_birth = strtotime($this->date_of_birth);
     }
 
     public function afterValidate() {
+        
     }
 
     public function afterSave($bNew = false) {
@@ -483,8 +636,8 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
             if (!is_null($this->email))
                 X3::app()->user->email = $this->email;
         }
-        if($this->getTable()->getIsNewRecord()){
-            @mkdir("uploads/User/Files{$this->id}",0777,true);
+        if ($this->getTable()->getIsNewRecord()) {
+            @mkdir("uploads/User/Files{$this->id}", 0777, true);
         }
         return TRUE;
     }
@@ -497,8 +650,8 @@ WHERE a2.user_id=$id AND a1.user_id<>a2.user_id AND `a2`.`city_id` = a1.city_id 
         if (strpos($tables, $this->tableName) !== false) {
             $model = $this->table->select('*')->where($condition)->asObject(true);
             Uploads::cleanUp($model, $model->image);
-            Project_Event::delete(array('user_id'=>$model->id));
-            Project::delete(array('user_id'=>$model->id));
+            Project_Event::delete(array('user_id' => $model->id));
+            Project::delete(array('user_id' => $model->id));
         }
         parent::onDelete($tables, $condition);
     }

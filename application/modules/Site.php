@@ -158,16 +158,39 @@ class Site extends X3_Module {
     }
 
     public function checkKkbOrder($result, $path1, $kkb) { // Проверка существования заказа
+        $logger = new Logger(X3::app()->basePath . '/application/log/kkb.log');
         if ($kkb->status == Project_Invest::STATUS_SUCCESS) {
             return true;
         }
         $req = process_check($result['PAYMENT_REFERENCE'], $result['PAYMENT_APPROVAL_CODE'], $result['ORDER_ORDER_ID'], 398, $result['ORDER_AMOUNT'], $path1);
         $host = X3::app()->kkb_host;
-        $xml = simplexml_load_string(file_get_contents("https://$host/jsp/remote/checkOrdern.jsp?" . urlencode($req)));
-        $response = $xml->bank->response->attributes();
-        if ($response->payment == 'true')
-            return true;
-        else {
+        try {
+            $xml = null;
+            $logger->log("$host/jsp/remote/checkOrdern.jsp?" . urlencode($req));
+            $text = file_get_contents("$host/jsp/remote/checkOrdern.jsp?" . urlencode($req));
+            if($text !== FALSE) {
+                $xml = simplexml_load_string($text);
+            } else {
+                $logger->log("Error getting response");
+                return false;
+            }
+            if($xml === false) {
+                $logger->log("Error reading xml string!");
+                $o = libxml_get_errors();
+                foreach($o as $err) {
+                    $logger->log($err->message);
+                }
+                return false;
+            } else {
+                $response = $xml->bank->response->attributes();
+                if ($response->payment == 'true') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }catch(Exception $e) {
+            $logger->log($e->getMessage());
             return false;
         }
     }
@@ -182,7 +205,8 @@ class Site extends X3_Module {
             require_once($addr . "kkb.utils.php");
             $path1 = $addr . 'config.txt';
             if (isset($_POST['response'])) {
-                @file_put_contents(X3::app()->basePath . '/kkb.log', $_POST['response']);
+                $logger = new Logger(X3::app()->basePath . '/application/log/kkb.log');
+                $logger->log($_POST['response']);
                 $result = 0;
                 $result = process_response(stripslashes($_POST["response"]), $path1);
                 $res = Project_Invest::getByPk(intval($result['ORDER_ORDER_ID']));
@@ -194,7 +218,9 @@ class Site extends X3_Module {
                         usleep(300);
                     }
                     if (!$done) {
-                        X3::log('Failed to proceed order');
+                        $logger->log('Failed to proceed order');
+                        echo -1;
+                        exit;
                     } else {
                         $res->status = Project_Invest::STATUS_SUCCESS;
                         $res->pay_data = json_encode($result);
@@ -209,8 +235,9 @@ class Site extends X3_Module {
                         $t->sum = $sum;
                         $t->comment = '';
                         $t->save();
-                        if ($res->interest_id > 0)
+                        if ($res->interest_id > 0) {
                             Project_Interest::update(array('bought' => '`bought` + 1'), array('id' => $res->interest_id));
+                        }
                         Project::update(array('current_sum' => '`current_sum` + ' . $res->amount), array('id' => $res->project_id));
                         
                         $url = X3::request()->getBaseUrl() . "/" . $invest->project_id()->name . "-project.html";

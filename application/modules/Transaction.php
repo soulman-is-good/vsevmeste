@@ -3,6 +3,16 @@
  * City
  *
  * @author Soul_man
+ * 
+ * @property string $id primary
+ * @property string $hash index
+ * @property string $user_id default NULL
+ * @property string $project_id default NULL
+ * @property string $title
+ * @property string $comment default NULL
+ * @property string $sum
+ * @property string $created_at
+ * @property string $status default=1
  */
 class Transaction extends X3_Module_Table {
 
@@ -14,6 +24,7 @@ class Transaction extends X3_Module_Table {
 
     public $_fields = array(
         'id'=>array('integer[10]','unsigned','primary','auto_increment'),
+        'hash'=>array('string[64]','index'),
         'user_id' => array('integer[10]', 'unsigned', 'default'=>'NULL', 'index', 'ref' => array('User', 'id', 'default' => "name")),
         'project_id' => array('integer[10]', 'unsigned', 'default'=>'NULL', 'index', 'ref' => array('Project', 'id', 'default' => "title")),
         'title'=>array('string[8]'),

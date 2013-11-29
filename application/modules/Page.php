@@ -138,11 +138,13 @@ class Page extends X3_Module_Table {
     public function modText() {
         $t = $this->text;
         if(X3::user()->isGuest()) {
-            $uid = '<a href="/enter.html">'.X3::translate("войти").'</a>';
+            $uemail = $uid = '<a href="/enter.html">'.X3::translate("войти").'</a>';
         } else {
-            $uid = "00".X3::user()->id;
+            $uid = X3::user()->id;
+            $uemail = X3::user()->email;
         }
-        $t = str_replace("{{USER_ACCOUNT}}",$uid,$t);
+        $t = str_replace("{{USER_ID}}",$uid,$t);
+        $t = str_replace("{{USER_ACCOUNT}}",$uemail,$t);
         $t = str_replace("{{PROJECT_ACCOUNT}}","".X3::user()->project_id,$t);
         $t = str_replace("{{DATETIME}}",date("d.m.Y H:i:s"),$t);
         $t = str_replace("{{DATE}}",date("d.m.Y"),$t);

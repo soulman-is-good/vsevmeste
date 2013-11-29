@@ -63,7 +63,10 @@ $links = array_merge($links, array_fill(0, 7, ''));
                     <div><?=$form->input('links[]',array('placeholder'=>'Google+','value'=>X3_Html::encode($links[6])))?></div>
                 </div>
                 <div class="field">
-                    <?=$form->input('debitcard',array('placeholder'=>'Укажите номер вашей банковской карты или расчетного счета'))?>
+                    <?=$form->input('debitcard',array('placeholder'=>'Укажите номер вашей банковской карты'))?>
+                </div>
+                <div class="field">
+                    <?=$form->input('user_account',array('placeholder'=>'Или Ваш расчетный счет'))?>
                     <div class="info">Мы переведем туда деньги, которые вы соберете с проекта, за минусом 9% комиссии.</div>
                 </div>
                 <div class="field">
@@ -75,6 +78,9 @@ $links = array_merge($links, array_fill(0, 7, ''));
                 </div>
                 <div class="field">
                     <div><?=$form->input('company_bin',array('placeholder'=>'ИИН/БИН компании'))?></div>
+                </div>
+                <div class="field">
+                    <div><?=$form->input('company_account',array('placeholder'=>'Расчетный счет компании'))?></div>
                 </div>
                 <h3>Смена пароля</h3>
                 <div class="field">

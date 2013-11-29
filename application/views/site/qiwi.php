@@ -1,5 +1,6 @@
 <?php
-$qiwicode = sprintf("%011d",$invest->id);
+//$qiwicode = sprintf("%011d",$invest->id);
+$qiwicode = $invest->id;
 $form = new Form();
 $per = (float)strip_tags(SysSettings::getValue('QiwiComittion','string','Комиссия Qiwi','Общие','1%'));
 $qiwi_text = SysSettings::getValue('QiwiText','text','Текст для оплаты через терминалы Qiwi','Общие','<p>Чтобы вложить %AMOUNT% тенге в этот проект, необходимо произвести оплату в любом терминале Qiwi<br/>Выберите способ оплаты "vsevmeste.kz" и введите номер счета <b>%CODE%</b></p>');

@@ -237,6 +237,7 @@
                     // except when there is an open quote or if setting allowSpaces = true.
                     // Tab will also create a tag, unless the tag input is empty, 
                     // in which case it isn't caught.
+                    console.log(event, event.which);
                     if (
                         event.which === $.ui.keyCode.COMMA ||
                         event.which === $.ui.keyCode.ENTER ||
