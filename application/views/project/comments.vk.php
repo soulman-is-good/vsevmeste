@@ -25,19 +25,7 @@
             </div>
             <a href="/<?=$model->name?>-project/invest.html" class="invest_big">Вложить в проект</a>
         </div>
-        <div style="height:20px">&nbsp;</div>
-        <div class="pane">
-            <div class="pane-cont">
-                <h3>Автор проекта</h3>
-                <div class="hr">&nbsp;</div>
-                <img class="p-avatar" src="<?=$model->user_id()->getAvatar()?>" />
-                <div class="project-p-content">
-                    <strong><a href="/user/<?=$model->user_id()->id?>/projects.html" class="grey_link"><?=$model->user_id()->fullName?></a></strong><br/>
-                    <i>последний визит <?=date('d.m.Y H:i:s',$model->user_id()->lastbeen_at)?></i>
-                </div>
-                <div class="clear">&nbsp;</div>
-            </div>
-        </div>
+        <?=  X3_Widget::run('@views:project:_author.php',array('model'=>$model))?>
         <?=  X3_Widget::run('@views:project:_project_interests.php',array('interests'=>$interests,'model'=>$model))?>
     </div>
     <div class="item-body">

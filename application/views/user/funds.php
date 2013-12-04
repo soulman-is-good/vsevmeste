@@ -98,10 +98,10 @@ else
             <div class="pane-cont">
                 <h3>Выберите систему оплаты</h3><br/>
                 <a href="/user/<?=$user->id?>/funds?type=qiwi" class="pay" title="Пополнение через Qiwi">
-                    <img src="/images/qiwi.png" alt="QIWI" />
+                    <img src="/images/qiwi.png" alt="QIWI" /> 
                 </a>
-                <a href="/user/<?=$user->id?>/funds?type=visa" class="pay" title="Оплата с помощью карточек Visa">
-                    <img src="/images/visa.png" width="158" alt="VISA" />
+                <a href="/user/<?=$user->id?>/funds?type=visa" class="pay" title="Оплата с помощью EPay">
+                    <img src="/images/epay.png" width="158" alt="EPAY" />
                 </a>
                 <div class="hr">&nbsp;</div>
                 <a class="grey_link" href="/user/<?=$user->id?>/">Отменить</a>
